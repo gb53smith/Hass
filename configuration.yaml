@@ -12,7 +12,8 @@ homeassistant:
   time_zone: !secret time_zone
 
 # Show links to resources in log and frontend
-introduction:
+#Turned off to test pull on rasbery
+#introduction:
 
 # Enables the frontend
 frontend:
@@ -43,8 +44,8 @@ logbook:
 
 # Track the sun
 sun:
-
 # Weather Prediction
+
 sensor:
   platform: yr
 
