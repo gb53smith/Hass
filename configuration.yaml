@@ -12,8 +12,18 @@ homeassistant:
   time_zone: !secret time_zone
 
 # Show links to resources in log and frontend
-#Turned off to test pull on rasbery
-#introduction:
+#Turned off to test pull on rasberry
+introduction:
+
+mqtt:
+  embedded:
+    listeners:
+      default:
+        max-connections: 500
+        type: tcp
+        bind: 127.0.0.1:1888
+  broker: 127.0.0.1
+  port: 1888
 
 # Enables the frontend
 frontend:
@@ -46,11 +56,5 @@ logbook:
 sun:
 # Weather Prediction
 
-sensor:
-  platform: yr
 
-# Text to speech
-tts:
-  platform: google
 
-group: !include groups.yaml
