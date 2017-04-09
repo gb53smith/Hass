@@ -11,19 +11,50 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: !secret time_zone
 
-# Show links to resources in log and frontend
-#Turned off to test pull on rasberry
-introduction:
+#Show links to resources in log and frontend
 
+#introduction:
+
+#This start the MQTT server on Raspberry setup using the HA install script
+#To access from an Arduino deviceI had to use the IP address for the Raspberry
 mqtt:
-  embedded:
-    listeners:
-      default:
-        max-connections: 500
-        type: tcp
-        bind: 127.0.0.1:1888
-  broker: 127.0.0.1
-  port: 1888
+  broker: localhost 
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: gbsmith
+  password: mos123
+  protocol: 3.1 
+
+switch:
+
+  - platform: mqtt
+    name: "Back Irrigation"
+    state_topic: "/house/switchConfirm1/"
+    command_topic: "/house/switch1/"
+    payload_on: "1"
+    payload_off: "0"
+    qos: 0
+    retain: true   
+
+  - platform: mqtt
+    name: "Front Irrigation"
+    state_topic: "/house/switchConfirm2/"
+    command_topic: "/house/switch2/"
+    payload_on: "1"
+    payload_off: "0"
+    qos: 0
+    retain: true    
+
+  - platform: mqtt
+    name: "Deck Irrigation"
+    state_topic: "/house/switchConfirm3/"
+    command_topic: "/house/switch3/"
+    payload_on: "1"
+    payload_off: "0"
+    qos: 0
+    retain: true    
+  
 
 # Enables the frontend
 frontend:
@@ -56,5 +87,33 @@ logbook:
 sun:
 # Weather Prediction
 
+#Needed for Developer panel
+group: !include groups.yaml
+
+# switch:
+  # - platform: mqtt
+    # name: "Relay 1"
+    # command_topic: "home/irrigation/relay1"
+    # payload_on: "ON"
+    # payload_off: "OFF"
+  # # - platform: mqtt
+    # # name: "Relay 1"
+    # # state_topic: "home/irrigation/relay1"
+    # # command_topic: "home/irrigation/relay1"
+    # # qos: 0
+    # # payload_on: "ON"
+    # # payload_off: "OFF"
+    # # optimistic: false 
+    # # retain: true
+    
+  # - platform: mqtt
+    # name: "Relay 2"
+    # command_topic: "home/irrigation/relay2"
+    # payload_on: "ON"
+    # payload_off: "OFF"
+  # # - platform: mqtt
+    # # command_topic: "home/irrigation/relay3/set"
+  # # - platform: mqtt
+    # # command_topic: "home/irrigation/relay4/set"
 
 
