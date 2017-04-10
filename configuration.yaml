@@ -30,29 +30,20 @@ switch:
 
   - platform: mqtt
     name: "Back Irrigation"
-    state_topic: "/house/switchConfirm1/"
-    command_topic: "/house/switch1/"
-    payload_on: "1"
-    payload_off: "0"
-    qos: 0
+    state_topic: "/home/irrigation/zoneConfirm1/"
+    command_topic: "/home/irrigation/zone1/"
     retain: true   
 
   - platform: mqtt
     name: "Front Irrigation"
-    state_topic: "/house/switchConfirm2/"
-    command_topic: "/house/switch2/"
-    payload_on: "1"
-    payload_off: "0"
-    qos: 0
+    state_topic: "/home/irrigation/zoneConfirm2/"
+    command_topic: "/home/irrigation/zone2/"
     retain: true    
 
   - platform: mqtt
     name: "Deck Irrigation"
-    state_topic: "/house/switchConfirm3/"
-    command_topic: "/house/switch3/"
-    payload_on: "1"
-    payload_off: "0"
-    qos: 0
+    state_topic: "/home/irrigation/zoneConfirm3/"
+    command_topic: "/home/irrigation/zone3/"
     retain: true    
   
 
@@ -89,31 +80,4 @@ sun:
 
 #Needed for Developer panel
 group: !include groups.yaml
-
-# switch:
-  # - platform: mqtt
-    # name: "Relay 1"
-    # command_topic: "home/irrigation/relay1"
-    # payload_on: "ON"
-    # payload_off: "OFF"
-  # # - platform: mqtt
-    # # name: "Relay 1"
-    # # state_topic: "home/irrigation/relay1"
-    # # command_topic: "home/irrigation/relay1"
-    # # qos: 0
-    # # payload_on: "ON"
-    # # payload_off: "OFF"
-    # # optimistic: false 
-    # # retain: true
-    
-  # - platform: mqtt
-    # name: "Relay 2"
-    # command_topic: "home/irrigation/relay2"
-    # payload_on: "ON"
-    # payload_off: "OFF"
-  # # - platform: mqtt
-    # # command_topic: "home/irrigation/relay3/set"
-  # # - platform: mqtt
-    # # command_topic: "home/irrigation/relay4/set"
-
 
