@@ -1,0 +1,9 @@
+
+  irrigation_automation:
+    name: Irrigation Schedule
+    #view: yes
+    entities:
+      - automation.back_irrigation
+      - automation.front_irrigation
+      - automation.deck_irrigation
+

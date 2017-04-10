@@ -1,0 +1,69 @@
+#Turns ON Back Irrigation if no other zones are turned ON
+#My 24V 500mA can only safely power one value at a time
+#Set start times in the trigger sections
+#and the ON time in the delay section
+#Note that the start time must be staggered to meet conditions
+  - alias: 'Back Irrigation'
+    #hide_entity: True
+    trigger:
+    - platform: time
+      after: '07:00:00'
+    - platform: time
+      after: '19:00:00'
+    condition: 
+      - condition: state
+        entity_id: switch.deck_irrigation
+        state: 'off'
+      - condition: state
+        entity_id: switch.front_irrigation
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.back_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.back_irrigation
+
+  - alias: 'Front Irrigation'
+    #hide_entity: True
+    trigger:
+    - platform: time
+      after: '07:15:00'
+    - platform: time
+      after: '19:15:00'
+    condition: 
+      - condition: state
+        entity_id: switch.deck_irrigation
+        state: 'off'
+      - condition: state
+        entity_id: switch.back_irrigation
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.back_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.back_irrigation  
+        
+  - alias: 'Deck Irrigation'
+    #hide_entity: True
+    trigger:
+    - platform: time
+      after: '07:30:00'
+    - platform: time
+      after: '19:30:00'
+    condition: 
+      - condition: state
+        entity_id: switch.back_irrigation
+        state: 'off'
+      - condition: state
+        entity_id: switch.front_irrigation
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.back_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.back_irrigation
+        
+
