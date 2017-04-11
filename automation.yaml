@@ -40,10 +40,10 @@
         state: 'off'
     action:
       - service: switch.turn_on
-        entity_id: switch.back_irrigation
+        entity_id: switch.front_irrigation
       - delay: '00:10:00'
       - service: switch.turn_off
-        entity_id: switch.back_irrigation  
+        entity_id: switch.front_irrigation  
         
   - alias: 'Deck Irrigation'
     #hide_entity: True
@@ -61,9 +61,9 @@
         state: 'off'
     action:
       - service: switch.turn_on
-        entity_id: switch.back_irrigation
+        entity_id: switch.deck_irrigation
       - delay: '00:10:00'
       - service: switch.turn_off
-        entity_id: switch.back_irrigation
+        entity_id: switch.deck_irrigation
         
 
