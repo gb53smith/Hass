@@ -13,7 +13,11 @@
       after: '07:00:00'
     - platform: time
       after: '19:00:00'
-    condition: 
+    condition:
+# These conditions not really needed since the hardware was 
+# modified to only allow one relay ON at a time.
+# If a command is received to turn one relay ON the others
+# are turned OFF.    
       - condition: state
         entity_id: switch.deck_irrigation
         state: 'off'
@@ -66,6 +70,19 @@
       - delay: '00:10:00'
       - service: switch.turn_off
         entity_id: switch.deck_irrigation
+        
+  - alias: 'Irrigation Safety'
+# In case some interruption occurs while a zone is ON
+# Not sure this is neccessary but does not hurt to include
+# Time are after the last zone cycle
+    trigger:
+    - platform: time
+      after: '08:00:00'
+    - platform: time
+      after: '20:00:00'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: group.irrigation_switches
         
 # Turn ON on hour before sunset      
   - alias: 'Living Room Light ON'

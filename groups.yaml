@@ -13,6 +13,12 @@
   Z-Wave Components:
     - zwave.aeotec_zw090_zstick_gen5_1
     - zwave.leviton_unknown_type1d04_id0334_2
+    
+  Irrigation Switches:
+    - switch.back_irrigation
+    - switch.front_irrigation
+    - switch.deck_irrigation
+
    
 # Control what is seen on the WEB States page
 # Note: I wanted to hide the Z-Wave Component Status
