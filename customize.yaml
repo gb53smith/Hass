@@ -1,0 +1,8 @@
+    switch.leviton_unknown_type1d04_id0334_switch_2_0:
+      friendly_name: "Living Room Receptacle"
+      icon: mdi:power-plug
+#This hides but also from a group so I made it False  
+    automation.living_room_light_on:
+      hidden: False
+    automation.living_room_light_off:
+      hidden: False

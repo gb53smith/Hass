@@ -4,8 +4,11 @@
 #and the ON time in the delay section
 #Note that the start time must be staggered to meet conditions
   - alias: 'Back Irrigation'
-    #hide_entity: True
+# This can be set to "off" to prevent automation coming back ON after a reboot
+# caused by a power outage
+    initial_state: 'on'
     trigger:
+# "-" needed only for multiple triggers/conditions/services
     - platform: time
       after: '07:00:00'
     - platform: time
@@ -25,7 +28,6 @@
         entity_id: switch.back_irrigation
 
   - alias: 'Front Irrigation'
-    #hide_entity: True
     trigger:
     - platform: time
       after: '07:15:00'
@@ -46,7 +48,6 @@
         entity_id: switch.front_irrigation  
         
   - alias: 'Deck Irrigation'
-    #hide_entity: True
     trigger:
     - platform: time
       after: '07:30:00'
@@ -66,4 +67,23 @@
       - service: switch.turn_off
         entity_id: switch.deck_irrigation
         
+# Turn ON on hour before sunset      
+  - alias: 'Living Room Light ON'
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-01:00:00"
+    action:
+      service: switch.turn_on
+      entity_id: switch.leviton_unknown_type1d04_id0334_switch_2_0
 
+# Turn OFF at 23:30
+  - alias: 'Living Room Light OFF'
+    trigger:
+      platform: time
+      after: '23:30:00'    
+    action:
+      service: switch.turn_off
+      entity_id: switch.leviton_unknown_type1d04_id0334_switch_2_0
+
+          
