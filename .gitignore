@@ -1,0 +1,20 @@
+#For Homeassisant
+secrets.yaml
+hass
+zwave_device_config.yaml
+known_devices.yaml
+*.pid
+*.xml
+*.csr
+*.crt
+*.key
+.*
+config
+OZW_Log.txt
+home-assistant.log
+home-assistant_v2.db
+*.db-journal
+lib
+deps
+tts
+pyozw.sqlite
