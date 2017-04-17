@@ -10,7 +10,7 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: !secret time_zone
-  customize: !include hass/customize.yaml
+  customize: !include customize.yaml
     
 #Show links to resources in log and frontend
 #introduction:
@@ -81,11 +81,9 @@ logbook:
 sun:
 # Weather Prediction
 
-#The hass directory is a clone repository from GitHub
-#There is a symbolic link from .homeassistant/configuration.yaml to
-# .homeassistant/hass/configuration.yaml
-group: !include hass/groups.yaml
-automation: !include hass/automation.yaml
+group: !include groups.yaml
+
+automation: !include automation.yaml
 
 
 
