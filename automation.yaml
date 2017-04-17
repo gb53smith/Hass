@@ -6,7 +6,7 @@
   - alias: 'Back Irrigation'
 # This can be set to "off" to prevent automation coming back ON after a reboot
 # caused by a power outage
-    initial_state: 'on'
+    initial_state: false
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
@@ -32,11 +32,14 @@
         entity_id: switch.back_irrigation
 
   - alias: 'Front Irrigation'
+# On reboot after a power outage restart this automation
+    initial_state: true
     trigger:
     - platform: time
       after: '07:15:00'
-    - platform: time
-      after: '19:15:00'
+#Removed second trigger for cold frame
+    # - platform: time
+      # after: '19:15:00'
     condition: 
       - condition: state
         entity_id: switch.deck_irrigation
@@ -52,6 +55,7 @@
         entity_id: switch.front_irrigation  
         
   - alias: 'Deck Irrigation'
+    initial_state: false
     trigger:
     - platform: time
       after: '07:30:00'
@@ -75,6 +79,7 @@
 # In case some interruption occurs while a zone is ON
 # Not sure this is neccessary but does not hurt to include
 # Time are after the last zone cycle
+    initial_state: true
     trigger:
     - platform: time
       after: '08:00:00'
@@ -86,6 +91,7 @@
         
 # Turn ON on hour before sunset      
   - alias: 'Living Room Light ON'
+    initial_state: true
     trigger:
       platform: sun
       event: sunset
@@ -96,6 +102,7 @@
 
 # Turn OFF at 23:30
   - alias: 'Living Room Light OFF'
+    initial_state: true
     trigger:
       platform: time
       after: '23:30:00'    

@@ -1,6 +1,5 @@
 #For Homeassisant
 secrets.yaml
-hass
 zwave_device_config.yaml
 known_devices.yaml
 *.pid
