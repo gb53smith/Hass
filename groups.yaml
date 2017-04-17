@@ -24,19 +24,26 @@
 # Note: I wanted to hide the Z-Wave Component Status
 # So it is not listed in the default view
 
+
+# Block comment this section out to see all available components
+# 
   default_view:
     name: DEFAULT
     icon: mdi:home
-    view: yes
+    view: true
     entities:
-      - switch.back_irrigation
-      - switch.front_irrigation
-      - switch.deck_irrigation
+      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
+      # Commented out so that I can't accidentally turn one ON.  
+      # All done in automation.  I can still use developer tools to see state.
+      # - switch.back_irrigation
+      # - switch.front_irrigation
+      # - switch.deck_irrigation
       - switch.leviton_unknown_type1d04_id0334_switch_2_0
+      
 
 # Use a second tab for automations which are usually left ON
   Automations:
-    view: yes
+    view: true
     entities:
       - group.irrigation
       - group.living_room_light

@@ -49,15 +49,16 @@ switch:
     command_topic: "/home/irrigation/zone3"
     retain: true
 
+
 # Enables the frontend
 frontend:
 
 # Enables configuration UI
 config:
 
-http:
+#http:
   # Uncomment this to add a password (recommended!)
-  # api_password: PASSWORD
+  #api_password: !secret api_password
   # Uncomment this if you are using SSL or running in Docker etc
   # base_url: example.duckdns.org:8123
 
