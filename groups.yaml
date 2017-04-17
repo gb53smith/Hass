@@ -1,0 +1,51 @@
+# Create Groups of Entities
+# Look them up on the front end under Developer Tools <>
+ 
+  Irrigation:
+    - automation.back_irrigation
+    - automation.front_irrigation
+    - automation.deck_irrigation
+    
+  Living Room Light:
+    - automation.living_room_light_on
+    - automation.living_room_light_off
+
+  Z-Wave Components:
+    - zwave.aeotec_zw090_zstick_gen5_1
+    - zwave.leviton_unknown_type1d04_id0334_2
+    
+  Irrigation Switches:
+    - switch.back_irrigation
+    - switch.front_irrigation
+    - switch.deck_irrigation
+
+   
+# Control what is seen on the WEB States page
+# Note: I wanted to hide the Z-Wave Component Status
+# So it is not listed in the default view
+
+
+# Block comment this section out to see all available components
+# 
+  default_view:
+    name: DEFAULT
+    icon: mdi:home
+    view: true
+    entities:
+      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
+      # Commented out so that I can't accidentally turn one ON.  
+      # All done in automation.  I can still use developer tools to see state.
+      # - switch.back_irrigation
+      # - switch.front_irrigation
+      # - switch.deck_irrigation
+      - switch.leviton_unknown_type1d04_id0334_switch_2_0
+      
+
+# Use a second tab for automations which are usually left ON
+  Automations:
+    view: true
+    entities:
+      - group.irrigation
+      - group.living_room_light
+      
+ 

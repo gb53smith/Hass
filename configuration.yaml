@@ -1,0 +1,91 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: !secret name
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude
+  longitude: !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret time_zone
+  customize: !include customize.yaml
+    
+#Show links to resources in log and frontend
+#introduction:
+
+#This start the MQTT server on Raspberry setup using the HA install script
+#To access from an Arduino deviceI had to use the IP address for the Raspberry
+mqtt:
+  broker: localhost 
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: gbsmith
+  password: mos123
+  protocol: 3.1 
+  
+zwave:
+  usb_path: /dev/ttyACM0
+        
+switch:
+
+  - platform: mqtt
+    name: "Back Irrigation"
+    state_topic: "/home/irrigation/zoneConfirm1"
+    command_topic: "/home/irrigation/zone1"
+    retain: true   
+
+  - platform: mqtt
+    name: "Front Irrigation"
+    state_topic: "/home/irrigation/zoneConfirm2"
+    command_topic: "/home/irrigation/zone2"
+    retain: true    
+
+  - platform: mqtt
+    name: "Deck Irrigation"
+    state_topic: "/home/irrigation/zoneConfirm3"
+    command_topic: "/home/irrigation/zone3"
+    retain: true
+
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+#http:
+  # Uncomment this to add a password (recommended!)
+  #api_password: !secret api_password
+  # Uncomment this if you are using SSL or running in Docker etc
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+#conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+# Weather Prediction
+
+#The hass directory is a clone repository from GitHub
+#There is a symbolic link from .homeassistant/configuration.yaml to
+# .homeassistant/hass/configuration.yaml
+group: !include groups.yaml
+automation: !include automation.yaml
+
+
+

@@ -1,0 +1,106 @@
+#Turns ON Back Irrigation if no other zones are turned ON
+#My 24V 500mA can only safely power one value at a time
+#Set start times in the trigger sections
+#and the ON time in the delay section
+#Note that the start time must be staggered to meet conditions
+  - alias: 'Back Irrigation'
+# This can be set to "off" to prevent automation coming back ON after a reboot
+# caused by a power outage
+    initial_state: 'on'
+    trigger:
+# "-" needed only for multiple triggers/conditions/services
+    - platform: time
+      after: '07:00:00'
+    - platform: time
+      after: '19:00:00'
+    condition:
+# These conditions not really needed since the hardware was 
+# modified to only allow one relay ON at a time.
+# If a command is received to turn one relay ON the others
+# are turned OFF.    
+      - condition: state
+        entity_id: switch.deck_irrigation
+        state: 'off'
+      - condition: state
+        entity_id: switch.front_irrigation
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.back_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.back_irrigation
+
+  - alias: 'Front Irrigation'
+    trigger:
+    - platform: time
+      after: '07:15:00'
+    - platform: time
+      after: '19:15:00'
+    condition: 
+      - condition: state
+        entity_id: switch.deck_irrigation
+        state: 'off'
+      - condition: state
+        entity_id: switch.back_irrigation
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.front_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.front_irrigation  
+        
+  - alias: 'Deck Irrigation'
+    trigger:
+    - platform: time
+      after: '07:30:00'
+    - platform: time
+      after: '19:30:00'
+    condition: 
+      - condition: state
+        entity_id: switch.back_irrigation
+        state: 'off'
+      - condition: state
+        entity_id: switch.front_irrigation
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.deck_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.deck_irrigation
+        
+  - alias: 'Irrigation Safety'
+# In case some interruption occurs while a zone is ON
+# Not sure this is neccessary but does not hurt to include
+# Time are after the last zone cycle
+    trigger:
+    - platform: time
+      after: '08:00:00'
+    - platform: time
+      after: '20:00:00'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: group.irrigation_switches
+        
+# Turn ON on hour before sunset      
+  - alias: 'Living Room Light ON'
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-01:00:00"
+    action:
+      service: switch.turn_on
+      entity_id: switch.leviton_unknown_type1d04_id0334_switch_2_0
+
+# Turn OFF at 23:30
+  - alias: 'Living Room Light OFF'
+    trigger:
+      platform: time
+      after: '23:30:00'    
+    action:
+      service: switch.turn_off
+      entity_id: switch.leviton_unknown_type1d04_id0334_switch_2_0
+
+          
