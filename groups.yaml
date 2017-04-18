@@ -28,9 +28,9 @@
 # Block comment this section out to see all available components
 # 
   default_view:
-    name: DEFAULT
+    view: true  
+    #name: DEFAULT
     icon: mdi:home
-    view: true
     entities:
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
       # Commented out so that I can't accidentally turn one ON.  

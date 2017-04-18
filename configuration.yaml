@@ -15,6 +15,14 @@ homeassistant:
 #Show links to resources in log and frontend
 #introduction:
 
+http:
+  api_password: !secret api_password
+#This works for https://gb53smith.duckdns.org from an external network
+#but not from my internal network.  
+  #ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
+  #ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
+
+
 #This start the MQTT server on Raspberry setup using the HA install script
 #To access from an Arduino deviceI had to use the IP address for the Raspberry
 mqtt:
