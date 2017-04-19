@@ -18,10 +18,10 @@ homeassistant:
 http:
   api_password: !secret api_password
 #This works for https://gb53smith.duckdns.org from an external network
-#but not from my internal network.  
-  #ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
-  #ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
-
+#but not from my internal network.  Well work on chrome
+  ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
+  ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
+  base_url: gb53smith.duckdns.org
 
 #This start the MQTT server on Raspberry setup using the HA install script
 #To access from an Arduino deviceI had to use the IP address for the Raspberry
@@ -63,12 +63,6 @@ frontend:
 
 # Enables configuration UI
 config:
-
-#http:
-  # Uncomment this to add a password (recommended!)
-  #api_password: !secret api_password
-  # Uncomment this if you are using SSL or running in Docker etc
-  # base_url: example.duckdns.org:8123
 
 # Checks for available updates
 updater:
