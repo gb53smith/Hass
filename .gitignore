@@ -17,3 +17,5 @@ lib
 deps
 tts
 pyozw.sqlite
+ios.conf
+
