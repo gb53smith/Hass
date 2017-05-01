@@ -99,15 +99,14 @@ history:
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_system_4_12
       - sensor.grahams_iphone_battery_level
       - sensor.grahams_iphone_battery_state
-      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
-      - switch.leviton_unknown_type1d04_id0334_switch_2_0
       - zwave.aeotec_zw090_zstick_gen5_1
-      - zwave.leviton_unknown_type1d04_id0334_2
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
+      - zwave.leviton_unknown_type1d04_id0334_2
       - group.zwave_components
       - group.all_switches
       - group.irrigation
       - group.irrigation_switches
+      - group.living_room_light
   
 #Track Location and send notifications to the iOS app on my iPhone
 ios:
