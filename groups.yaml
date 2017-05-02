@@ -18,6 +18,11 @@
     - switch.back_irrigation
     - switch.front_irrigation
     - switch.deck_irrigation
+    
+  Back Door Lock:
+    - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
+    - sensor.back_lock_last_action
+    - sensor.lock_battery
 
    
 # Control what is seen on the WEB States page
@@ -32,13 +37,14 @@
     #name: DEFAULT
     icon: mdi:home
     entities:
-      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
+      - group.back_door_lock
       # Commented out so that I can't accidentally turn one ON.  
       # All done in automation.  I can still use developer tools to see state.
       # - switch.back_irrigation
       # - switch.front_irrigation
       # - switch.deck_irrigation
       - switch.leviton_unknown_type1d04_id0334_switch_2_0
+
       
 
 # Use a second tab for automations which are usually left ON
@@ -47,5 +53,5 @@
     entities:
       - group.irrigation
       - group.living_room_light
-      
+      - sensor.ssl_cert_expiry
  

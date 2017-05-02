@@ -1,0 +1,74 @@
+
+
+  - platform: command_line
+    name: SSL cert expiry
+    unit_of_measurement: days
+    scan_interval: 10800
+    command: "ssl-cert-check -b -c /etc/letsencrypt/live/gb53smith.duckdns.org/cert.pem | awk '{ print $NF }'"
+
+  - platform: template
+    sensors:
+      back_lock_last_action:
+        friendly_name: 'Lock Last Action'
+        value_template: > 
+                          {% if 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '1') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '6') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '19') %} 
+                                  Unlocked: Graham
+                          {% endif %}
+
+                          {% if 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '2') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '6') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '19') %} 
+                                  Unlocked: Joyce
+                          {% endif %}
+
+                          {% if 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '3') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '6') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '19') %} 
+                                  Unlocked: Oliver
+                          {% endif %}  
+                          
+                          {% if 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '1') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '2') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '22') %} 
+                                  Unlocked: Inside Deadbolt
+                          {% endif %}
+
+                          {% if 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '1') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '1') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '21') %} 
+                                  Locked: Inside Deadbolt
+                          {% endif %}
+
+                          {% if 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '0') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '5') 
+                          and 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '18') %} 
+                                  Locked: Outside Keypad
+                          {% endif %}
+  - platform: template
+    sensors:
+      lock_battery:
+        friendly_name: 'Lock Battery'
+        value_template: "{{ states.zwave.schlage_be469nxcen_touchscreen_deadbolt_4.attributes.battery_level|default(-1)|int }}"
+        unit_of_measurement: '%'
+        entity_id: zwave.schlage_be469nxcen_touchscreen_deadbolt_4
+        

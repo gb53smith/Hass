@@ -19,9 +19,9 @@ http:
   api_password: !secret api_password
 #This works for https://gb53smith.duckdns.org from an external network
 #but not from my internal network.  Well work on chrome
-  ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
-  base_url: gb53smith.duckdns.org
+  # ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
+  # ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
+  # base_url: gb53smith.duckdns.org
 
 #This start the MQTT server on Raspberry setup using the HA install script
 #To access from an Arduino deviceI had to use the IP address for the Raspberry
@@ -99,6 +99,7 @@ history:
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_system_4_12
       - sensor.grahams_iphone_battery_level
       - sensor.grahams_iphone_battery_state
+      - sensor.ssl_cert_expiry
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_unknown_type1d04_id0334_2
@@ -120,5 +121,4 @@ group: !include groups.yaml
 
 automation: !include automation.yaml
 
-
-
+sensor: !include sensors.yaml
