@@ -17,13 +17,18 @@
 # These conditions not really needed since the hardware was 
 # modified to only allow one relay ON at a time.
 # If a command is received to turn one relay ON the others
-# are turned OFF.    
-      - condition: state
-        entity_id: switch.deck_irrigation
-        state: 'off'
-      - condition: state
-        entity_id: switch.front_irrigation
-        state: 'off'
+# are turned OFF.
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: switch.deck_irrigation
+          state: 'off'
+        - condition: state
+          entity_id: switch.front_irrigation
+          state: 'off'
+#Copy this to Front Irrigation when not using cold frame
+        - condition: template
+          value_template: '{{ states.sensor.yesterday_rainfall.state < 5 }}'
     action:
       - service: switch.turn_on
         entity_id: switch.back_irrigation
@@ -41,12 +46,14 @@
     # - platform: time
       # after: '19:15:00'
     condition: 
-      - condition: state
-        entity_id: switch.deck_irrigation
-        state: 'off'
-      - condition: state
-        entity_id: switch.back_irrigation
-        state: 'off'
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: switch.deck_irrigation
+          state: 'off'
+        - condition: state
+          entity_id: switch.back_irrigation
+          state: 'off'
     action:
       - service: switch.turn_on
         entity_id: switch.front_irrigation
@@ -62,12 +69,14 @@
     - platform: time
       after: '19:30:00'
     condition: 
-      - condition: state
-        entity_id: switch.back_irrigation
-        state: 'off'
-      - condition: state
-        entity_id: switch.front_irrigation
-        state: 'off'
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: switch.back_irrigation
+          state: 'off'
+        - condition: state
+          entity_id: switch.front_irrigation
+          state: 'off'
     action:
       - service: switch.turn_on
         entity_id: switch.deck_irrigation

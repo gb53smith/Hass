@@ -51,8 +51,10 @@
   Automations:
     view: true
     entities:
+      - sensor.yesterday_rainfall
       - group.irrigation
       - group.living_room_light
       - sensor.ssl_cert_expiry
+     
 
  

@@ -1,17 +1,23 @@
 #!/usr/bin/python3.4
 
 import urllib.request
-import json
-owm_url = "http://api.openweathermap.org/data/2.5/weather?id=5911606&appid=6ba0b719372607e5a99106e08e877a80"
+import urllib.parse 
+import re 
+import xml.etree.ElementTree as ET 
+from urllib import request 
 
-response = urllib.request.urlopen(owm_url)
-content = response.read()
-json_data = json.loads(content.decode("utf8"))
+#Now I can make the API call.  
+id_request = urllib.request.urlopen('http://dd.weatheroffice.ec.gc.ca/citypage_weather/xml/BC/s0000141_e.xml')
 
-json_dt = json_data['dt'] #Unix time
-json_temp = json_data['main']['temp']
-if '"rain"' in json_data:
-	json_rain = json_data['rain']['3h']
-	print(json_dt,json_temp,json_rain)
-else:
-	print(json_dt,json_temp,0)
+#Let's now read this baby in XML format!
+id_pubmed = id_request.read()
+root = ET.fromstring(id_pubmed)
+
+# Find the data I want
+#elements are numbered with integers.  Uncomment to see order of elements
+#for child in root:
+	#print(child.tag,child.attrib)
+#This is yesterday's rainfall in mm.
+print(root[8][2].text)
+
+

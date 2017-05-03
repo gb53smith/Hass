@@ -101,6 +101,7 @@ history:
       - sensor.grahams_iphone_battery_state
       - sensor.lock_battery
       - sensor.ssl_cert_expiry
+      - sensor.yesterday_rainfall
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_unknown_type1d04_id0334_2
