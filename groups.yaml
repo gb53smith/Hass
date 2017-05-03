@@ -23,7 +23,7 @@
     - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
     - sensor.back_lock_last_action
     - sensor.lock_battery
-
+    
    
 # Control what is seen on the WEB States page
 # Note: I wanted to hide the Z-Wave Component Status
@@ -54,4 +54,5 @@
       - group.irrigation
       - group.living_room_light
       - sensor.ssl_cert_expiry
+
  

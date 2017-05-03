@@ -71,4 +71,3 @@
         value_template: "{{ states.zwave.schlage_be469nxcen_touchscreen_deadbolt_4.attributes.battery_level|default(-1)|int }}"
         unit_of_measurement: '%'
         entity_id: zwave.schlage_be469nxcen_touchscreen_deadbolt_4
-        
