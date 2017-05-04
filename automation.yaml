@@ -119,4 +119,24 @@
       service: switch.turn_off
       entity_id: switch.leviton_unknown_type1d04_id0334_switch_2_0
 
-          
+  - alias: Notify iOS App Joyce
+    trigger:
+      platform: state
+      entity_id: sensor.back_lock_last_action
+      state: 'Unlocked: Joyce'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Joyce Unlocked Door"
+        
+  - alias: Notify iOS App Oliver
+    trigger:
+      platform: state
+      entity_id: sensor.back_lock_last_action
+      state: 'Unlocked: Oliver'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Oliver Unlocked Door"
+
+        
