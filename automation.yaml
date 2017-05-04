@@ -27,8 +27,9 @@
           entity_id: switch.front_irrigation
           state: 'off'
 #Copy this to Front Irrigation when not using cold frame
+# float is needed to convert string state to float for comparison
         - condition: template
-          value_template: '{{ states.sensor.yesterday_rainfall.state < 5 }}'
+          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
       - service: switch.turn_on
         entity_id: switch.back_irrigation
