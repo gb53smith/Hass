@@ -9,6 +9,7 @@
   - platform: template
     sensors:
       back_lock_last_action:
+# _4 is the node ID.  I see that last codes in the HA log.  The _1, _9, _0 can be found in the HA States
         friendly_name: 'Lock Last Action'
         value_template: > 
                           {% if 

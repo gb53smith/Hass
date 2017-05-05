@@ -3,8 +3,15 @@
       icon: mdi:power-plug
     lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0:
       friendly_name: "Back Door"
-#This hides but also from a group so I made it False  
+
+# This hides but also from a group so I made it False  
     automation.living_room_light_on:
       hidden: False
     automation.living_room_light_off:
       hidden: False
+      
+# To getting tracking with iOS App working
+    zone.home:
+      track_ios: true
+      
+ 

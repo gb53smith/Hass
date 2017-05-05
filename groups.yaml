@@ -55,6 +55,7 @@
       - group.irrigation
       - group.living_room_light
       - sensor.ssl_cert_expiry
+      - device_tracker.grahams_iphone
      
 
  
