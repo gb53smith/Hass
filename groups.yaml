@@ -24,7 +24,12 @@
     - sensor.back_lock_last_action
     - sensor.lock_battery
     
-   
+  MultiSensor Components:
+    - sensor.temperature
+    - sensor.humidity
+    - sensor.motion
+    - sensor.rgb_state
+
 # Control what is seen on the WEB States page
 # Note: I wanted to hide the Z-Wave Component Status
 # So it is not listed in the default view
@@ -57,5 +62,12 @@
       - sensor.ssl_cert_expiry
       - device_tracker.grahams_iphone
      
+# Use a third tab for Multisensor Project
+  MultiSensor:
+    view: true
+    entities:
+      - switch.furnace
+      - group.multisensor_components
+ 
 
  

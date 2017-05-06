@@ -1,0 +1,25 @@
+# For Relay4 Arduino Project
+  - platform: mqtt
+    name: "Back Irrigation"
+    state_topic: "/home/irrigation/zoneConfirm1"
+    command_topic: "/home/irrigation/zone1"
+    retain: true   
+
+  - platform: mqtt
+    name: "Front Irrigation"
+    state_topic: "/home/irrigation/zoneConfirm2"
+    command_topic: "/home/irrigation/zone2"
+    retain: true    
+
+  - platform: mqtt
+    name: "Deck Irrigation"
+    state_topic: "/home/irrigation/zoneConfirm3"
+    command_topic: "/home/irrigation/zone3"
+    retain: true
+    
+# For MKR1000_MultiSensor Arduino Project
+  - platform: mqtt
+    name: "Furnace"
+    state_topic: "/home/furnace/confirm"
+    command_topic: "/home/furnace/heat"
+    retain: true

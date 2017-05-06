@@ -37,26 +37,6 @@ mqtt:
 zwave:
   usb_path: /dev/ttyACM0
         
-switch:
-
-  - platform: mqtt
-    name: "Back Irrigation"
-    state_topic: "/home/irrigation/zoneConfirm1"
-    command_topic: "/home/irrigation/zone1"
-    retain: true   
-
-  - platform: mqtt
-    name: "Front Irrigation"
-    state_topic: "/home/irrigation/zoneConfirm2"
-    command_topic: "/home/irrigation/zone2"
-    retain: true    
-
-  - platform: mqtt
-    name: "Deck Irrigation"
-    state_topic: "/home/irrigation/zoneConfirm3"
-    command_topic: "/home/irrigation/zone3"
-    retain: true
-
 
 # Enables the frontend
 frontend:
@@ -72,9 +52,6 @@ discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 #conversation:
-
-
-
 
 # View all events in a logbook
 logbook:
@@ -102,6 +79,9 @@ history:
       - sensor.lock_battery
       - sensor.ssl_cert_expiry
       - sensor.yesterday_rainfall
+      - sensor.motion
+      - sensor.rgb_state
+      - switch.furnace
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_unknown_type1d04_id0334_2
@@ -111,16 +91,18 @@ history:
       - group.irrigation_switches
       - group.living_room_light
       - group.back_door_lock
+      - group.multisensor
+      - group.multisensor_components
+      - sun.sun
   
 #Track Location and send notifications to the iOS app on my iPhone
 ios:
-
   
 # Track the sun
 sun:
 
+# Include other files to better organize code
 group: !include groups.yaml
-
 automation: !include automation.yaml
-
 sensor: !include sensors.yaml
+switch: !include switches.yaml

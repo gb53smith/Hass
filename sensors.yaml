@@ -78,3 +78,26 @@
     unit_of_measurement: "mm"
     scan_interval: 10800
     command: "python3 /home/homeassistant/.homeassistant/getrain.py"
+    
+  - platform: mqtt
+    state_topic: '/home/multisensor1'
+    name: 'Temperature'
+    unit_of_measurement: '°C'
+    value_template: '{{ value_json.temperature }}'
+    
+  - platform: mqtt
+    state_topic: '/home/multisensor1'
+    name: 'Humidity'
+    unit_of_measurement: '%'
+    value_template: '{{ value_json.humidity }}'
+    
+  - platform: mqtt
+    state_topic: '/home/multisensor1'
+    name: 'Motion'
+    value_template: '{{ value_json.motion }}'
+    
+  - platform: mqtt
+    state_topic: '/home/multisensor1'
+    name: 'RGB State'
+    value_template: '{{ value_json.rgbstate }}'
+    
