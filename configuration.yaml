@@ -81,7 +81,6 @@ history:
       - sensor.yesterday_rainfall
       - sensor.motion
       - sensor.rgb_state
-      - switch.furnace
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_unknown_type1d04_id0334_2
@@ -101,6 +100,22 @@ ios:
 # Track the sun
 sun:
 
+# Experimental replacement for dumb thermostat
+# Attempt to turn down set point to 18 when away.
+# The hardware should limit max temp to 25 to prevent fire
+# Send Notification if temperature reaches min_temp or max_temp.
+climate:
+  - platform: generic_thermostat
+    name: House
+    heater: switch.furnace
+    target_sensor: sensor.temperature
+    min_temp: 15
+    max_temp: 25
+    target_temp: 21
+    tolerance: 0.3
+    min_cycle_duration:
+      minutes: 5
+             
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automation.yaml

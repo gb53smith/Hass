@@ -45,7 +45,7 @@
       - group.back_door_lock
       # Commented out so that I can't accidentally turn one ON.  
       # All done in automation.  I can still use developer tools to see state.
-      # - switch.back_irrigation
+      - switch.back_irrigation
       # - switch.front_irrigation
       # - switch.deck_irrigation
       - switch.leviton_unknown_type1d04_id0334_switch_2_0
@@ -68,6 +68,7 @@
     entities:
       - switch.furnace
       - group.multisensor_components
+      - climate.house
  
 
  

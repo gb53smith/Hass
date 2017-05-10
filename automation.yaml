@@ -140,4 +140,41 @@
       data:
         message: "Oliver Unlocked Door"
 
+  - alias: Furnace ON
+    trigger:
+      platform: time
+      after: '07:00:00'
+    action:
+      service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: 21
+        
+  - alias: Furnace OFF
+    trigger:
+      platform: time
+      after: '23:00:00'
+    action:
+      service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: 18
+
+# Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point        
+  - alias: Furnace Safety
+    trigger:
+      platform: state
+      entity_id: switch.furnace
+      state: 'On'
+      for:
+        minutes: 7
+    condition:
+      condition: template
+      value_template: '{{ sensor.temperature > 25 }}'
+    action:
+      service: switch.turn_off
+      entity_id: switch.furnace
+    
+      
+        
         
