@@ -12,7 +12,7 @@
 
   Z-Wave Components:
     - zwave.aeotec_zw090_zstick_gen5_1
-    - zwave.leviton_unknown_type1d04_id0334_2
+    - zwave.leviton_dzr151lz_binary_scene_switch_6
     
   Irrigation Switches:
     - switch.back_irrigation
@@ -49,7 +49,7 @@
       # - switch.back_irrigation
       # - switch.front_irrigation
       # - switch.deck_irrigation
-      - switch.leviton_unknown_type1d04_id0334_switch_2_0
+      - switch.leviton_dzr151lz_binary_scene_switch_switch_6_0
 
       
 
