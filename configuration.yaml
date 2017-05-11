@@ -93,6 +93,8 @@ history:
       - group.multisensor
       - group.multisensor_components
       - sun.sun
+      - input_boolean.vacation
+      - device_tracker.grahams_iphone
   
 #Send notifications to the iOS app on my iPhone
 ios:
@@ -111,7 +113,7 @@ climate:
     target_sensor: sensor.temperature
     min_temp: 15
     max_temp: 25
-    target_temp: 21
+    target_temp: !secret temperature_home
     tolerance: 0.3
     min_cycle_duration:
       minutes: 5

@@ -158,7 +158,7 @@
       service: climate.set_temperature
       data_template:
         entity_id: climate.house
-        temperature: 21
+        temperature: !secret temperature_home
         
   - alias: Furnace OFF
     trigger:
@@ -168,7 +168,7 @@
       service: climate.set_temperature
       data_template:
         entity_id: climate.house
-        temperature: 18   
+        temperature: !secret temperature_away   
         
 # Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
 # Needs to be tested       
@@ -185,4 +185,38 @@
     action:
       service: switch.turn_off
       entity_id: switch.furnace
-    
+      
+# Turn temperature setpoint down if away
+  - alias: Away
+    trigger:
+      platform: state
+      entity_id: sensor.my_presence
+      state: 'Away'
+    action:
+      service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: !secret temperature_away   
+
+# Return temperature setpoint when return between 7:00 and 23:00 if not on vacation
+  - alias: Home
+    trigger:
+      platform: state
+      entity_id: sensor.my_presence
+      state: 'Home'
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.vacation
+          state: 'off'
+        - condition: time
+          after: '07:00:00'
+          before: '23:00:00'
+    action:
+      service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: !secret temperature_home   
+
+        
