@@ -83,7 +83,7 @@ history:
       - sensor.rgb_state
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
-      - zwave.leviton_unknown_type1d04_id0334_2
+      - zwave.leviton_dzr151lz_binary_scene_switch_6
       - group.zwave_components
       - group.all_switches
       - group.irrigation
@@ -118,8 +118,14 @@ climate:
     min_cycle_duration:
       minutes: 5
 
-# Create a front end control to force away state if there is a reboot and 
-# lock does not report a state change.  (Away normally set by "Locked: Outside Keypad")
+# Used in automations to detect when I leave and come home again.  'on' = away
+binary_sensor:
+  - platform: template
+    sensors:
+      away:
+        value_template: '{{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")}}'
+        friendly_name: 'I am away' 
+
 input_boolean:
   vacation:
     name: "ON Vacation"
@@ -127,7 +133,7 @@ input_boolean:
     icon: mdi:car
     
 # Send notification if Home Assistant restarts after 10 minutes
-# to wait for internet to come back up.
+# to wait for internet to come back up. I get an error if this is in the automation.yaml file
 automation 2:
   trigger:
     platform: homeassistant

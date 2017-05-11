@@ -141,7 +141,7 @@
         message: "Oliver Unlocked Door"
 
 # Change thermostat set point to 21 C at 7:00 but only if home and not on vacation
-  - alias: Furnace ON
+  - alias: Set Home Setpoint
     trigger:
       platform: time
       after: '07:00:00'
@@ -149,8 +149,8 @@
       condition: and
       conditions:
         - condition: state
-          entity_id: sensor.my_presence
-          state: 'home'
+          entity_id: binary_sensor.away
+          state: 'off'
         - condition: state
           entity_id: input_boolean.vacation
           state: 'off'    
@@ -160,7 +160,7 @@
         entity_id: climate.house
         temperature: !secret temperature_home
         
-  - alias: Furnace OFF
+  - alias: Set Away or Asleep Setpoint
     trigger:
       platform: time
       after: '23:00:00'
@@ -187,11 +187,12 @@
       entity_id: switch.furnace
       
 # Turn temperature setpoint down if away
+#Note: A normal template sensor did not trigger so the binary_sensor was used instead.
   - alias: Away
     trigger:
       platform: state
-      entity_id: sensor.my_presence
-      state: 'Away'
+      entity_id: binary_sensor.away
+      state: 'on' 
     action:
       service: climate.set_temperature
       data_template:
@@ -202,8 +203,8 @@
   - alias: Home
     trigger:
       platform: state
-      entity_id: sensor.my_presence
-      state: 'Home'
+      entity_id: binary_sensor.away
+      state: 'off'
     condition: 
       condition: and
       conditions:
