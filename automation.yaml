@@ -140,10 +140,20 @@
       data:
         message: "Oliver Unlocked Door"
 
+# Change thermostat set point to 21 C at 7:00 but only if home and not on vacation
   - alias: Furnace ON
     trigger:
       platform: time
       after: '07:00:00'
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: sensor.my_presence
+          state: 'home'
+        - condition: state
+          entity_id: input_boolean.vacation
+          state: 'off'    
     action:
       service: climate.set_temperature
       data_template:
@@ -158,23 +168,21 @@
       service: climate.set_temperature
       data_template:
         entity_id: climate.house
-        temperature: 18
-
-# Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point        
+        temperature: 18   
+        
+# Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
+# Needs to be tested       
   - alias: Furnace Safety
     trigger:
       platform: state
       entity_id: switch.furnace
-      state: 'On'
+      state: 'on'
       for:
         minutes: 7
     condition:
       condition: template
-      value_template: '{{ sensor.temperature > 25 }}'
+      value_template: '{{ states.climate.house.attributes.current_temperature | float > states.climate.house.attributes.temperature | float }}'
     action:
       service: switch.turn_off
       entity_id: switch.furnace
     
-      
-        
-        

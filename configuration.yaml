@@ -94,7 +94,7 @@ history:
       - group.multisensor_components
       - sun.sun
   
-#Track Location and send notifications to the iOS app on my iPhone
+#Send notifications to the iOS app on my iPhone
 ios:
   
 # Track the sun
@@ -115,7 +115,28 @@ climate:
     tolerance: 0.3
     min_cycle_duration:
       minutes: 5
-             
+
+# Create a front end control to force away state if there is a reboot and 
+# lock does not report a state change.  (Away normally set by "Locked: Outside Keypad")
+input_boolean:
+  vacation:
+    name: "ON Vacation"
+    initial: off
+    icon: mdi:car
+    
+# Send notification if Home Assistant restarts after 10 minutes
+# to wait for internet to come back up.
+automation 2:
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - delay: 0:10
+    - service: notify.ios_grahams_iphone
+      data:
+        message: "HA Restarted"
+          
+    
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automation.yaml

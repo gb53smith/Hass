@@ -23,6 +23,7 @@
     - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
     - sensor.back_lock_last_action
     - sensor.lock_battery
+
     
   MultiSensor Components:
     - sensor.temperature
@@ -60,7 +61,7 @@
       - group.irrigation
       - group.living_room_light
       - sensor.ssl_cert_expiry
-      - device_tracker.grahams_iphone
+      - input_boolean.vacation
      
 # Use a third tab for Multisensor Project
   MultiSensor:
@@ -69,6 +70,7 @@
       - switch.furnace
       - group.multisensor_components
       - climate.house
+
  
 
  

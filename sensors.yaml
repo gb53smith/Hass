@@ -79,8 +79,7 @@
     sensors:
       my_presense:
         value_template: '{% if is_state("sensor.back_lock_last_action", "Locked: Outside Keypad") %}Away{% else %}Home{% endif %}'
-        entity_id: sensor.back_lock_last_action
-        
+        entity_id: sensor.back_lock_last_action     
 
   - platform: command_line
     name: Yesterday Rainfall
