@@ -1,0 +1,41 @@
+  # Triggered in automation by switch.furnace -> ON
+  furnace_timer:
+    alias: "Resetable Delay to Heat0"
+    sequence:
+      - service: homeassistant.turn_off
+        data:
+          entity_id: 
+            - script.timer_heat0
+            - script.timer_heat1
+            - switch.heat1
+      - service: homeassistant.turn_on
+        data:
+          entity_id: 
+            - switch.heat0
+            - script.timer_heat0 
+
+  timer_heat0:
+    alias: "Heat0 Timer"
+    sequence:
+      - delay:
+          minutes: 7
+          # Purge and ignition delay
+          seconds: 150
+      - service: switch.turn_off
+        data:
+          entity_id: switch.heat0
+      - service: homeassistant.turn_on
+        data:
+          entity_id: 
+            - switch.heat1
+            - script.timer_heat1    
+
+  timer_heat1:
+    alias: "Heat1 Timer"
+    sequence:
+      - delay:
+          minutes: 12
+      - service: switch.turn_on
+        data:
+          entity_id: switch.heat0
+

@@ -226,3 +226,27 @@
         entity_id: switch.presence        
 
         
+  - alias: Furnace Ramp ON
+    trigger:
+      platform: state
+      entity_id: switch.furnace
+      state: 'on'
+    action:
+      service: script.turn_on
+      entity_id: script.furnace_timer
+
+      
+  - alias: Furnace OFF
+    trigger:
+      platform: state
+      entity_id: switch.furnace
+      state: 'off'
+    action:
+      service: homeassistant.turn_off
+      entity_id: 
+        - script.furnace_timer
+        - script.timer_heat0
+        - script.timer_heat0
+        - switch.heat1
+        - switch.heat0
+      
