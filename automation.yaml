@@ -194,10 +194,13 @@
       entity_id: binary_sensor.away
       state: 'on' 
     action:
-      service: climate.set_temperature
-      data_template:
-        entity_id: climate.house
-        temperature: !secret temperature_away   
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_away
+      - service: switch.turn_off
+        entity_id: switch.presence
+        
 
 # Return temperature setpoint when return between 7:00 and 23:00 if not on vacation
   - alias: Home
@@ -215,9 +218,11 @@
           after: '07:00:00'
           before: '23:00:00'
     action:
-      service: climate.set_temperature
-      data_template:
-        entity_id: climate.house
-        temperature: !secret temperature_home   
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_home
+      - service: switch.turn_on
+        entity_id: switch.presence        
 
         

@@ -95,12 +95,11 @@
     value_template: '{{ value_json.humidity }}'
     
   - platform: mqtt
-    state_topic: '/home/multisensor1'
+    state_topic: '/home/motion1'
     name: 'Motion'
-    value_template: '{{ value_json.motion }}'
     
   - platform: mqtt
-    state_topic: '/home/multisensor1'
-    name: 'RGB State'
-    value_template: '{{ value_json.rgbstate }}'
+    state_topic: '/home/heatstate'
+    name: 'Heat State'
+    value_template: '{{ value_json.heatstate }}'
     

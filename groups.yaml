@@ -23,13 +23,12 @@
     - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
     - sensor.back_lock_last_action
     - sensor.lock_battery
-
     
   MultiSensor Components:
     - sensor.temperature
     - sensor.humidity
     - sensor.motion
-    - sensor.rgb_state
+    - sensor.heat_state
 
 # Control what is seen on the WEB States page
 # Note: I wanted to hide the Z-Wave Component Status
@@ -68,6 +67,9 @@
     view: true
     entities:
       - switch.furnace
+      - switch.presence
+      - switch.heat0
+      - switch.heat1
       - group.multisensor_components
       - climate.house
 
