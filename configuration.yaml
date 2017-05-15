@@ -86,7 +86,7 @@ history:
       - switch.heat1
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
-      - zwave.leviton_dzr151lz_binary_scene_switch_6
+      - zwave.leviton_dzr151lz_binary_scene_switch_7
       - group.zwave_components
       - group.all_switches
       - group.irrigation
