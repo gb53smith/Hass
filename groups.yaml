@@ -29,6 +29,15 @@
     - sensor.humidity
     - sensor.motion
     - sensor.heat_state
+    
+  Switches OFF at Restart:
+    - switch.back_irrigation
+    - switch.front_irrigation
+    - switch.deck_irrigation
+    - switch.furnace
+    - switch.heat0
+    - switch.heat1
+
 
 # Control what is seen on the WEB States page
 # Note: I wanted to hide the Z-Wave Component Status
@@ -67,7 +76,7 @@
     view: true
     entities:
       - switch.furnace
-      - switch.presence
+      - switch.away
       - switch.heat0
       - switch.heat1
       - group.multisensor_components

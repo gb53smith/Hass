@@ -36,7 +36,8 @@ mqtt:
   
 zwave:
   usb_path: /dev/ttyACM0
-        
+  config_path: /srv/homeassistant/src/python-openzwave/openzwave/config
+# instead of   /srv/homeassistant/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
 
 # Enables the frontend
 frontend:
@@ -119,7 +120,7 @@ climate:
     target_temp: !secret temperature_home
     tolerance: 0.3
     min_cycle_duration:
-      minutes: 5
+      seconds: 10
 
 # Used in automations to detect when I leave and come home again.  'on' = away
 binary_sensor:
@@ -142,7 +143,11 @@ automation 2:
     platform: homeassistant
     event: start
   action:
-    - delay: 0:10
+    - service: homeassistant.turn_off
+      data:
+        entity_id: group.switches_off_at_restart
+    - delay:
+        minutes: 10
     - service: notify.ios_grahams_iphone
       data:
         message: "HA Restarted"

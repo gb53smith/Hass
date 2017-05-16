@@ -198,8 +198,8 @@
         data_template:
           entity_id: climate.house
           temperature: !secret temperature_away
-      - service: switch.turn_off
-        entity_id: switch.presence
+      - service: switch.turn_on
+        entity_id: switch.away
         
 
 # Return temperature setpoint when return between 7:00 and 23:00 if not on vacation
@@ -222,9 +222,37 @@
         data_template:
           entity_id: climate.house
           temperature: !secret temperature_home
-      - service: switch.turn_on
-        entity_id: switch.presence        
+      - service: switch.turn_off
+        entity_id: switch.away 
 
+# Force temperature_away, immediately, when vacation switched ON
+  - alias: Vacation ON
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation
+      state: 'on'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_away
+      - service: switch.turn_on
+        entity_id: switch.away
+
+
+# Force temperature_home, immediately, when vacation switched OFF
+  - alias: Vacation OFF
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation
+      state: 'off'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_home
+      - service: switch.turn_off
+        entity_id: switch.away   
         
   - alias: Furnace Ramp ON
     trigger:
