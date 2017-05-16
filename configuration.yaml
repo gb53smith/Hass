@@ -69,6 +69,18 @@ history:
       - automation
       - script
     entities:
+      - binary_sensor.away
+      - device_tracker.grahams_iphone
+      - group.zwave_components
+      - group.all_switches
+      - group.irrigation
+      - group.irrigation_switches
+      - group.living_room_light
+      - group.back_door_lock
+      - group.switches_off_at_restart
+      - group.multisensor
+      - group.multisensor_components
+      - input_boolean.vacation
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0
@@ -78,27 +90,19 @@ history:
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_system_4_12
       - sensor.grahams_iphone_battery_level
       - sensor.grahams_iphone_battery_state
+      - sensor.joyce_ipad_battery_level
+      - sensor.joyce_ipad_battery_state
       - sensor.lock_battery
       - sensor.ssl_cert_expiry
       - sensor.yesterday_rainfall
       - sensor.motion
       - sensor.rgb_state
+      - sun.sun
       - switch.heat0
       - switch.heat1
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_dzr151lz_binary_scene_switch_7
-      - group.zwave_components
-      - group.all_switches
-      - group.irrigation
-      - group.irrigation_switches
-      - group.living_room_light
-      - group.back_door_lock
-      - group.multisensor
-      - group.multisensor_components
-      - sun.sun
-      - input_boolean.vacation
-      - device_tracker.grahams_iphone
   
 #Send notifications to the iOS app on my iPhone
 ios:

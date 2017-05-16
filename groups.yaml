@@ -69,7 +69,6 @@
       - group.irrigation
       - group.living_room_light
       - sensor.ssl_cert_expiry
-      - input_boolean.vacation
      
 # Use a third tab for Multisensor Project
   MultiSensor:
@@ -81,7 +80,7 @@
       - switch.heat1
       - group.multisensor_components
       - climate.house
-
+      - input_boolean.vacation
  
 
  
