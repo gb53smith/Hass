@@ -3,44 +3,44 @@
     name: "Back Irrigation"
     state_topic: "/home/irrigation/zoneConfirm1"
     command_topic: "/home/irrigation/zone1"
-    retain: false   
+    retain: False   
 
   - platform: mqtt
     name: "Front Irrigation"
     state_topic: "/home/irrigation/zoneConfirm2"
     command_topic: "/home/irrigation/zone2"
-    retain: false    
+    retain: False    
 
   - platform: mqtt
     name: "Deck Irrigation"
     state_topic: "/home/irrigation/zoneConfirm3"
     command_topic: "/home/irrigation/zone3"
-    retain: false
+    retain: False
     
 # For MKR1000_MultiSensor Arduino Project
   - platform: mqtt
     name: "Furnace"
     state_topic: "/home/furnace/confirm"
     command_topic: "/home/furnace/heat"
-    retain: false
+    retain: False
 
 # Mirrors binary_sensor
   - platform: mqtt
     name: "Away"
     state_topic: "/home/presence/confirm"
     command_topic: "/home/presence/away"
-    retain: true
+    retain: True
 
 # Heat Bits 0 and 1 are sent to the Arduino Multisensor to indicate heatin stage    
   - platform: mqtt
     name: "Heat0"
     state_topic: "/home/furnace/heat0confirm"
     command_topic: "/home/furnace/heat0"
-    retain: false
+    retain: False
     
   - platform: mqtt
     name: "Heat1"
     state_topic: "/home/furnace/heat1confirm"
     command_topic: "/home/furnace/heat1"
-    retain: false
+    retain: False
   

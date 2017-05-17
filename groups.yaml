@@ -47,7 +47,7 @@
 # Block comment this section out to see all available components
 # 
   default_view:
-    view: true  
+    view: True  
     #name: DEFAULT
     icon: mdi:home
     entities:
@@ -63,7 +63,7 @@
 
 # Use a second tab for automations which are usually left ON
   Automations:
-    view: true
+    view: True
     entities:
       - sensor.yesterday_rainfall
       - group.irrigation
@@ -72,7 +72,7 @@
      
 # Use a third tab for Multisensor Project
   MultiSensor:
-    view: true
+    view: True
     entities:
       - switch.furnace
       - switch.away

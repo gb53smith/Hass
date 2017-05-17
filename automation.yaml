@@ -6,7 +6,7 @@
   - alias: 'Back Irrigation'
 # This can be set to "off" to prevent automation coming back ON after a reboot
 # caused by a power outage
-    initial_state: false
+    initial_state: False
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
@@ -39,7 +39,7 @@
 
   - alias: 'Front Irrigation'
 # On reboot after a power outage restart this automation
-    initial_state: true
+    initial_state: True
     trigger:
     - platform: time
       after: '07:15:00'
@@ -63,7 +63,7 @@
         entity_id: switch.front_irrigation  
         
   - alias: 'Deck Irrigation'
-    initial_state: false
+    initial_state: False
     trigger:
     - platform: time
       after: '07:30:00'
@@ -89,7 +89,7 @@
 # In case some interruption occurs while a zone is ON
 # Not sure this is neccessary but does not hurt to include
 # Time are after the last zone cycle
-    initial_state: true
+    initial_state: True
     trigger:
     - platform: time
       after: '08:00:00'
@@ -101,7 +101,7 @@
         
 # Turn ON on hour before sunset      
   - alias: 'Living Room Light ON'
-    initial_state: true
+    initial_state: True
     trigger:
       platform: sun
       event: sunset
@@ -112,7 +112,7 @@
 
 # Turn OFF at 23:30
   - alias: 'Living Room Light OFF'
-    initial_state: true
+    initial_state: True
     trigger:
       platform: time
       after: '23:30:00'    
@@ -277,4 +277,16 @@
         - script.timer_heat0
         - switch.heat1
         - switch.heat0
-      
+
+        
+# Send Notification if temperature reaches min_temp or max_temp.
+  - alias: Notify Out of Range Temperature
+    trigger:
+      - platform: template
+        value_template: '{{ states.sensor.temperature.state | float > 25.0 }}'
+      - platform: template
+        value_template: '{{ states.sensor.temperature.state | float < 15.0 }}'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "House Temperature Out of Range"

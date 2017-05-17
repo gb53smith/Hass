@@ -111,9 +111,9 @@ ios:
 sun:
 
 # Experimental replacement for dumb thermostat
-# Attempt to turn down set point to 18 when away.
-# The hardware should limit max temp to 25 to prevent fire
-# Send Notification if temperature reaches min_temp or max_temp.
+# Keep alive repeats furnace ON or OFF message every 3 minutes
+# Furnace Arduino will expect repeated furnace ON messages to keep the furnace relay ON.
+
 climate:
   - platform: generic_thermostat
     name: House
@@ -125,6 +125,8 @@ climate:
     tolerance: 0.3
     min_cycle_duration:
       seconds: 10
+    keep_alive:
+      minutes: 3
 
 # Used in automations to detect when I leave and come home again.  'on' = away
 binary_sensor:

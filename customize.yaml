@@ -12,6 +12,6 @@
       
 # To getting tracking with iOS App working
     zone.home:
-      track_ios: false
+      track_ios: False
       
  
