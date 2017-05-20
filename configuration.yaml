@@ -18,7 +18,7 @@ homeassistant:
 http:
   api_password: !secret api_password
 #This works for https://gb53smith.duckdns.org from an external network
-#but not from my internal network.  Well work on chrome
+#but not from my internal network.  Will work on chrome
   ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
   ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
   base_url: gb53smith.duckdns.org
@@ -36,8 +36,7 @@ mqtt:
   
 zwave:
   usb_path: /dev/ttyACM0
-  config_path: /srv/homeassistant/src/python-openzwave/openzwave/config
-# instead of   /srv/homeassistant/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
+  config_path: /home/homeassistant/.homeassistant/ozw_config
 
 # Enables the frontend
 frontend:
