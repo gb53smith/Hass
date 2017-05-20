@@ -13,6 +13,7 @@
   Z-Wave Components:
     - zwave.aeotec_zw090_zstick_gen5_1
     - zwave.leviton_dzr151lz_binary_scene_switch_6
+    - zwave.ge_12724_3way_dimmer_switch_8
     
   Irrigation Switches:
     - switch.back_irrigation
@@ -58,6 +59,7 @@
       # - switch.front_irrigation
       # - switch.deck_irrigation
       - switch.leviton_dzr151lz_binary_scene_switch_switch_7_0
+      - light.ge_12724_3way_dimmer_switch_level_8_0
 
       
 

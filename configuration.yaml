@@ -102,6 +102,7 @@ history:
       - zwave.aeotec_zw090_zstick_gen5_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_dzr151lz_binary_scene_switch_7
+      - zwave.ge_12724_3way_dimmer_switch_8
   
 #Send notifications to the iOS app on my iPhone
 ios:

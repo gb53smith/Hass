@@ -3,6 +3,8 @@
       icon: mdi:power-plug
     lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0:
       friendly_name: "Back Door"
+    light.ge_12724_3way_dimmer_switch_level_8_0:
+      friendly_name: "Dining Room Dimmer"
 
 # This hides but also from a group so I made it False  
     automation.living_room_light_on:
