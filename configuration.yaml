@@ -80,6 +80,7 @@ history:
       - group.multisensor
       - group.multisensor_components
       - input_boolean.vacation
+      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0
@@ -99,7 +100,7 @@ history:
       - sun.sun
       - switch.heat0
       - switch.heat1
-      - zwave.aeotec_zw090_zstick_gen5_1
+      - zwave.aeotec_zw090_zstick_gen5_us_1
       - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
       - zwave.leviton_dzr151lz_binary_scene_switch_7
       - zwave.ge_12724_3way_dimmer_switch_8
@@ -158,6 +159,7 @@ automation 2:
       data:
         message: "HA Restarted"
           
+
     
 # Include other files to better organize code
 group: !include groups.yaml
