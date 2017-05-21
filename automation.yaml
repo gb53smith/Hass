@@ -44,8 +44,8 @@
     - platform: time
       after: '07:15:00'
 #Removed second trigger for cold frame
-    # - platform: time
-      # after: '19:15:00'
+    - platform: time
+      after: '19:15:00'
     condition: 
       condition: and
       conditions:
@@ -290,3 +290,5 @@
       service: notify.ios_grahams_iphone
       data:
         message: "House Temperature Out of Range"
+        
+
