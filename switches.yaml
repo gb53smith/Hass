@@ -20,8 +20,14 @@
 # For MKR1000_MultiSensor Arduino Project
   - platform: mqtt
     name: "Furnace"
-    state_topic: "/home/furnace/confirm"
+    state_topic: "/home/furnace/heat/confirm"
     command_topic: "/home/furnace/heat"
+    retain: False
+
+  - platform: mqtt
+    name: "Fan"
+    state_topic: "/home/furnace/fan/confirm"
+    command_topic: "/home/furnace/fan"
     retain: False
 
 # Mirrors binary_sensor

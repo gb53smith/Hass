@@ -78,9 +78,11 @@
     view: True
     entities:
       - switch.furnace
+      - switch.fan
       - switch.away
       - switch.heat0
       - switch.heat1
+      - sensor.flood
       - group.multisensor_components
       - climate.house
       - input_boolean.vacation

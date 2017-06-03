@@ -6,7 +6,7 @@
   - alias: 'Back Irrigation'
 # This can be set to "off" to prevent automation coming back ON after a reboot
 # caused by a power outage
-    initial_state: False
+    initial_state: true
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
@@ -26,8 +26,9 @@
         - condition: state
           entity_id: switch.front_irrigation
           state: 'off'
-#Copy this to Front Irrigation when not using cold frame
+# Copy this to Front Irrigation when not using cold frame
 # float is needed to convert string state to float for comparison
+# Deck irrigration is mostly under cover so I need watering every day.
         - condition: template
           value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
@@ -39,7 +40,7 @@
 
   - alias: 'Front Irrigation'
 # On reboot after a power outage restart this automation
-    initial_state: True
+    initial_state: true
     trigger:
     - platform: time
       after: '07:15:00'
@@ -63,7 +64,7 @@
         entity_id: switch.front_irrigation  
         
   - alias: 'Deck Irrigation'
-    initial_state: False
+    initial_state: true
     trigger:
     - platform: time
       after: '07:30:00'

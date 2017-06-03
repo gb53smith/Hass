@@ -103,3 +103,6 @@
     name: 'Heat State'
     value_template: '{{ value_json.heatstate }}'
     
+  - platform: mqtt
+    state_topic: '/home/basement/flood'
+    name: 'Flood'
