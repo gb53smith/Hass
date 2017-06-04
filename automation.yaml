@@ -10,9 +10,9 @@
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
-      after: '07:00:00'
+      at: '07:00:00'
     - platform: time
-      after: '19:00:00'
+      at: '19:00:00'
     condition:
 # These conditions not really needed since the hardware was 
 # modified to only allow one relay ON at a time.
@@ -43,10 +43,10 @@
     initial_state: true
     trigger:
     - platform: time
-      after: '07:15:00'
+      at: '07:15:00'
 #Removed second trigger for cold frame
     - platform: time
-      after: '19:15:00'
+      at: '19:15:00'
     condition: 
       condition: and
       conditions:
@@ -67,9 +67,9 @@
     initial_state: true
     trigger:
     - platform: time
-      after: '07:30:00'
+      at: '07:30:00'
     - platform: time
-      after: '19:30:00'
+      at: '19:30:00'
     condition: 
       condition: and
       conditions:
@@ -93,9 +93,9 @@
     initial_state: True
     trigger:
     - platform: time
-      after: '08:00:00'
+      at: '08:00:00'
     - platform: time
-      after: '20:00:00'
+      at: '20:00:00'
     action:
       - service: homeassistant.turn_off
         entity_id: group.irrigation_switches
@@ -116,7 +116,7 @@
     initial_state: True
     trigger:
       platform: time
-      after: '23:30:00'    
+      at: '23:30:00'    
     action:
       service: switch.turn_off
       entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch_7_0
@@ -125,7 +125,7 @@
     trigger:
       platform: state
       entity_id: sensor.back_lock_last_action
-      state: 'Unlocked: Joyce'
+      to: 'Unlocked: Joyce'
     action:
       service: notify.ios_grahams_iphone
       data:
@@ -135,7 +135,7 @@
     trigger:
       platform: state
       entity_id: sensor.back_lock_last_action
-      state: 'Unlocked: Oliver'
+      to: 'Unlocked: Oliver'
     action:
       service: notify.ios_grahams_iphone
       data:
@@ -145,7 +145,7 @@
   - alias: Set Home Setpoint
     trigger:
       platform: time
-      after: '07:00:00'
+      at: '07:00:00'
     condition: 
       condition: and
       conditions:
@@ -164,7 +164,7 @@
   - alias: Set Away or Asleep Setpoint
     trigger:
       platform: time
-      after: '23:00:00'
+      at: '23:00:00'
     action:
       service: climate.set_temperature
       data_template:
@@ -177,7 +177,7 @@
     trigger:
       platform: state
       entity_id: switch.furnace
-      state: 'on'
+      to: 'on'
       for:
         minutes: 7
     condition:
@@ -193,7 +193,7 @@
     trigger:
       platform: state
       entity_id: binary_sensor.away
-      state: 'on' 
+      to: 'on' 
     action:
       - service: climate.set_temperature
         data_template:
@@ -208,7 +208,7 @@
     trigger:
       platform: state
       entity_id: binary_sensor.away
-      state: 'off'
+      to: 'off'
     condition: 
       condition: and
       conditions:
@@ -231,7 +231,7 @@
     trigger:
       platform: state
       entity_id: input_boolean.vacation
-      state: 'on'
+      to: 'on'
     action:
       - service: climate.set_temperature
         data_template:
@@ -246,7 +246,7 @@
     trigger:
       platform: state
       entity_id: input_boolean.vacation
-      state: 'off'
+      to: 'off'
     action:
       - service: climate.set_temperature
         data_template:
@@ -259,7 +259,7 @@
     trigger:
       platform: state
       entity_id: switch.furnace
-      state: 'on'
+      to: 'on'
     action:
       service: script.turn_on
       entity_id: script.furnace_timer
@@ -269,7 +269,7 @@
     trigger:
       platform: state
       entity_id: switch.furnace
-      state: 'off'
+      to: 'off'
     action:
       service: homeassistant.turn_off
       entity_id: 
@@ -297,7 +297,7 @@
   - alias: Renew SSL Certificate
     trigger:
       platform: time
-      after: '12:00:00'
+      at: '12:00:00'
     condition:
       condition: template
       value_template: '{{ states.sensor.ssl_cert_expiry.state | int  < 15 }}'
