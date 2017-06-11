@@ -156,11 +156,15 @@
           entity_id: input_boolean.vacation
           state: 'off'    
     action:
-      service: climate.set_temperature
-      data_template:
-        entity_id: climate.house
-        temperature: !secret temperature_home
-        
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_home
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan
+
   - alias: Set Away or Asleep Setpoint
     trigger:
       platform: time
@@ -169,7 +173,7 @@
       service: climate.set_temperature
       data_template:
         entity_id: climate.house
-        temperature: !secret temperature_away   
+        temperature: !secret temperature_away
         
 # Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
 # Needs to be tested       
@@ -187,7 +191,7 @@
       service: switch.turn_off
       entity_id: switch.furnace
       
-# Turn temperature setpoint down if away
+# Turn temperature setpoint down if away set when door locked from outside keypad
 #Note: A normal template sensor did not trigger so the binary_sensor was used instead.
   - alias: Away
     trigger:
@@ -199,9 +203,13 @@
         data_template:
           entity_id: climate.house
           temperature: !secret temperature_away
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan_away
       - service: switch.turn_on
         entity_id: switch.away
-        
+
 
 # Return temperature setpoint when return between 7:00 and 23:00 if not on vacation
   - alias: Home
@@ -223,6 +231,10 @@
         data_template:
           entity_id: climate.house
           temperature: !secret temperature_home
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan
       - service: switch.turn_off
         entity_id: switch.away 
 
@@ -237,6 +249,10 @@
         data_template:
           entity_id: climate.house
           temperature: !secret temperature_away
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan_away
       - service: switch.turn_on
         entity_id: switch.away
 
@@ -252,8 +268,12 @@
         data_template:
           entity_id: climate.house
           temperature: !secret temperature_home
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan
       - service: switch.turn_off
-        entity_id: switch.away   
+        entity_id: switch.away
         
   - alias: Furnace Ramp ON
     trigger:
@@ -304,6 +324,15 @@
     action:
       service: notify.ios_grahams_iphone
       data:
-        message: "House Temperature Out of Range"
+        message: "SSL Certificate expires in 14 days"
 
-        
+  - alias: Basement Flood Alarm
+    trigger:
+      platform: state
+      entity_id: sensor.flood
+      to: 'ON'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Basement Flood Detected!"
+

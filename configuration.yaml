@@ -78,13 +78,13 @@ history:
       - device_tracker.grahams_iphone
       - group.zwave_components
       - group.all_switches
-      - group.irrigation
+      - group.alarms
+      - group.irrigation_automation
       - group.irrigation_switches
-      - group.living_room_light
+      - group.living_room_light_automation
       - group.back_door_lock
       - group.switches_off_at_restart
-      - group.multisensor
-      - group.multisensor_components
+      - group.temperature_control
       - input_boolean.vacation
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9
@@ -134,6 +134,19 @@ climate:
       seconds: 10
     keep_alive:
       minutes: 3
+
+  - platform: generic_thermostat
+    name: Summer Fan
+    heater: switch.fan
+    target_sensor: sensor.temperature
+    min_temp: 22
+    max_temp: 35
+    target_temp: !secret temperature_fan
+    tolerance: 0.3
+    min_cycle_duration:
+      seconds: 10
+    ac_mode: true
+
 
 # Used in automations to detect when I leave and come home again.  'on' = away
 binary_sensor:

@@ -1,12 +1,12 @@
 # Create Groups of Entities
 # Look them up on the front end under Developer Tools <>
  
-  Irrigation:
+  Irrigation Automation:
     - automation.back_irrigation
     - automation.front_irrigation
     - automation.deck_irrigation
     
-  Living Room Light:
+  Living Room Light Automation:
     - automation.living_room_light_on
     - automation.living_room_light_off
 
@@ -25,13 +25,7 @@
     - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
     - sensor.back_lock_last_action
     - sensor.lock_battery
-    
-  MultiSensor Components:
-    - sensor.temperature
-    - sensor.humidity
-    - sensor.motion
-    - sensor.heat_state
-    
+
   Switches OFF at Restart:
     - switch.back_irrigation
     - switch.front_irrigation
@@ -39,7 +33,16 @@
     - switch.furnace
     - switch.heat0
     - switch.heat1
+    - switch.fan
 
+  Temperature Control:
+    - input_boolean.vacation
+    - climate.house
+    - climate.summer_fan
+    - sensor.heat_state
+    
+  Alarms:
+    - sensor.flood
 
 # Control what is seen on the WEB States page
 # Note: I wanted to hide the Z-Wave Component Status
@@ -47,45 +50,31 @@
 
 
 # Block comment this section out to see all available components
-# 
   default_view:
     view: True  
-    #name: DEFAULT
     icon: mdi:home
     entities:
-      - group.back_door_lock
-      # Commented out so that I can't accidentally turn one ON.  
-      # All done in automation.  I can still use developer tools to see state.
-      # - switch.back_irrigation
-      # - switch.front_irrigation
-      # - switch.deck_irrigation
       - switch.leviton_dzr151lz_binary_scene_switch_switch_7_0
       - light.ge_12724_3way_dimmer_switch_level_8_0
+      - group.back_door_lock
+      - group.temperature_control
+      - group.alarms
 
-      
-
-# Use a second tab for automations which are usually left ON
-  Automations:
+# Use a second tab for back end information not regularly accessed
+  Back End:
     view: True
     entities:
-      - sensor.yesterday_rainfall
-      - group.irrigation
-      - group.living_room_light
+      - group.irrigation_automation
+      - group.living_room_light_automation
       - sensor.ssl_cert_expiry
-     
-# Use a third tab for Multisensor Project
-  MultiSensor:
-    view: True
-    entities:
+      - sensor.humidity
+      - sensor.motion
+      - sensor.yesterday_rainfall
       - switch.furnace
       - switch.fan
       - switch.away
       - switch.heat0
       - switch.heat1
-      - sensor.flood
-      - group.multisensor_components
-      - climate.house
-      - input_boolean.vacation
- 
-
- 
+      - switch.back_irrigation
+      - switch.front_irrigation
+      - switch.deck_irrigation
