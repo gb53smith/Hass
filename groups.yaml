@@ -1,32 +1,44 @@
 # Create Groups of Entities
 # Look them up on the front end under Developer Tools <>
- 
+
   Irrigation Automation:
+    entities:
     - automation.back_irrigation
     - automation.front_irrigation
     - automation.deck_irrigation
     
   Living Room Light Automation:
+    entities:
     - automation.living_room_light_on
     - automation.living_room_light_off
 
   Z-Wave Components:
+    entities:
     - zwave.aeotec_zw090_zstick_gen5_us_1
     - zwave.leviton_dzr151lz_binary_scene_switch_6
     - zwave.ge_12724_3way_dimmer_switch_8
     - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
-    
+
   Irrigation Switches:
+    entities:
     - switch.back_irrigation
     - switch.front_irrigation
     - switch.deck_irrigation
     
+  Lights:
+    control: hidden
+    entities:
+    - switch.leviton_dzr151lz_binary_scene_switch_switch_7_0
+    - light.ge_12724_3way_dimmer_switch_level_8_0
+
   Back Door Lock:
+    entities:
     - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
     - sensor.back_lock_last_action
     - sensor.lock_battery
 
   Switches OFF at Restart:
+    entities:
     - switch.back_irrigation
     - switch.front_irrigation
     - switch.deck_irrigation
@@ -36,26 +48,27 @@
     - switch.fan
 
   Temperature Control:
+    entities:
     - input_boolean.vacation
     - climate.house
     - climate.summer_fan
     - sensor.heat_state
-    
+
   Alarms:
+    entities:
     - sensor.flood
 
-# Control what is seen on the WEB States page
-# Note: I wanted to hide the Z-Wave Component Status
-# So it is not listed in the default view
 
+# Control what is seen on the WEB States page
 
 # Block comment this section out to see all available components
+# Display order is determined by the order in which groups are defined above,
+# not by the list of group entities in the the default view.
   default_view:
     view: True  
     icon: mdi:home
     entities:
-      - switch.leviton_dzr151lz_binary_scene_switch_switch_7_0
-      - light.ge_12724_3way_dimmer_switch_level_8_0
+      - group.lights
       - group.back_door_lock
       - group.temperature_control
       - group.alarms

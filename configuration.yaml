@@ -24,7 +24,7 @@ http:
   base_url: gb53smith.duckdns.org
 
 #This start the MQTT server on Raspberry setup using the HA install script
-#To access from an Arduino deviceI had to use the IP address for the Raspberry
+#To access from an Arduino device I had to use the IP address for the Raspberry
 mqtt:
   broker: localhost 
   port: 1883
@@ -73,18 +73,20 @@ history:
     domains:
       - automation
       - script
+      - group
+      - zwave
     entities:
       - binary_sensor.away
       - device_tracker.grahams_iphone
-      - group.zwave_components
-      - group.all_switches
-      - group.alarms
-      - group.irrigation_automation
-      - group.irrigation_switches
-      - group.living_room_light_automation
-      - group.back_door_lock
-      - group.switches_off_at_restart
-      - group.temperature_control
+      # - group.zwave_components
+      # - group.all_switches
+      # - group.alarms
+      # - group.irrigation_automation
+      # - group.irrigation_switches
+      # - group.living_room_light_automation
+      # - group.back_door_lock
+      # - group.switches_off_at_restart
+      # - group.temperature_control
       - input_boolean.vacation
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9
@@ -106,10 +108,10 @@ history:
       - sun.sun
       - switch.heat0
       - switch.heat1
-      - zwave.aeotec_zw090_zstick_gen5_us_1
-      - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
-      - zwave.leviton_dzr151lz_binary_scene_switch_7
-      - zwave.ge_12724_3way_dimmer_switch_8
+      # - zwave.aeotec_zw090_zstick_gen5_us_1
+      # - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
+      # - zwave.leviton_dzr151lz_binary_scene_switch_7
+      # - zwave.ge_12724_3way_dimmer_switch_8
   
 #Send notifications to the iOS app on my iPhone
 ios:
