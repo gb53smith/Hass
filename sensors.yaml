@@ -9,60 +9,60 @@
   - platform: template
     sensors:
       back_lock_last_action:
-# _4 is the node ID.  I see that last codes in the HA log.  The _1, _9, _0 can be found in the HA States
+#The _1, _9, _0 can be found in the HA States
         friendly_name: 'Lock Last Action'
         value_template: > 
                           {% if 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '1') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '6') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '19') %} 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %} 
                                   Unlocked: Graham
                           {% endif %}
 
                           {% if 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '2') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '2') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '6') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '19') %} 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %} 
                                   Unlocked: Joyce
                           {% endif %}
 
                           {% if 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '3') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '3') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '6') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '19') %} 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %} 
                                   Unlocked: Oliver
                           {% endif %}  
                           
                           {% if 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '1') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '2') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '2') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '22') %} 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '22') %} 
                                   Unlocked: Inside Deadbolt
                           {% endif %}
 
                           {% if 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '1') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '1') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '1') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '21') %} 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '21') %} 
                                   Locked: Inside Deadbolt
                           {% endif %}
 
                           {% if 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1', '0') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '0') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9', '5') 
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '5') 
                           and 
-                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0', '18') %}
+                            is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '18') %}
                                   Locked: Outside Keypad
                           {% endif %}
 
@@ -72,9 +72,9 @@
     sensors:
       lock_battery:
         friendly_name: 'Lock Battery'
-        value_template: "{{ states.zwave.schlage_be469nxcen_touchscreen_deadbolt_4.attributes.battery_level|default(-1)|int }}"
+        value_template: "{{ states.zwave.schlage_be469nxcen_touchscreen_deadbolt.attributes.battery_level|default(-1)|int }}"
         unit_of_measurement: '%'
-        entity_id: zwave.schlage_be469nxcen_touchscreen_deadbolt_4
+        entity_id: zwave.schlage_be469nxcen_touchscreen_deadbolt
         
   - platform: command_line
     name: Yesterday Rainfall

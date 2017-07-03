@@ -14,10 +14,10 @@
 
   Z-Wave Components:
     entities:
-    - zwave.aeotec_zw090_zstick_gen5_us_1
-    - zwave.leviton_dzr151lz_binary_scene_switch_6
-    - zwave.ge_12724_3way_dimmer_switch_8
-    - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
+    - zwave.aeotec_zw090_zstick_gen5_us
+    - zwave.leviton_dzr151lz_binary_scene_switch
+    - zwave.ge_12724_3way_dimmer_switch
+    - zwave.schlage_be469nxcen_touchscreen_deadbolt
 
   Irrigation Switches:
     entities:
@@ -28,12 +28,12 @@
   Lights:
     control: hidden
     entities:
-    - switch.leviton_dzr151lz_binary_scene_switch_switch_7_0
-    - light.ge_12724_3way_dimmer_switch_level_8_0
+    - switch.leviton_dzr151lz_binary_scene_switch_switch
+    - light.ge_12724_3way_dimmer_switch_level
 
   Back Door Lock:
     entities:
-    - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
+    - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
     - sensor.back_lock_last_action
     - sensor.lock_battery
 

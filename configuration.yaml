@@ -37,9 +37,10 @@ mqtt:
 zwave:
   usb_path: /dev/ttyACM0
   config_path: /home/homeassistant/.homeassistant/ozw_config
+  new_entity_ids: true
   polling_interval: 30000
   device_config:
-    light.ge_12724_3way_dimmer_switch_level_8_0: # Added to keep HA in sync after manual override
+    light.ge_12724_3way_dimmer_switch_level: # Added to keep HA in sync after manual override
       refresh_value: true #refresh the brightness value if the dimmer do "soft off"
       delay: 2 #Amount of seconds before the refresh is done after the actual action.
       polling_intensity: 1 #Polls the device when each (polling_intensity) polling is performed by polling_interval
@@ -88,14 +89,14 @@ history:
       # - group.switches_off_at_restart
       # - group.temperature_control
       - input_boolean.vacation
-      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control_4_9
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level_4_1
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type_4_0
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_burglar_4_10
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_power_management_4_11
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_sourcenodeid_4_2
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_system_4_12
+      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_burglar
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_power_management
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_sourcenodeid
+      - sensor.schlage_be469nxcen_touchscreen_deadbolt_system
       - sensor.grahams_iphone_battery_level
       - sensor.grahams_iphone_battery_state
       - sensor.joyce_ipad_battery_level
@@ -108,11 +109,7 @@ history:
       - sun.sun
       - switch.heat0
       - switch.heat1
-      # - zwave.aeotec_zw090_zstick_gen5_us_1
-      # - zwave.schlage_be469nxcen_touchscreen_deadbolt_4
-      # - zwave.leviton_dzr151lz_binary_scene_switch_7
-      # - zwave.ge_12724_3way_dimmer_switch_8
-  
+
 #Send notifications to the iOS app on my iPhone
 ios:
   

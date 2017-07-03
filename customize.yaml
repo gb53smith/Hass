@@ -1,9 +1,9 @@
-    switch.leviton_dzr151lz_binary_scene_switch_switch_7_0:
+    switch.leviton_dzr151lz_binary_scene_switch_switch:
       friendly_name: "Living Room Receptacle"
       icon: mdi:power-plug
-    lock.schlage_be469nxcen_touchscreen_deadbolt_locked_4_0:
+    lock.schlage_be469nxcen_touchscreen_deadbolt_locked:
       friendly_name: "Back Door"
-    light.ge_12724_3way_dimmer_switch_level_8_0:
+    light.ge_12724_3way_dimmer_switch_level:
       friendly_name: "Dining Room Dimmer"
 
 # This hides but also from a group so I made it False  
