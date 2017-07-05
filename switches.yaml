@@ -35,7 +35,7 @@
     name: "Away"
     state_topic: "/home/presence/confirm"
     command_topic: "/home/presence/away"
-    retain: True
+    retain: False
 
 # Heat Bits 0 and 1 are sent to the Arduino Multisensor to indicate heatin stage    
   - platform: mqtt
