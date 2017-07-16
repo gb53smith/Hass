@@ -336,3 +336,13 @@
       data:
         message: "Basement Flood Detected!"
 
+  - alias: Motion Alarm
+    trigger:
+      platform: state
+      entity_id: sensor.motion
+      to: 'ON'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Motion Detected While Away!"
+        
