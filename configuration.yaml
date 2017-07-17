@@ -57,9 +57,6 @@ updater:
 # Discover some devices automatically
 discovery:
 
-# Allows you to issue voice commands from the frontend in enabled browsers
-#conversation:
-
 # View all events in a logbook
 logbook:
 
@@ -79,15 +76,6 @@ history:
     entities:
       - binary_sensor.away
       - device_tracker.grahams_iphone
-      # - group.zwave_components
-      # - group.all_switches
-      # - group.alarms
-      # - group.irrigation_automation
-      # - group.irrigation_switches
-      # - group.living_room_light_automation
-      # - group.back_door_lock
-      # - group.switches_off_at_restart
-      # - group.temperature_control
       - input_boolean.vacation
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
@@ -160,7 +148,11 @@ input_boolean:
     name: "ON Vacation"
     initial: off
     icon: mdi:car
-    
+
+  motion:
+    name: "Motion Alarm Override"
+    initial: off
+    icon: mdi:lock    
 # Send notification if Home Assistant restarts after 10 minutes
 # to wait for internet to come back up. I get an error if this is in the automation.yaml file
 # After 10 minutes, default to vacation mode in case power cycles while on vacation.

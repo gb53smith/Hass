@@ -341,6 +341,11 @@
       platform: state
       entity_id: sensor.motion
       to: 'ON'
+# Disable motion alarm if getting too many false alarms
+    condition:
+      - condition: state
+        entity_id: input_boolean.motion
+        state: 'off'
     action:
       service: notify.ios_grahams_iphone
       data:
