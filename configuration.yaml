@@ -77,7 +77,10 @@ history:
       - binary_sensor.away
       - device_tracker.grahams_iphone
       - input_boolean.vacation
+      - input_boolean.motion
+      - input_boolean.watchdog
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - media_player.apple_tv
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -97,6 +100,7 @@ history:
       - sun.sun
       - switch.heat0
       - switch.heat1
+      - switch.watchdog
 
 #Send notifications to the iOS app on my iPhone
 ios:
@@ -151,6 +155,11 @@ input_boolean:
 
   motion:
     name: "Motion Alarm Override"
+    initial: off
+    icon: mdi:lock    
+    
+  watchdog:
+    name: "Watchdog Alarm Override"
     initial: off
     icon: mdi:lock    
 # Send notification if Home Assistant restarts after 10 minutes

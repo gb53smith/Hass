@@ -49,4 +49,10 @@
     state_topic: "/home/furnace/heat1confirm"
     command_topic: "/home/furnace/heat1"
     retain: False
+    
+  - platform: mqtt
+    name: "Watchdog"
+    state_topic: "/home/multisensor1/watchdogconfirm"
+    command_topic: "/home/multisensor1/watchdog"
+    retain: False
   

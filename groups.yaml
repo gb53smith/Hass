@@ -55,10 +55,13 @@
     - sensor.heat_state
 
   Alarms:
+    control: hidden
     entities:
     - input_boolean.motion
+    - input_boolean.watchdog
     - sensor.motion
     - sensor.flood
+
 
 
 # Control what is seen on the WEB States page
@@ -92,3 +95,4 @@
       - switch.back_irrigation
       - switch.front_irrigation
       - switch.deck_irrigation
+      - switch.watchdog

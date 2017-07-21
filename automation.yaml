@@ -351,3 +351,56 @@
       data:
         message: "Motion Detected While Away!"
         
+  - alias: Watchdog
+    trigger:
+      platform: time
+      minutes: '/10'
+      seconds: 01
+    action:
+      - service: switch.turn_on
+        entity_id: switch.watchdog
+      - delay:  0:05:00
+      - service: switch.turn_off
+        entity_id: switch.watchdog
+        
+# Send a notice to iPhone if watchdog state stays in ON state too long
+  - alias: Watchdog Alarm ON
+    trigger:
+      platform: state
+      entity_id: switch.watchdog
+      # Must be lower case for internal state
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 2
+# Disable watchdog alarm if getting too many alarms
+# Not that useful since only one alarm is generated if multisensor hangs up.
+    condition:
+      - condition: state
+        entity_id: input_boolean.watchdog
+        state: 'off'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Multisensor ON Failed!"
+        
+# Send a notice to iPhone if watchdog state stays in OFF state too long
+  - alias: Watchdog Alarm OFF
+    trigger:
+      platform: state
+      entity_id: switch.watchdog
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 2
+  # Disable watchdog alarm if getting too many alarms
+    condition:
+      - condition: state
+        entity_id: input_boolean.watchdog
+        state: 'off'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Multisensor OFF Failed!"

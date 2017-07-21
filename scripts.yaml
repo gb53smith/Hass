@@ -20,7 +20,7 @@
       - delay:
           minutes: 7
           # Purge and ignition delay
-          seconds: 150
+          seconds: 80
       - service: switch.turn_off
         data:
           entity_id: switch.heat0
