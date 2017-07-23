@@ -61,8 +61,14 @@ discovery:
 logbook:
 
 # Keep database from growing too large by purging
+# No need to log watchdog or automations
 recorder:
   purge_days: 30
+  exclude:
+    entities:
+      - switch.watchdog
+    domains:
+      - automation
  
 # Enables support for tracking state changes over time.
 # Exclude those domains and entities that do not change much 
