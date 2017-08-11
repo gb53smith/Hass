@@ -106,3 +106,14 @@
     state_topic: '/home/basement/flood'
     name: 'Flood'
     
+  - platform: mqtt
+    state_topic: '/home/TH_sensor1'
+    name: 'Remote Temperature'
+    unit_of_measurement: '°C'
+    value_template: '{{ value_json.temperature }}'
+    
+  - platform: mqtt
+    state_topic: '/home/TH_sensor1'
+    name: 'Remote Humidity'
+    unit_of_measurement: '%'
+    value_template: '{{ value_json.humidity }}'

@@ -61,7 +61,11 @@
     - input_boolean.watchdog
     - sensor.motion
     - sensor.flood
-
+    
+  Wine Cellar:
+    entities:
+    - sensor.remote_temperature
+    - sensor.remote_humidity
 
 
 # Control what is seen on the WEB States page
@@ -77,6 +81,7 @@
       - group.back_door_lock
       - group.temperature_control
       - group.alarms
+      - group.wine_cellar
 
 # Use a second tab for back end information not regularly accessed
   Back End:

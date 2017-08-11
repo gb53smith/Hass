@@ -311,6 +311,18 @@
       service: notify.ios_grahams_iphone
       data:
         message: "House Temperature Out of Range"
+        
+# Send Notification if Wine Cellar temperature reaches min_temp or max_temp.
+  - alias: Notify Out of Range Temperature
+    trigger:
+      - platform: template
+        value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
+      - platform: template
+        value_template: '{{ states.sensor.remote_temperature.state | float < 10.0 }}'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Wine Cellar Temperature Out of Range"
 
 # Send Notification if SSL Certificate expires in 14 days
 # and must be manually renewed.    
