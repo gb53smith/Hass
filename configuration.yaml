@@ -87,6 +87,7 @@ history:
       - input_boolean.watchdog
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - media_player.apple_tv
+      - remote.apple_tv
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -101,7 +102,6 @@ history:
       - sensor.lock_battery
       - sensor.ssl_cert_expiry
       - sensor.yesterday_rainfall
-      - sensor.motion
       - sensor.rgb_state
       - sun.sun
       - switch.heat0
