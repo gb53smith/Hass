@@ -295,7 +295,7 @@
       entity_id: 
         - script.furnace_timer
         - script.timer_heat0
-        - script.timer_heat0
+        - script.timer_heat1
         - switch.heat1
         - switch.heat0
 
@@ -312,11 +312,11 @@
       data:
         message: "House Temperature Out of Range"
         
-# Send Notification if Wine Cellar temperature reaches min_temp or max_temp.
+# Send Notification if Wine Cellar temperature reaches min_temp or max_temp. (was 15.5)
   - alias: Notify Out of Range Temperature
     trigger:
       - platform: template
-        value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
+        value_template: '{{ states.sensor.remote_temperature.state | float > 17.5 }}'
       - platform: template
         value_template: '{{ states.sensor.remote_temperature.state | float < 10.0 }}'
     action:
