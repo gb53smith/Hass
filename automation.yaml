@@ -295,7 +295,7 @@
       entity_id: 
         - script.furnace_timer
         - script.timer_heat0
-        - script.timer_heat0
+        - script.timer_heat1
         - switch.heat1
         - switch.heat0
 

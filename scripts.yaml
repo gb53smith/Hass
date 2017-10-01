@@ -34,7 +34,7 @@
     alias: "Heat1 Timer"
     sequence:
       - delay:
-          minutes: 12
+          minutes: 10
       - service: switch.turn_on
         data:
           entity_id: switch.heat0
