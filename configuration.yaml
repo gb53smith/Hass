@@ -19,8 +19,8 @@ http:
   api_password: !secret api_password
 #This works for https://gb53smith.duckdns.org from an external network
 #but not from my internal network.  Will work on chrome
-  #ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
-  #ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
   #base_url: gb53smith.duckdns.org
 
 #This start the MQTT server on Raspberry setup using the HA install script

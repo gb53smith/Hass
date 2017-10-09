@@ -326,17 +326,17 @@
 
 # Send Notification if SSL Certificate expires in 14 days
 # and must be manually renewed.    
-  - alias: Renew SSL Certificate
-    trigger:
-      platform: time
-      at: '12:00:00'
-    condition:
-      condition: template
-      value_template: '{{ states.sensor.ssl_cert_expiry.state | int  < 15 }}'
-    action:
-      service: notify.ios_grahams_iphone
-      data:
-        message: "SSL Certificate expires in 14 days"
+#  - alias: Renew SSL Certificate
+#    trigger:
+#      platform: time
+#      at: '12:00:00'
+#    condition:
+#      condition: template
+#      value_template: '{{ states.sensor.ssl_cert_expiry.state | int  < 15 }}'
+#    action:
+#      service: notify.ios_grahams_iphone
+#      data:
+#        message: "SSL Certificate expires in 14 days"
 
   - alias: Basement Flood Alarm
     trigger:
