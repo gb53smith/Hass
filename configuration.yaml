@@ -19,9 +19,9 @@ http:
   api_password: !secret api_password
 #This works for https://gb53smith.duckdns.org from an external network
 #but not from my internal network.  Will work on chrome
-  ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
-  base_url: gb53smith.duckdns.org
+  #ssl_certificate: /etc/letsencrypt/live/gb53smith.duckdns.org/fullchain.pem
+  #ssl_key: /etc/letsencrypt/live/gb53smith.duckdns.org/privkey.pem
+  #base_url: gb53smith.duckdns.org
 
 #This start the MQTT server on Raspberry setup using the HA install script
 #To access from an Arduino device I had to use the IP address for the Raspberry
@@ -30,14 +30,13 @@ mqtt:
   port: 1883
   client_id: home-assistant-1
   keepalive: 60
-  username: gbsmith
-  password: mos123
+  username: !secret mos_id
+  password: !secret mos_password
   protocol: 3.1 
   
 zwave:
   usb_path: /dev/ttyACM0
-  config_path: /home/homeassistant/.homeassistant/ozw_config
-  new_entity_ids: true
+  network_key: !secret zwave_key
   polling_interval: 30000
   device_config:
     light.ge_12724_3way_dimmer_switch_level: # Added to keep HA in sync after manual override
@@ -63,7 +62,8 @@ logbook:
 # Keep database from growing too large by purging
 # No need to log watchdog or automations
 recorder:
-  purge_days: 30
+  purge_interval: 5
+  purge_keep_days: 7
   exclude:
     entities:
       - switch.watchdog

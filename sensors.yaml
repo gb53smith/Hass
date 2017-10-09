@@ -79,7 +79,7 @@
     name: Yesterday Rainfall
     unit_of_measurement: "mm"
     scan_interval: 10800
-    command: "python3 /home/homeassistant/.homeassistant/getrain.py"
+    command: "python3 /config/getrain.py"
     
   - platform: mqtt
     state_topic: '/home/multisensor1'
