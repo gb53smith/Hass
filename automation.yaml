@@ -316,7 +316,7 @@
   - alias: Notify Out of Range Temperature
     trigger:
       - platform: template
-        value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
+        value_template: '{{ states.sensor.remote_temperature.state | float > 17.5 }}'
       - platform: template
         value_template: '{{ states.sensor.remote_temperature.state | float < 10.0 }}'
     action:
@@ -353,6 +353,10 @@
       platform: state
       entity_id: sensor.motion
       to: 'ON'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
 # Disable motion alarm if getting too many false alarms
     condition:
       - condition: state
@@ -385,7 +389,7 @@
       for:
         hours: 0
         minutes: 5
-        seconds: 2
+        seconds: 5
 # Disable watchdog alarm if getting too many alarms
 # Not that useful since only one alarm is generated if multisensor hangs up.
     condition:
@@ -406,7 +410,7 @@
       for:
         hours: 0
         minutes: 5
-        seconds: 2
+        seconds: 5
   # Disable watchdog alarm if getting too many alarms
     condition:
       - condition: state

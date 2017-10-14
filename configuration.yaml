@@ -55,6 +55,8 @@ updater:
 
 # Discover some devices automatically
 discovery:
+  ignore:
+    - apple_tv
 
 # View all events in a logbook
 logbook:
@@ -83,11 +85,8 @@ history:
       - binary_sensor.away
       - device_tracker.grahams_iphone
       - input_boolean.vacation
-      - input_boolean.motion
       - input_boolean.watchdog
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-      - media_player.apple_tv
-      - remote.apple_tv
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -159,11 +158,6 @@ input_boolean:
     initial: off
     icon: mdi:car
 
-  motion:
-    name: "Motion Alarm Override"
-    initial: off
-    icon: mdi:lock    
-    
   watchdog:
     name: "Watchdog Alarm Override"
     initial: off

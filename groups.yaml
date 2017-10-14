@@ -57,9 +57,7 @@
   Alarms:
     control: hidden
     entities:
-    - input_boolean.motion
     - input_boolean.watchdog
-    - sensor.motion
     - sensor.flood
     
   Wine Cellar:
