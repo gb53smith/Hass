@@ -347,25 +347,6 @@
       service: notify.ios_grahams_iphone
       data:
         message: "Basement Flood Detected!"
-
-  - alias: Motion Alarm
-    trigger:
-      platform: state
-      entity_id: sensor.motion
-      to: 'ON'
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 2
-# Disable motion alarm if getting too many false alarms
-    condition:
-      - condition: state
-        entity_id: input_boolean.motion
-        state: 'off'
-    action:
-      service: notify.ios_grahams_iphone
-      data:
-        message: "Motion Detected While Away!"
         
   - alias: Watchdog
     trigger:
