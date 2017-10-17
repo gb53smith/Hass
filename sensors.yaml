@@ -75,6 +75,14 @@
         unit_of_measurement: '%'
         entity_id: zwave.schlage_be469nxcen_touchscreen_deadbolt
         
+  # - platform: template
+    # sensors:
+      # temperature_setpoint:
+        # friendly_name: 'Set Point'
+        # unit_of_measurement: '°C'
+        # value_template: "{{ states.climate.house.attributes.temperature }}"
+        # entity_id: climate.house
+        
   - platform: command_line
     name: Yesterday Rainfall
     unit_of_measurement: "mm"
@@ -113,3 +121,6 @@
     name: 'Remote Humidity'
     unit_of_measurement: '%'
     value_template: '{{ value_json.humidity }}'
+    
+  - platform: cert_expiry
+    host: home-assistant.io

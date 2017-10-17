@@ -90,6 +90,7 @@
       - sensor.ssl_cert_expiry
       - sensor.humidity
       - sensor.yesterday_rainfall
+      - sensor.ssl_certificate_expiry
       - switch.furnace
       - switch.fan
       - switch.away
@@ -99,3 +100,11 @@
       - switch.front_irrigation
       - switch.deck_irrigation
       - switch.watchdog
+      
+# Custom Graphs
+  # Graphs:
+    # view: true
+    # entities:
+      # - history_graph.house_climate
+
+      

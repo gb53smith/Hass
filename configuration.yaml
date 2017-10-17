@@ -99,9 +99,9 @@ history:
       - sensor.joyce_ipad_battery_level
       - sensor.joyce_ipad_battery_state
       - sensor.lock_battery
-      - sensor.ssl_cert_expiry
       - sensor.yesterday_rainfall
       - sensor.rgb_state
+      - sensor.ssl_certificate_expiry
       - sun.sun
       - switch.heat0
       - switch.heat1
@@ -183,7 +183,17 @@ automation 2:
       data:
         message: "HA Restarted"
           
-
+# history_graph:
+  # gr1:
+    # name: House Climate
+    # entities:
+      # - switch.away
+      # - sensor.heat_state
+      # - switch.furnace
+      # - sensor.temperature
+      # - sensor.temperature_setpoint
+    # hours_to_show: 24
+    # refresh: 60
     
 # Include other files to better organize code
 group: !include groups.yaml
