@@ -87,7 +87,6 @@
     entities:
       - group.irrigation_automation
       - group.living_room_light_automation
-      - sensor.ssl_cert_expiry
       - sensor.humidity
       - sensor.yesterday_rainfall
       - sensor.ssl_certificate_expiry

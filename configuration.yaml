@@ -101,7 +101,6 @@ history:
       - sensor.lock_battery
       - sensor.yesterday_rainfall
       - sensor.rgb_state
-      - sensor.ssl_certificate_expiry
       - sun.sun
       - switch.heat0
       - switch.heat1
@@ -125,7 +124,8 @@ climate:
     min_temp: 15
     max_temp: 25
     target_temp: !secret temperature_home
-    tolerance: 0.3
+    cold_tolerance: 0.3
+    hot_tolerance: 0.3
     min_cycle_duration:
       seconds: 10
     keep_alive:
@@ -138,7 +138,8 @@ climate:
     min_temp: 22
     max_temp: 35
     target_temp: !secret temperature_fan
-    tolerance: 0.3
+    cold_tolerance: 0.3
+    hot_tolerance: 0.3
     min_cycle_duration:
       seconds: 10
     ac_mode: true
