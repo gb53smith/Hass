@@ -46,6 +46,9 @@ zwave:
 
 # Enables the frontend
 frontend:
+#Breaks climate display on IOS app
+  javascript_version: es5
+
 
 # Enables configuration UI
 config:
@@ -195,7 +198,7 @@ automation 2:
       # - sensor.temperature_setpoint
     # hours_to_show: 24
     # refresh: 60
-    
+
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automations.yaml
