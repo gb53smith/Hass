@@ -199,6 +199,24 @@ automation 2:
     # hours_to_show: 24
     # refresh: 60
 
+    
+google_assistant:
+  project_id: graham-bb666
+  client_id: WRWcrvxwzflm4cihLtNGM29XvUfNNuz4Xr2fbdgRMa0vBoUoGAZrnYEKwByuYBQMpaQ7E4OSTJw8pE1e
+  access_token: JdC6XKyrVDi7tLCTmY1WDvmgs59o5cScdKk7oMu5j1QIED6mHxrDRKY978h26qqsgnOGKjACCQruEhEc
+  agent_user_id: gb53smith@gmail.com
+  api_key: AIzaSyAWxbX5diYHEskrc3pHEcNR-DH0UVocRNk
+  exposed_domains:
+    - switch
+    - light
+
+tts:
+  - platform: google
+  
+# media_player:
+  # - platform: cast
+    # host: 192.168.1.65
+   
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automations.yaml
