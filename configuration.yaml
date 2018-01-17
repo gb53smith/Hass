@@ -115,7 +115,6 @@ ios:
 # Track the sun
 sun:
 
-# Experimental replacement for dumb thermostat
 # Keep alive repeats furnace ON or OFF message every 3 minutes
 # Furnace Arduino will expect repeated furnace ON messages to keep the furnace relay ON.
 
@@ -199,23 +198,20 @@ automation 2:
     # hours_to_show: 24
     # refresh: 60
 
-    
-google_assistant:
-  project_id: graham-bb666
-  client_id: WRWcrvxwzflm4cihLtNGM29XvUfNNuz4Xr2fbdgRMa0vBoUoGAZrnYEKwByuYBQMpaQ7E4OSTJw8pE1e
-  access_token: JdC6XKyrVDi7tLCTmY1WDvmgs59o5cScdKk7oMu5j1QIED6mHxrDRKY978h26qqsgnOGKjACCQruEhEc
-  agent_user_id: gb53smith@gmail.com
-  api_key: AIzaSyAWxbX5diYHEskrc3pHEcNR-DH0UVocRNk
-  exposed_domains:
-    - switch
-    - light
-
-tts:
-  - platform: google
+#This worked with a Google Home Mini to control all switches and light using a voice command
+#Joyce considered this an invasion of privacy so I had to disconnect the service.
+#I changed the HA password after disconnection.
+# google_assistant:
+  # project_id: graham-bb666
+  # client_id: WRWcrvxwzflm4cihLtNGM29XvUfNNuz4Xr2fbdgRMa0vBoUoGAZrnYEKwByuYBQMpaQ7E4OSTJw8pE1e
+  # access_token: JdC6XKyrVDi7tLCTmY1WDvmgs59o5cScdKk7oMu5j1QIED6mHxrDRKY978h26qqsgnOGKjACCQruEhEc
+  # agent_user_id: gb53smith@gmail.com
+  # api_key: AIzaSyAWxbX5diYHEskrc3pHEcNR-DH0UVocRNk
+  # exposed_domains:
+    # - switch
+    # - light
   
-# media_player:
-  # - platform: cast
-    # host: 192.168.1.65
+
    
 # Include other files to better organize code
 group: !include groups.yaml
