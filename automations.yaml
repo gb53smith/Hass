@@ -1,0 +1,404 @@
+#Turns ON Back Irrigation if no other zones are turned ON
+#My 24V 500mA can only safely power one value at a time
+#Set start times in the trigger sections
+#and the ON time in the delay section
+#Note that the start time must be staggered to meet conditions
+  - alias: 'Back Irrigation'
+# This can be set to "off" to prevent automation coming back ON after a reboot
+# caused by a power outage
+    initial_state: false
+    trigger:
+# "-" needed only for multiple triggers/conditions/services
+    - platform: time
+      at: '07:00:00'
+    - platform: time
+      at: '19:00:00'
+    condition:
+# These conditions not really needed since the hardware was 
+# modified to only allow one relay ON at a time.
+# If a command is received to turn one relay ON the others
+# are turned OFF.
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: switch.deck_irrigation
+          state: 'off'
+        - condition: state
+          entity_id: switch.front_irrigation
+          state: 'off'
+# Copy this to Front Irrigation when not using cold frame
+# float is needed to convert string state to float for comparison
+# Deck irrigation is mostly under cover so I need watering every day.
+        - condition: template
+          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.back_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.back_irrigation
+
+  - alias: 'Front Irrigation'
+# On reboot after a power outage restart this automation
+    initial_state: false
+    trigger:
+    - platform: time
+      at: '07:15:00'
+#Removed second trigger for cold frame
+    - platform: time
+      at: '19:15:00'
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: switch.deck_irrigation
+          state: 'off'
+        - condition: state
+          entity_id: switch.back_irrigation
+          state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.front_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.front_irrigation  
+        
+  - alias: 'Deck Irrigation'
+    initial_state: false
+    trigger:
+    - platform: time
+      at: '07:30:00'
+    - platform: time
+      at: '19:30:00'
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: switch.back_irrigation
+          state: 'off'
+        - condition: state
+          entity_id: switch.front_irrigation
+          state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.deck_irrigation
+      - delay: '00:10:00'
+      - service: switch.turn_off
+        entity_id: switch.deck_irrigation
+        
+  - alias: 'Irrigation Safety'
+# In case some interruption occurs while a zone is ON
+# Not sure this is necessary but does not hurt to include
+# Time are after the last zone cycle
+    initial_state: True
+    trigger:
+    - platform: time
+      at: '08:00:00'
+    - platform: time
+      at: '20:00:00'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: group.irrigation_switches
+        
+# Turn ON on hour before sunset      
+  - alias: 'Living Room Light ON'
+    initial_state: True
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-01:00:00"
+    action:
+      service: switch.turn_on
+      entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
+
+# Turn OFF at 23:30
+  - alias: 'Living Room Light OFF'
+    initial_state: True
+    trigger:
+      platform: time
+      at: '23:30:00'    
+    action:
+      service: switch.turn_off
+      entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
+
+  - alias: Notify iOS App Joyce
+    trigger:
+      platform: state
+      entity_id: sensor.back_lock_last_action
+      to: 'Unlocked: Joyce'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Joyce Unlocked Door"
+        
+  - alias: Notify iOS App Oliver
+    trigger:
+      platform: state
+      entity_id: sensor.back_lock_last_action
+      to: 'Unlocked: Oliver'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Oliver Unlocked Door"
+
+# Change thermostat set point to 21 C at 7:00 but only if home and not on vacation
+  - alias: Set Home Setpoint
+    trigger:
+      platform: time
+      at: '07:00:00'
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.away
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.vacation
+          state: 'off'    
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_home
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan
+
+  - alias: Set Away or Asleep Setpoint
+    trigger:
+      platform: time
+      at: '23:00:00'
+    action:
+      service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: !secret temperature_away
+        
+# Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
+# Needs to be tested       
+  - alias: Furnace Safety
+    trigger:
+      platform: state
+      entity_id: switch.furnace
+      to: 'on'
+      for:
+        minutes: 7
+    condition:
+      condition: template
+      value_template: '{{ states.climate.house.attributes.current_temperature | float > states.climate.house.attributes.temperature | float }}'
+    action:
+      service: switch.turn_off
+      entity_id: switch.furnace
+      
+# Turn temperature set point down if away set when door locked from outside keypad
+#Note: A normal template sensor did not trigger so the binary_sensor was used instead.
+  - alias: Away
+    trigger:
+      platform: state
+      entity_id: binary_sensor.away
+      to: 'on' 
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_away
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan_away
+      - service: switch.turn_on
+        entity_id: switch.away
+
+
+# Return temperature set point when return between 7:00 and 23:00 if not on vacation
+  - alias: Home
+    trigger:
+      platform: state
+      entity_id: binary_sensor.away
+      to: 'off'
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.vacation
+          state: 'off'
+        - condition: time
+          after: '07:00:00'
+          before: '23:00:00'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_home
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan
+      - service: switch.turn_off
+        entity_id: switch.away 
+
+# Force temperature_away, immediately, when vacation switched ON
+  - alias: Vacation ON
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation
+      to: 'on'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_away
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan_away
+      - service: switch.turn_on
+        entity_id: switch.away
+
+
+# Force temperature_home, immediately, when vacation switched OFF
+  - alias: Vacation OFF
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation
+      to: 'off'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: !secret temperature_home
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: !secret temperature_fan
+      - service: switch.turn_off
+        entity_id: switch.away
+        
+  - alias: Furnace Ramp ON
+    trigger:
+      platform: state
+      entity_id: switch.furnace
+      to: 'on'
+    action:
+      service: script.turn_on
+      entity_id: script.furnace_timer
+
+      
+  - alias: Furnace OFF
+    trigger:
+      platform: state
+      entity_id: switch.furnace
+      to: 'off'
+    action:
+      service: homeassistant.turn_off
+      entity_id: 
+        - script.furnace_timer
+        - script.timer_heat0
+        - script.timer_heat1
+        - switch.heat1
+        - switch.heat0
+
+        
+# Send Notification if temperature reaches min_temp or max_temp.
+  - alias: Notify Out of Range Temperature
+    trigger:
+      - platform: template
+        value_template: '{{ states.sensor.temperature.state | float > 25.0 }}'
+      - platform: template
+        value_template: '{{ states.sensor.temperature.state | float < 15.0 }}'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "House Temperature Out of Range"
+        
+# Send Notification if Wine Cellar temperature reaches min_temp or max_temp.
+  - alias: Notify Out of Range Temperature
+    trigger:
+      - platform: template
+        value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
+      - platform: template
+        value_template: '{{ states.sensor.remote_temperature.state | float < 10.0 }}'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Wine Cellar Temperature Out of Range"
+
+  - alias: Basement Flood Alarm
+    trigger:
+      platform: state
+      entity_id: sensor.flood
+      to: 'ON'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Basement Flood Detected!"
+        
+  - alias: Watchdog
+    trigger:
+      platform: time
+      minutes: '/10'
+      seconds: 01
+    action:
+      - service: switch.turn_on
+        entity_id: switch.watchdog
+      - delay:  0:05:00
+      - service: switch.turn_off
+        entity_id: switch.watchdog
+        
+# Send a notice to iPhone if watchdog state stays in ON state too long
+  - alias: Watchdog Alarm ON
+    trigger:
+      platform: state
+      entity_id: switch.watchdog
+      # Must be lower case for internal state
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 5
+# Disable watchdog alarm if getting too many alarms
+# Not that useful since only one alarm is generated if multisensor hangs up.
+    condition:
+      - condition: state
+        entity_id: input_boolean.watchdog
+        state: 'off'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Multisensor ON Failed!"
+        
+# Send a notice to iPhone if watchdog state stays in OFF state too long
+  - alias: Watchdog Alarm OFF
+    trigger:
+      platform: state
+      entity_id: switch.watchdog
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 5
+  # Disable watchdog alarm if getting too many alarms
+    condition:
+      - condition: state
+        entity_id: input_boolean.watchdog
+        state: 'off'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Multisensor OFF Failed!"
+  
+  # Turn all switches OFF on reboot and send notification 10 minutes later
+  - alias: HA Restarted
+    trigger:
+      platform: homeassistant
+      event: start
+    action:
+      - service: homeassistant.turn_off
+        data:
+          entity_id: group.switches_off_at_restart
+      - delay:
+          minutes: 10
+      - service: notify.ios_grahams_iphone
+        data:
+          message: "HA Restarted"

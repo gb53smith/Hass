@@ -166,21 +166,20 @@ input_boolean:
     icon: mdi:lock    
 # Send notification if Home Assistant restarts after 10 minutes
 # to wait for Internet to come back up. I get an error if this is in the automation.yaml file
-# After 10 minutes, default to vacation mode in case power cycles while on vacation.
-# If at home, manually switch off vacation.
-automation 2:
-  trigger:
-    platform: homeassistant
-    event: start
-  action:
-    - service: homeassistant.turn_off
-      data:
-        entity_id: group.switches_off_at_restart
-    - delay:
-        minutes: 10
-    - service: notify.ios_grahams_iphone
-      data:
-        message: "HA Restarted"
+
+# automation 2:
+  # trigger:
+    # platform: homeassistant
+    # event: start
+  # action:
+    # - service: homeassistant.turn_off
+      # data:
+        # entity_id: group.switches_off_at_restart
+    # - delay:
+        # minutes: 10
+    # - service: notify.ios_grahams_iphone
+      # data:
+        # message: "HA Restarted"
           
 # history_graph:
   # gr1:
@@ -211,8 +210,7 @@ automation 2:
    
 # Include other files to better organize code
 group: !include groups.yaml
-automation: !include automations.yaml
-automation pre45: !include automation.yaml
+automation pre45: !include automations.yaml
 sensor: !include sensors.yaml
 switch: !include switches.yaml
 script: !include scripts.yaml
