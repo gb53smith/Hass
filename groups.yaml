@@ -89,6 +89,7 @@
       - group.living_room_light_automation
       - sensor.humidity
       - sensor.yesterday_rainfall
+      - sensor.cpu_used
       - switch.furnace
       - switch.fan
       - switch.away
@@ -98,12 +99,6 @@
       - switch.front_irrigation
       - switch.deck_irrigation
       - switch.watchdog
-#      - media_player.living_room_speaker
-      
-# Custom Graphs
-  # Graphs:
-    # view: true
-    # entities:
-      # - history_graph.house_climate
+
 
       

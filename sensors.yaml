@@ -105,3 +105,10 @@
     name: 'Remote Humidity'
     unit_of_measurement: '%'
     value_template: '{{ value_json.humidity }}'
+    
+  - platform: systemmonitor
+    resources:
+      - type: processor_use
+        
+      
+      
