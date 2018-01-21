@@ -4,9 +4,6 @@
 #and the ON time in the delay section
 #Note that the start time must be staggered to meet conditions
   - alias: 'Back Irrigation'
-# This can be set to "off" to prevent automation coming back ON after a reboot
-# caused by a power outage
-    initial_state: false
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
@@ -39,12 +36,9 @@
         entity_id: switch.back_irrigation
 
   - alias: 'Front Irrigation'
-# On reboot after a power outage restart this automation
-    initial_state: false
     trigger:
     - platform: time
       at: '07:15:00'
-#Removed second trigger for cold frame
     - platform: time
       at: '19:15:00'
     condition: 
@@ -64,7 +58,6 @@
         entity_id: switch.front_irrigation  
         
   - alias: 'Deck Irrigation'
-    initial_state: false
     trigger:
     - platform: time
       at: '07:30:00'
@@ -102,7 +95,6 @@
         
 # Turn ON on hour before sunset      
   - alias: 'Living Room Light ON'
-    initial_state: True
     trigger:
       platform: sun
       event: sunset
@@ -113,7 +105,6 @@
 
 # Turn OFF at 23:30
   - alias: 'Living Room Light OFF'
-    initial_state: True
     trigger:
       platform: time
       at: '23:30:00'    

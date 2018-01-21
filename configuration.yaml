@@ -65,15 +65,14 @@ discovery:
 logbook:
 
 # Keep database from growing too large by purging
-# No need to log watchdog or automations
+# No need to log watchdog
+# Must log automations to restore_state of automations on restart
 recorder:
   purge_interval: 5
   purge_keep_days: 7
   exclude:
     entities:
       - switch.watchdog
-    domains:
-      - automation
  
 # Enables support for tracking state changes over time.
 # Exclude those domains and entities that do not change much 
@@ -104,6 +103,7 @@ history:
       - sensor.lock_battery
       - sensor.yesterday_rainfall
       - sensor.rgb_state
+      - sensor.cpu_used
       - sun.sun
       - switch.heat0
       - switch.heat1
