@@ -51,6 +51,8 @@
     entities:
     - input_boolean.vacation
     - climate.house
+    - input_number.slider_home
+    - input_number.slider_away
     - climate.summer_fan
     - sensor.heat_state
 
@@ -99,6 +101,7 @@
       - switch.front_irrigation
       - switch.deck_irrigation
       - switch.watchdog
+
 
 
       

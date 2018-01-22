@@ -150,7 +150,7 @@
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
-          temperature: !secret temperature_home
+          temperature: "{{ states('input_number.slider_home')}}"
       - service: climate.set_temperature
         data_template:
           entity_id: climate.summer_fan
@@ -164,7 +164,7 @@
       service: climate.set_temperature
       data_template:
         entity_id: climate.house
-        temperature: !secret temperature_away
+        temperature: "{{ states('input_number.slider_away')}}"
         
 # Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
 # Needs to be tested       
@@ -193,7 +193,7 @@
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
-          temperature: !secret temperature_away
+          temperature: "{{ states('input_number.slider_away')}}"
       - service: climate.set_temperature
         data_template:
           entity_id: climate.summer_fan
@@ -221,7 +221,7 @@
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
-          temperature: !secret temperature_home
+          temperature: "{{ states('input_number.slider_home')}}"
       - service: climate.set_temperature
         data_template:
           entity_id: climate.summer_fan
@@ -239,7 +239,7 @@
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
-          temperature: !secret temperature_away
+          temperature: "{{ states('input_number.slider_away')}}"
       - service: climate.set_temperature
         data_template:
           entity_id: climate.summer_fan
@@ -258,7 +258,7 @@
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
-          temperature: !secret temperature_home
+          temperature: "{{ states('input_number.slider_home')}}"
       - service: climate.set_temperature
         data_template:
           entity_id: climate.summer_fan
@@ -388,8 +388,56 @@
       - service: homeassistant.turn_off
         data:
           entity_id: group.switches_off_at_restart
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: >
+            {% if is_state('input_boolean.vacation', 'on') %}
+              {{ states('input_number.slider_away')}}
+            {% else %}
+              {{ states('input_number.slider_home')}}
+            {% endif %}
       - delay:
           minutes: 10
       - service: notify.ios_grahams_iphone
         data:
           message: "HA Restarted"
+          
+  - alias: Home Slider Changed
+    trigger:
+      platform: state
+      entity_id: input_number.slider_home
+    condition: 
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.away
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.vacation
+          state: 'off'  
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: "{{ states('input_number.slider_home')}}"
+
+  - alias: Away Slider Changed
+    trigger:
+      platform: state
+      entity_id: input_number.slider_away
+    condition: 
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.away
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.vacation
+          state: 'on'  
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.house
+          temperature: "{{ states('input_number.slider_away')}}" 
+  

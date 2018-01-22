@@ -88,6 +88,8 @@ history:
       - device_tracker.grahams_iphone
       - input_boolean.vacation
       - input_boolean.watchdog
+      - input_number.slider_home
+      - input_number.slider_away
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
@@ -164,23 +166,24 @@ input_boolean:
     name: "Watchdog Alarm Override"
     initial: off
     icon: mdi:lock    
-# Send notification if Home Assistant restarts after 10 minutes
-# to wait for Internet to come back up. I get an error if this is in the automation.yaml file
 
-# automation 2:
-  # trigger:
-    # platform: homeassistant
-    # event: start
-  # action:
-    # - service: homeassistant.turn_off
-      # data:
-        # entity_id: group.switches_off_at_restart
-    # - delay:
-        # minutes: 10
-    # - service: notify.ios_grahams_iphone
-      # data:
-        # message: "HA Restarted"
-          
+    
+input_number:
+  slider_home:
+    name: Home Temp
+    #initial: 21
+    min: 18
+    max: 25
+    step: 0.5
+    icon: mdi:target
+  slider_away:
+    name: Away Temp
+    #initial: 18
+    min: 16
+    max: 20
+    step: 0.5
+    icon: mdi:target
+    
 # history_graph:
   # gr1:
     # name: House Climate
