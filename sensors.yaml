@@ -113,6 +113,6 @@
   - platform: command_line
     name: CPU Temperature
     unit_of_measurement: "°C"
-    scan_interval: 10
+    scan_interval: 300
     command: "python3 /config/cputemp.py"    
       

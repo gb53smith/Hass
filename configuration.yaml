@@ -111,6 +111,7 @@ history:
       - sensor.yesterday_rainfall
       - sensor.rgb_state
       - sensor.cpu_used
+      - sensor.cpu_temperature
       - sun.sun
       - switch.heat0
       - switch.heat1
