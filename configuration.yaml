@@ -63,6 +63,11 @@ discovery:
 
 # View all events in a logbook
 logbook:
+  exclude:
+    domains:
+      - automation
+      - script
+      - group
 
 # Keep database from growing too large by purging
 # No need to log watchdog
