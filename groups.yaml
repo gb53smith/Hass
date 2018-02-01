@@ -92,6 +92,7 @@
       - sensor.humidity
       - sensor.yesterday_rainfall
       - sensor.cpu_used
+      - sensor.cpu_temperature
       - switch.furnace
       - switch.fan
       - switch.away
