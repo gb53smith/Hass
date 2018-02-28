@@ -61,6 +61,15 @@ discovery:
   ignore:
     - apple_tv
 
+python_script:
+
+#Need this only to debug python scripts
+# logger:
+  # default: info
+  # logs:
+    # homeassistant.components.python_scripts: debug
+    # homeassistant.components.sensor.time: error
+    
 # View all events in a logbook
 logbook:
   exclude:
@@ -95,6 +104,7 @@ history:
       - input_boolean.watchdog
       - input_number.slider_home
       - input_number.slider_away
+      - input_datetime.living_room_light_off
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
@@ -171,7 +181,7 @@ input_boolean:
   watchdog:
     name: "Watchdog Alarm Override"
     initial: off
-    icon: mdi:lock    
+    icon: mdi:lock
 
     
 input_number:
@@ -189,6 +199,28 @@ input_number:
     max: 20
     step: 0.5
     icon: mdi:target
+
+input_datetime:
+  lr_off_time:
+    name: Living Room Light OFF
+    has_date: false
+    has_time: true
+
+  lr_off_time_random:
+    name: Living Room Light Random OFF 
+    has_date: false
+    has_time: true
+
+  br_on_time_random:
+    name: Bed Room Light Random ON
+    has_date: false
+    has_time: true
+
+  br_off_time_random:
+    name: Bed Room Light Random OFF
+    has_date: false
+    has_time: true
+    
     
 # history_graph:
   # gr1:

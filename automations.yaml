@@ -93,15 +93,16 @@
       - service: homeassistant.turn_off
         entity_id: group.irrigation_switches
         
-# Turn ON on hour before sunset      
+# Turn ON on hour before sunset an setup random ON/OFF time for lights when Away    
   - alias: 'Living Room Light ON'
     trigger:
       platform: sun
       event: sunset
       offset: "-01:00:00"
     action:
-      service: switch.turn_on
-      entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
+      - service: switch.turn_on
+        entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
+      - service: python_script.random_lights
 
 # Turn OFF at 23:30
   - alias: 'Living Room Light OFF'
@@ -440,4 +441,10 @@
         data_template:
           entity_id: climate.house
           temperature: "{{ states('input_number.slider_away')}}" 
+
+  
+  
+  
+  
+  
   

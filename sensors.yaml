@@ -115,4 +115,17 @@
     unit_of_measurement: "°C"
     scan_interval: 300
     command: "python3 /config/cputemp.py"    
-      
+
+  - platform: random
+    name: lr_random
+    minimum: 0
+    maximum: 30
+    scan_interval: 3600
+    
+  - platform: random
+    name: br_random
+    minimum: 0
+    maximum: 10
+    scan_interval: 3600
+    
+       
