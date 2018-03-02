@@ -1,0 +1,45 @@
+sensor.grahams_iphone_battery_state:
+  platform: ios
+  unique_id: state_grahams_iphone
+sensor.joyce_ipad_battery_level:
+  platform: ios
+  unique_id: level_joyce_ipad
+sensor.joyce_ipad_battery_state:
+  platform: ios
+  unique_id: state_joyce_ipad
+sensor.grahams_iphone_battery_level:
+  platform: ios
+  unique_id: level_grahams_iphone
+lock.schlage_be469nxcen_touchscreen_deadbolt_locked:
+  platform: zwave
+  unique_id: 4-72057594110836736
+sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type:
+  platform: zwave
+  unique_id: 4-72057594111082497
+sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level:
+  platform: zwave
+  unique_id: 4-72057594111082513
+sensor.schlage_be469nxcen_touchscreen_deadbolt_sourcenodeid:
+  platform: zwave
+  unique_id: 4-72057594111082529
+sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control:
+  platform: zwave
+  unique_id: 4-72057594111082641
+sensor.schlage_be469nxcen_touchscreen_deadbolt_burglar:
+  platform: zwave
+  unique_id: 4-72057594111082657
+sensor.schlage_be469nxcen_touchscreen_deadbolt_power_management:
+  platform: zwave
+  unique_id: 4-72057594111082673
+sensor.schlage_be469nxcen_touchscreen_deadbolt_system:
+  platform: zwave
+  unique_id: 4-72057594111082689
+switch.leviton_dzr151lz_binary_scene_switch_switch:
+  platform: zwave
+  unique_id: 7-72057594160168960
+light.ge_12724_3way_dimmer_switch_level:
+  platform: zwave
+  unique_id: 8-72057594176962561
+switch.leviton_dz15s_light_switch_switch:
+  platform: zwave
+  unique_id: 9-72057594193723392

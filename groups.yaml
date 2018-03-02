@@ -91,7 +91,7 @@
       - group.light_automation
       - sensor.humidity
       - sensor.yesterday_rainfall
-      - sensor.cpu_used
+      - sensor.processor_use
       - sensor.cpu_temperature
       - switch.furnace
       - switch.fan
