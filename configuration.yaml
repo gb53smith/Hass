@@ -109,7 +109,7 @@ history:
       - input_boolean.watchdog
       - input_number.slider_home
       - input_number.slider_away
-      - input_datetime.living_room_light_off
+      - input_datetime.lr_off_time
       - input_datetime.lr_off_time_random
       - input_datetime.br_on_time_random
       - input_datetime.br_off_time_random
