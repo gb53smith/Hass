@@ -130,7 +130,7 @@ history:
       - sensor.lock_battery
       - sensor.yesterday_rainfall
       - sensor.rgb_state
-      - sensor.cpu_used
+      - sensor.processor_use
       - sensor.cpu_temperature
       - sensor.time
       - sun.sun
