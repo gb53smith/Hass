@@ -6,15 +6,10 @@
     - automation.back_irrigation
     - automation.front_irrigation
     - automation.deck_irrigation
-    
-  Living Room Light Automation:
+
+  Light Automation:
     entities:
-    - automation.living_room_light_on
-    - automation.living_room_light_off
     - input_datetime.lr_off_time
-    - input_datetime.lr_off_time_random
-    - input_datetime.br_on_time_random
-    - input_datetime.br_off_time_random
 
   Z-Wave Components:
     entities:
@@ -22,18 +17,20 @@
     - zwave.leviton_dzr151lz_binary_scene_switch
     - zwave.ge_12724_3way_dimmer_switch
     - zwave.schlage_be469nxcen_touchscreen_deadbolt
+    - zwave.leviton_dz15s_light_switch
 
   Irrigation Switches:
     entities:
     - switch.back_irrigation
     - switch.front_irrigation
     - switch.deck_irrigation
-    
+
   Lights:
     control: hidden
     entities:
     - switch.leviton_dzr151lz_binary_scene_switch_switch
     - light.ge_12724_3way_dimmer_switch_level
+    - switch.leviton_dz15s_light_switch_switch
 
   Back Door Lock:
     entities:
@@ -65,12 +62,11 @@
     entities:
     - input_boolean.watchdog
     - sensor.flood
-    
+
   Wine Cellar:
     entities:
     - sensor.remote_temperature
     - sensor.remote_humidity
-
 
 # Control what is seen on the WEB States page
 
@@ -92,7 +88,7 @@
     view: True
     entities:
       - group.irrigation_automation
-      - group.living_room_light_automation
+      - group.light_automation
       - sensor.humidity
       - sensor.yesterday_rainfall
       - sensor.cpu_used
@@ -106,7 +102,3 @@
       - switch.front_irrigation
       - switch.deck_irrigation
       - switch.watchdog
-
-
-
-      

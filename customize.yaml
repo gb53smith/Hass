@@ -5,15 +5,17 @@
       friendly_name: "Back Door"
     light.ge_12724_3way_dimmer_switch_level:
       friendly_name: "Dining Room Dimmer"
+    switch.leviton_dz15s_light_switch_switch:
+      friendly_name: "Bed Room Light"
+      icon: mdi:lightbulb
 
 # This hides but also from a group so I made it False  
     automation.living_room_light_on:
       hidden: False
     automation.living_room_light_off:
       hidden: False
-      
+
 # To getting tracking with iOS App working
     zone.home:
       track_ios: False
-      
- 
+

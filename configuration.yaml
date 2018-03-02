@@ -11,7 +11,7 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: !secret time_zone
   customize: !include customize.yaml
-    
+
 #Show links to resources in log and frontend
 #introduction:
 
@@ -26,14 +26,14 @@ http:
 #This start the MQTT server on Raspberry setup using the HA install script
 #To access from an Arduino device I had to use the IP address for the Raspberry
 mqtt:
-  broker: localhost 
+  broker: localhost
   port: 1883
   client_id: home-assistant-1
   keepalive: 60
   username: !secret mos_id
   password: !secret mos_password
-  protocol: 3.1 
-  
+  protocol: 3.1
+
 zwave:
   usb_path: /dev/ttyACM0
   network_key: !secret zwave_key
@@ -48,7 +48,6 @@ zwave:
 frontend:
 #Breaks climate display on IOS app
   javascript_version: es5
-
 
 # Enables configuration UI
 config:
@@ -69,14 +68,19 @@ python_script:
   # logs:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
-    
-# View all events in a logbook
+
+# View only some events in logbook
 logbook:
   exclude:
     domains:
       - automation
       - script
       - group
+      - input_datetime
+    entities:
+      - sensor.time
+      - sensor.br_random
+      - sensor.lv_random
 
 # Keep database from growing too large by purging
 # No need to log watchdog
@@ -87,9 +91,9 @@ recorder:
   exclude:
     entities:
       - switch.watchdog
- 
+
 # Enables support for tracking state changes over time.
-# Exclude those domains and entities that do not change much 
+# Exclude those domains and entities that do not change much
 history:
   exclude:
     domains:
@@ -98,6 +102,7 @@ history:
       - group
       - zwave
     entities:
+      - automation.living_room_light_on
       - binary_sensor.away
       - device_tracker.grahams_iphone
       - input_boolean.vacation
@@ -105,7 +110,12 @@ history:
       - input_number.slider_home
       - input_number.slider_away
       - input_datetime.living_room_light_off
+      - input_datetime.lr_off_time_random
+      - input_datetime.br_on_time_random
+      - input_datetime.br_off_time_random
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - sensor.lr_random
+      - sensor.br_random
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -122,6 +132,7 @@ history:
       - sensor.rgb_state
       - sensor.cpu_used
       - sensor.cpu_temperature
+      - sensor.time
       - sun.sun
       - switch.heat0
       - switch.heat1
@@ -129,7 +140,7 @@ history:
 
 #Send notifications to the iOS app on my iPhone
 ios:
-  
+
 # Track the sun
 sun:
 
@@ -164,14 +175,16 @@ climate:
       seconds: 10
     ac_mode: true
 
-
 # Used in automations to detect when I leave and come home again.  'on' = away
+# Add special condition for Oliver since he sometimes locks using a key code
 binary_sensor:
   - platform: template
     sensors:
       away:
-        value_template: '{{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")}}'
-        friendly_name: 'I am away' 
+        value_template: >
+          {{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")
+          or is_state("sensor.back_lock_last_action", "Locked: Oliver")}}
+        friendly_name: 'I am away'
 
 input_boolean:
   vacation:
@@ -183,7 +196,6 @@ input_boolean:
     initial: off
     icon: mdi:lock
 
-    
 input_number:
   slider_home:
     name: Home Temp
@@ -207,7 +219,7 @@ input_datetime:
     has_time: true
 
   lr_off_time_random:
-    name: Living Room Light Random OFF 
+    name: Living Room Light Random OFF
     has_date: false
     has_time: true
 
@@ -220,8 +232,7 @@ input_datetime:
     name: Bed Room Light Random OFF
     has_date: false
     has_time: true
-    
-    
+
 # history_graph:
   # gr1:
     # name: House Climate
@@ -246,9 +257,7 @@ input_datetime:
   # exposed_domains:
     # - switch
     # - light
-  
 
-   
 # Include other files to better organize code
 group: !include groups.yaml
 automation pre45: !include automations.yaml
