@@ -46,7 +46,6 @@ zwave:
 
 # Enables the frontend
 frontend:
-#Breaks climate display on IOS app
   javascript_version: es5
 
 # Enables configuration UI
@@ -69,21 +68,9 @@ python_script:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
 
-# View only some events in logbook
-logbook:
-  exclude:
-    domains:
-      - automation
-      - script
-      - group
-      - input_datetime
-    entities:
-      - sensor.time
-      - sensor.br_random
-      - sensor.lv_random
 
 # Keep database from growing too large by purging
-# No need to log watchdog
+# No need to record some entities
 # Must log automations to restore_state of automations on restart
 recorder:
   purge_interval: 5
@@ -91,9 +78,48 @@ recorder:
   exclude:
     entities:
       - switch.watchdog
+      - sensor.time
+      - sensor.rgb_state
+      - sun.sun
+      - switch.heat0
+      - switch.heat1
+      - sensor.grahams_iphone_battery_level
+      - sensor.grahams_iphone_battery_state
+      - sensor.joyce_ipad_battery_level
+      - sensor.joyce_ipad_battery_state
+      - device_tracker.grahams_iphone
+      - sensor.lr_random
+      - sensor.br_random
 
-# Enables support for tracking state changes over time.
-# Exclude those domains and entities that do not change much
+# View only some events in logbook
+# Depends on recorder settings.
+logbook:
+  exclude:
+    domains:
+      - automation
+      - script
+      - group
+      - input_datetime
+      - input_number
+      - zwave
+  include:
+    entities:
+      - climate.house
+      - climate.summer_fan
+      - light.ge_12724_3way_dimmer_switch_level
+      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - sensor.heat_state
+      - sensor.back_lock_last_action
+      - sensor.flood
+      - switch.away
+      - switch.back_irrigation
+      - switch.deck_irrigation
+      - switch.front_irrigation
+      - switch.leviton_dz15s_light_switch_switch
+      - switch.leviton_dzr151lz_binary_scene_switch_switch
+
+# View the history of only some components
+# Depends on recorder settings.
 history:
   exclude:
     domains:
@@ -102,9 +128,7 @@ history:
       - group
       - zwave
     entities:
-      - automation.living_room_light_on
       - binary_sensor.away
-      - device_tracker.grahams_iphone
       - input_boolean.vacation
       - input_boolean.watchdog
       - input_number.slider_home
@@ -114,8 +138,6 @@ history:
       - input_datetime.br_on_time_random
       - input_datetime.br_off_time_random
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-      - sensor.lr_random
-      - sensor.br_random
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -123,20 +145,11 @@ history:
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_power_management
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_sourcenodeid
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_system
-      - sensor.grahams_iphone_battery_level
-      - sensor.grahams_iphone_battery_state
-      - sensor.joyce_ipad_battery_level
-      - sensor.joyce_ipad_battery_state
       - sensor.lock_battery
       - sensor.yesterday_rainfall
-      - sensor.rgb_state
       - sensor.processor_use
       - sensor.cpu_temperature
-      - sensor.time
-      - sun.sun
-      - switch.heat0
-      - switch.heat1
-      - switch.watchdog
+      - updater.updater
 
 #Send notifications to the iOS app on my iPhone
 ios:
