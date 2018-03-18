@@ -94,17 +94,8 @@ recorder:
 # View only some events in logbook
 # Depends on recorder settings.
 logbook:
-  exclude:
-    domains:
-      - automation
-      - script
-      - group
-      - input_datetime
-      - input_number
-      - zwave
   include:
     entities:
-      - climate.house
       - climate.summer_fan
       - light.ge_12724_3way_dimmer_switch_level
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
