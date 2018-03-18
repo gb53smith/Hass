@@ -336,7 +336,7 @@
 
         
 # Send Notification if temperature reaches min_temp or max_temp.
-  - alias: Notify Out of Range Temperature
+  - alias: Notify House Out of Range Temperature
     trigger:
       - platform: template
         value_template: '{{ states.sensor.temperature.state | float > 25.0 }}'
@@ -348,7 +348,7 @@
         message: "House Temperature Out of Range"
         
 # Send Notification if Wine Cellar temperature reaches min_temp or max_temp.
-  - alias: Notify Out of Range Temperature
+  - alias: Notify Wine Out of Range Temperature
     trigger:
       - platform: template
         value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
