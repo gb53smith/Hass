@@ -109,7 +109,9 @@
   - alias: 'Living Room Light OFF at Home'
     trigger:
       platform: template
-      value_template: '{{ (states.input_datetime.lr_off_time.attributes.timestamp | int | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}'   
+      value_template: >
+        {{ (states.input_datetime.lr_off_time.attributes.timestamp | int 
+        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}   
     condition:
       condition: state    
       entity_id: input_boolean.vacation
@@ -117,42 +119,6 @@
     action:
       service: switch.turn_off
       entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
-
-  # - alias: 'Living Room Light OFF when Vacation'
-    # trigger:
-      # platform: template
-      # value_template: '{{ (states.input_datetime.lr_off_time_random.timestamp | int | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}'   
-    # condition:
-      # condition: state    
-      # entity_id: input_boolean.vacation
-      # state: 'on'     
-    # action:
-      # service: switch.turn_off
-      # entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
-
-  # - alias: 'Bedroom Room Light ON when on Vacation'
-    # trigger:
-      # platform: template
-      # value_template: '{{ (states.input_datetime.br_on_time_random.timestamp | int | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}'   
-    # condition:
-      # condition: state    
-      # entity_id: input_boolean.vacation
-      # state: 'on'     
-    # action:
-      # service: switch.turn_on
-      # entity_id: switch.leviton_dz15s_light_switch_switch
-
-  # - alias: 'Bedroom Room Light OFF when on Vacation'
-    # trigger:
-      # platform: template
-      # value_template: '{{ (states.input_datetime.br_off_time_random.timestamp | int | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}'  
-    # condition:
-      # condition: state    
-      # entity_id: input_boolean.vacation
-      # state: 'on'     
-    # action:
-      # service: switch.turn_off
-      # entity_id: switch.leviton_dz15s_light_switch_switch     
 
   - alias: Notify iOS App Joyce
     trigger:
@@ -174,11 +140,14 @@
       data:
         message: "Oliver Unlocked Door"
 
-# Change thermostat set point to 21 C at 7:00 but only if home and not on vacation
+# Change thermostat set point to slider_home temp at datetime.heat_on_time
+# but only if home and not on vacation
   - alias: Set Home Setpoint
     trigger:
-      platform: time
-      at: '07:00:00'
+      platform: template
+      value_template: >
+        {{ (states.input_datetime.heat_on_time.timestamp | int 
+        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
     condition: 
       condition: and
       conditions:
@@ -200,8 +169,10 @@
 
   - alias: Set Away or Asleep Setpoint
     trigger:
-      platform: time
-      at: '23:00:00'
+      platform: template
+      value_template: >
+        {{ (states.input_datetime.heat_off_time.timestamp | int 
+        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
     action:
       service: climate.set_temperature
       data_template:
@@ -246,7 +217,8 @@
         entity_id: switch.away
 
 
-# Return temperature set point when return between 7:00 and 23:00 if not on vacation
+# Return temperature set point when returning
+# between heat ON and OFF times if not on vacation
   - alias: Home
     trigger:
       platform: state
@@ -258,9 +230,12 @@
         - condition: state
           entity_id: input_boolean.vacation
           state: 'off'
-        - condition: time
-          after: '07:00:00'
-          before: '23:00:00'
+        - condition: template
+          value_template: >
+            {{ (now().hour * 60 + now().minute) * 60  
+              > states.input_datetime.heat_on_time.attributes.timestamp and 
+              (now().hour * 60 + now().minute) * 60 
+              < states.input_datetime.heat_off_time.attributes.timestamp }}  
     action:
       - service: climate.set_temperature
         data_template:
@@ -318,7 +293,6 @@
     action:
       service: script.turn_on
       entity_id: script.furnace_timer
-
       
   - alias: Furnace OFF
     trigger:
@@ -333,7 +307,6 @@
         - script.timer_heat1
         - switch.heat1
         - switch.heat0
-
         
 # Send Notification if temperature reaches min_temp or max_temp.
   - alias: Notify House Out of Range Temperature
@@ -446,7 +419,9 @@
       - service: notify.ios_grahams_iphone
         data:
           message: "HA Restarted"
-          
+
+# When home slider changes, change heating set point only when home
+# and the time is between heat ON and heat OFF times.          
   - alias: Home Slider Changed
     trigger:
       platform: state
@@ -459,13 +434,21 @@
           state: 'off'
         - condition: state
           entity_id: input_boolean.vacation
-          state: 'off'  
+          state: 'off'
+        - condition: template
+          value_template: >
+            {{ (now().hour * 60 + now().minute) * 60  
+              > states.input_datetime.heat_on_time.attributes.timestamp and 
+              (now().hour * 60 + now().minute) * 60 
+              < states.input_datetime.heat_off_time.attributes.timestamp }}  
     action:
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
           temperature: "{{ states('input_number.slider_home')}}"
 
+# When home slider changes, change heating set point only when away
+# or the time is between heat OFF and heat ON times. 
   - alias: Away Slider Changed
     trigger:
       platform: state
@@ -478,16 +461,19 @@
           state: 'on'
         - condition: state
           entity_id: input_boolean.vacation
-          state: 'on'  
+          state: 'on'
+        - condition: template
+          value_template: >
+            {{ (now().hour * 60 + now().minute) * 60  
+              > states.input_datetime.lr_off_time.attributes.timestamp or 
+              (now().hour * 60 + now().minute) * 60 
+              < states.input_datetime.lr_on_time.attributes.timestamp }}           
     action:
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
           temperature: "{{ states('input_number.slider_away')}}" 
 
-  
-  
-  
-  
+
   
   

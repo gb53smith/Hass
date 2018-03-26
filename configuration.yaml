@@ -128,6 +128,8 @@ history:
       - input_datetime.lr_off_time_random
       - input_datetime.br_on_time_random
       - input_datetime.br_off_time_random
+      - input_datetime.heat_on_time
+      - input_datetime.heat_off_time
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
@@ -236,6 +238,16 @@ input_datetime:
     name: Bed Room Light Random OFF
     has_date: false
     has_time: true
+    
+  heat_on_time:
+    name: Heat ON time
+    has_date: false
+    has_time: true
+
+  heat_off_time:
+    name: Heat OFF time
+    has_date: false
+    has_time: true    
 
 # history_graph:
   # gr1:

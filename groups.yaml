@@ -10,7 +10,12 @@
   Light Automation:
     entities:
     - input_datetime.lr_off_time
-
+    
+  Heat Automation:
+    entities:
+    - input_datetime.heat_on_time
+    - input_datetime.heat_off_time
+    
   Z-Wave Components:
     entities:
     - zwave.aeotec_zw090_zstick_gen5_us
@@ -89,6 +94,7 @@
     entities:
       - group.irrigation_automation
       - group.light_automation
+      - group.heat_automation
       - sensor.humidity
       - sensor.yesterday_rainfall
       - sensor.processor_use
