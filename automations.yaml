@@ -146,7 +146,7 @@
     trigger:
       platform: template
       value_template: >
-        {{ (states.input_datetime.heat_on_time.timestamp | int 
+        {{ (states.input_datetime.heat_on_time.attributes.timestamp | int 
         | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
     condition: 
       condition: and
@@ -171,7 +171,7 @@
     trigger:
       platform: template
       value_template: >
-        {{ (states.input_datetime.heat_off_time.timestamp | int 
+        {{ (states.input_datetime.heat_off_time.attributes.timestamp | int 
         | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
     action:
       service: climate.set_temperature
