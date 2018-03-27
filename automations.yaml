@@ -267,12 +267,20 @@
         entity_id: switch.away
 
 
-# Force temperature_home, immediately, when vacation switched OFF
+# Force temperature_home when vacation switched OFF
+# and time is between heat ON and OFF times.
   - alias: Vacation OFF
     trigger:
       platform: state
       entity_id: input_boolean.vacation
       to: 'off'
+    condition:
+      - condition: template
+        value_template: >
+          {{ (now().hour * 60 + now().minute) * 60  
+            > states.input_datetime.heat_on_time.attributes.timestamp and 
+            (now().hour * 60 + now().minute) * 60 
+            < states.input_datetime.heat_off_time.attributes.timestamp }} 
     action:
       - service: climate.set_temperature
         data_template:
@@ -397,6 +405,8 @@
         message: "Multisensor OFF Failed!"
   
   # Turn all switches OFF on reboot and send notification 10 minutes later
+  # Restore heat if not on vacation and  time is between heat ON and heat OFF times.
+  # Restore summer fan depending on vacation status.  Note !secrets does not work in template.
   - alias: HA Restarted
     trigger:
       platform: homeassistant
@@ -409,10 +419,23 @@
         data_template:
           entity_id: climate.house
           temperature: >
-            {% if is_state('input_boolean.vacation', 'on') %}
-              {{ states('input_number.slider_away')}}
-            {% else %}
+            {% if is_state('input_boolean.vacation', 'off') and 
+              (now().hour * 60 + now().minute) * 60  
+              > states.input_datetime.heat_on_time.attributes.timestamp and 
+              (now().hour * 60 + now().minute) * 60 
+              < states.input_datetime.heat_off_time.attributes.timestamp %}
               {{ states('input_number.slider_home')}}
+            {% else %}
+              {{ states('input_number.slider_away')}}
+            {% endif %}
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.summer_fan
+          temperature: >
+            {% if is_state('input_boolean.vacation', 'off') %}
+              25
+            {% else %}
+              30
             {% endif %}
       - delay:
           minutes: 10
@@ -465,15 +488,11 @@
         - condition: template
           value_template: >
             {{ (now().hour * 60 + now().minute) * 60  
-              > states.input_datetime.lr_off_time.attributes.timestamp or 
+              > states.input_datetime.heat_off_time.attributes.timestamp or 
               (now().hour * 60 + now().minute) * 60 
-              < states.input_datetime.lr_on_time.attributes.timestamp }}           
+              < states.input_datetime.heat_on_time.attributes.timestamp }}           
     action:
       - service: climate.set_temperature
         data_template:
           entity_id: climate.house
-          temperature: "{{ states('input_number.slider_away')}}" 
-
-
-  
-  
+          temperature: "{{ states('input_number.slider_away')}}"
