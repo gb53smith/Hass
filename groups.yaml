@@ -94,6 +94,7 @@
     entities:
       - group.irrigation_automation
       - group.light_automation
+      - history_graph.rain_fall
       - group.heat_automation
       - sensor.humidity
       - sensor.yesterday_rainfall

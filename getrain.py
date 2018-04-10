@@ -18,4 +18,10 @@ root = ET.fromstring(id_pubmed)
 #for child in root:
 	#print(child.tag,child.attrib)
 #This is yesterday's rainfall in mm.
-print(root[8][2].text)
+rain = root[8][2].text
+# If 'trace' return 0.1
+if rain[0].isdigit():
+    print(rain)
+else:
+    print('0.1')
+

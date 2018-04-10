@@ -46,7 +46,7 @@ zwave:
 
 # Enables the frontend
 frontend:
-  javascript_version: es5
+  #javascript_version: es5
 
 # Enables configuration UI
 config:
@@ -249,17 +249,13 @@ input_datetime:
     has_date: false
     has_time: true    
 
-# history_graph:
-  # gr1:
-    # name: House Climate
-    # entities:
-      # - switch.away
-      # - sensor.heat_state
-      # - switch.furnace
-      # - sensor.temperature
-      # - sensor.temperature_setpoint
-    # hours_to_show: 24
-    # refresh: 60
+history_graph:
+  gr1:
+    name: Rain Fall
+    entities:
+      - sensor.yesterday_rainfall
+    hours_to_show: 168
+    refresh: 0
 
 #This worked with a Google Home Mini to control all switches and light using a voice command
 #Joyce considered this an invasion of privacy so I had to disconnect the service.
