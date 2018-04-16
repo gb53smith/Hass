@@ -118,7 +118,49 @@
       state: 'off'     
     action:
       service: switch.turn_off
+      entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch    
+      
+  - alias: 'Living Room Light OFF when Vacation'
+    trigger:
+      platform: template
+      value_template: >
+        {{ (states.input_datetime.lr_off_time_random.attributes.timestamp | int 
+        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
+    condition:
+      condition: state    
+      entity_id: input_boolean.vacation
+      state: 'on'     
+    action:
+      service: switch.turn_off
       entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
+
+  - alias: 'Bedroom Room Light ON when on Vacation'
+    trigger:
+      platform: template
+      value_template: >
+        {{ (states.input_datetime.br_on_time_random.attributes.timestamp | int 
+        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}   
+    condition:
+      condition: state    
+      entity_id: input_boolean.vacation
+      state: 'on'     
+    action:
+      service: switch.turn_on
+      entity_id: switch.leviton_dz15s_light_switch_switch
+
+  - alias: 'Bedroom Room Light OFF when on Vacation'
+    trigger:
+      platform: template
+      value_template: >
+        {{ (states.input_datetime.br_off_time_random.attributes.timestamp | int 
+        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
+    condition:
+      condition: state    
+      entity_id: input_boolean.vacation
+      state: 'on'     
+    action:
+      service: switch.turn_off
+      entity_id: switch.leviton_dz15s_light_switch_switch   
 
   - alias: Notify iOS App Joyce
     trigger:
