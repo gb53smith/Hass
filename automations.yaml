@@ -479,6 +479,7 @@
             {% else %}
               30
             {% endif %}
+      - service: python_script.random_lights
       - delay:
           minutes: 10
       - service: notify.ios_grahams_iphone

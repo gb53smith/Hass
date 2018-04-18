@@ -27,13 +27,14 @@ lr_off_time = hass.states.get('input_datetime.lr_off_time').state
 #logger.info("lr_off_time = {}".format(lr_off_time))
 
 # Add a random +/- 15 minutes to lr_off_time
+if ':' in lr_off_time:
+    # Set the living room random time off to be used when away
+    hour, minute, sec =  lr_off_time.split(':')
 
-# Set the living room random time off to be used when away
-hour, minute, sec =  lr_off_time.split(':')
-
-# Calculate number of minutes to enable math on time
-minutes = int(hour) * 60 + int(minute)
-
+    # Calculate number of minutes to enable math on time
+    minutes = int(hour) * 60 + int(minute)
+else:
+    minutes = 23 * 60 + 30
 
 # Get random offsets from random sensors
 lr_random = int(hass.states.get('sensor.lr_random').state)

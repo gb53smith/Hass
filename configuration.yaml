@@ -120,6 +120,7 @@ history:
       - zwave
     entities:
       - binary_sensor.away
+      - history_graph.rain_fall
       - input_boolean.vacation
       - input_boolean.watchdog
       - input_number.slider_home
