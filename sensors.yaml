@@ -115,6 +115,30 @@
     name: 'Remote Humidity'
     unit_of_measurement: '%'
     value_template: '{{ value_json.humidity }}'
+    
+  - platform: mqtt
+    state_topic: '/home/multisensor2'
+    name: 'Outdoor Temperature'
+    unit_of_measurement: '°C'
+    value_template: '{{ value_json.temperature }}'
+
+  - platform: mqtt
+    state_topic: '/home/multisensor2'
+    name: 'Outdoor Humidity'
+    unit_of_measurement: '%'
+    value_template: '{{ value_json.humidity }}'
+    
+  - platform: mqtt
+    state_topic: '/home/multisensor2'
+    name: 'Outdoor Pressure'
+    unit_of_measurement: 'hPa'
+    value_template: '{{ value_json.pressure }}'    
+
+  - platform: mqtt
+    state_topic: '/home/multisensor2'
+    name: 'Battery Voltage'
+    unit_of_measurement: 'V'
+    value_template: '{{ value_json.voltage }}' 
 
   - platform: systemmonitor
     resources:
@@ -141,3 +165,4 @@
   - platform: time_date
     display_options:
       - 'time'
+      

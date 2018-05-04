@@ -108,6 +108,10 @@ logbook:
       - switch.front_irrigation
       - switch.leviton_dz15s_light_switch_switch
       - switch.leviton_dzr151lz_binary_scene_switch_switch
+      - sensor.outdoor_temperature
+      - sensor.outdoor_humidity
+      - sensor.outdoor_pressure
+      - sensor.battery_voltage   
 
 # View the history of only some components
 # Depends on recorder settings.

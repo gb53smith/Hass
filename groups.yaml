@@ -72,6 +72,13 @@
     entities:
     - sensor.remote_temperature
     - sensor.remote_humidity
+    
+  Outdoor Conditions:
+    entities:
+    - sensor.outdoor_temperature
+    - sensor.outdoor_humidity
+    - sensor.outdoor_pressure
+    - sensor.battery_voltage    
 
 # Control what is seen on the WEB States page
 
@@ -87,6 +94,7 @@
       - group.temperature_control
       - group.alarms
       - group.wine_cellar
+      - group.outdoor_conditions
 
 # Use a second tab for back end information not regularly accessed
   Back End:
@@ -109,3 +117,4 @@
       - switch.front_irrigation
       - switch.deck_irrigation
       - switch.watchdog
+
