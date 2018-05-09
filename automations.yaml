@@ -549,3 +549,18 @@
         data_template:
           entity_id: climate.house
           temperature: "{{ states('input_number.slider_away')}}"
+
+# Monitor Mom's Medical Alert System and notify if system has lost connection
+# to the internet.          
+  - alias: Medalert1 Alarm
+    trigger:
+      - platform: state
+        entity_id: sensor.medalert1_check
+        to: 'Down'
+      - platform: state
+        entity_id: sensor.medalert1_check
+        to: 'URLError'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Medalert1 System Down!"

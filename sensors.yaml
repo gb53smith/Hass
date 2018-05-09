@@ -82,6 +82,11 @@
     unit_of_measurement: "mm"
     scan_interval: 10800
     command: "python3 /config/getrain.py"
+    
+  - platform: command_line
+    name: Medalert1 Check
+    scan_interval: 600
+    command: "python3 /config/medalert1_check.py"
 
   - platform: mqtt
     state_topic: '/home/multisensor1'

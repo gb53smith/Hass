@@ -106,6 +106,7 @@
       - group.heat_automation
       - sensor.humidity
       - sensor.yesterday_rainfall
+      - sensor.medalert1_check
       - sensor.processor_use
       - sensor.cpu_temperature
       - switch.furnace
