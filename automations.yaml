@@ -381,6 +381,16 @@
       service: notify.ios_grahams_iphone
       data:
         message: "Wine Cellar Temperature Out of Range"
+        
+# Send Notification if Outdoor battery voltage is below 3.2 volts and needs to be charged
+  - alias: Notify Battery Needs Changing
+    trigger:
+      - platform: template
+        value_template: '{{ states.sensor.battery_voltage.state | float < 3.2 }}'
+    action:
+      service: notify.ios_grahams_iphone
+      data:
+        message: "Outdoor battery needs to be charged."
 
   - alias: Basement Flood Alarm
     trigger:
