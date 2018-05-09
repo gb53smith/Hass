@@ -406,7 +406,7 @@
     trigger:
       platform: time
       minutes: '/10'
-      seconds: 01
+      seconds: 00
     action:
       - service: switch.turn_on
         entity_id: switch.watchdog
@@ -424,7 +424,7 @@
       for:
         hours: 0
         minutes: 5
-        seconds: 5
+        seconds: 10
 # Disable watchdog alarm if getting too many alarms
 # Not that useful since only one alarm is generated if multisensor hangs up.
     condition:
@@ -445,7 +445,7 @@
       for:
         hours: 0
         minutes: 5
-        seconds: 5
+        seconds: 10
   # Disable watchdog alarm if getting too many alarms
     condition:
       - condition: state
