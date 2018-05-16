@@ -10,4 +10,4 @@ try:
     else:
         print("Down")
 except URLError:
-    print("URLError")
+    print("FIX")
