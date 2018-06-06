@@ -21,18 +21,14 @@ http:
 #but not from my internal network.  Will work on chrome
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
-  base_url: gb53smith.duckdns.org:8123
+  base_url: https://gb53smith.duckdns.org:8123
 
 #This start the MQTT server on Raspberry setup using the HA install script
 #To access from an Arduino device I had to use the IP address for the Raspberry
 mqtt:
-  broker: localhost
-  port: 1883
-  client_id: home-assistant-1
-  keepalive: 60
+  broker: core-mosquitto
   username: !secret mos_id
   password: !secret mos_password
-  protocol: 3.1
 
 zwave:
   usb_path: /dev/ttyACM0
