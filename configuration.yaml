@@ -86,7 +86,8 @@ recorder:
       - device_tracker.grahams_iphone
       - sensor.lr_random
       - sensor.br_random
-      - zwave.ge_12724_3way_dimmer_switch
+    domains:
+      - zwave
 
 # View only some events in logbook
 # Depends on recorder settings.
