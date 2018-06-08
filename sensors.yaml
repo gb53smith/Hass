@@ -145,15 +145,15 @@
     unit_of_measurement: 'V'
     value_template: '{{ value_json.voltage }}' 
 
-  - platform: systemmonitor
-    resources:
-      - type: processor_use
+  # - platform: systemmonitor
+    # resources:
+      # - type: processor_use
 
-  - platform: command_line
-    name: CPU Temperature
-    unit_of_measurement: "°C"
-    scan_interval: 300
-    command: "python3 /config/cputemp.py"
+  # - platform: command_line
+    # name: CPU Temperature
+    # unit_of_measurement: "°C"
+    # scan_interval: 300
+    # command: "python3 /config/cputemp.py"
 
   - platform: random
     name: lr_random
