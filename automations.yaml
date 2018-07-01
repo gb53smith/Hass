@@ -50,6 +50,8 @@
         - condition: state
           entity_id: switch.back_irrigation
           state: 'off'
+        - condition: template
+          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
       - service: switch.turn_on
         entity_id: switch.front_irrigation
@@ -72,6 +74,8 @@
         - condition: state
           entity_id: switch.front_irrigation
           state: 'off'
+        - condition: template
+          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
       - service: switch.turn_on
         entity_id: switch.deck_irrigation
