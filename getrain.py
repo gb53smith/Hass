@@ -15,13 +15,20 @@ root = ET.fromstring(id_pubmed)
 
 # Find the data I want
 # elements are numbered with integers.  Uncomment to see order of elements
-#for child in root:
-	#print(child.tag,child.attrib)
+# i = 0
+# for child in root:
+    # print(i,child.tag,child.attrib)
+    # i += 1
+    
 #This is yesterday's rainfall in mm.
 rain = root[8][2].text
-# If 'trace' return 0.1
-if rain[0].isdigit():
-    print(rain)
+# Report 0.0 if no data found
+if rain == None:
+    print('0.0')
 else:
-    print('0.1')
+    # Report 0.1 mm if trace is reported
+    if rain[0].isdigit():
+        print(rain)
+    else:
+        print('0.1')
 
