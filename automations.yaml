@@ -291,9 +291,17 @@
         data_template:
           entity_id: climate.summer_fan
           temperature: !secret temperature_fan
+
+# Unconditional switch.away tracking of binary_sensor.away
+  - alias: Home to Away OFF
+    trigger:
+      platform: state
+      entity_id: binary_sensor.away
+      to: 'off'
+    action:
       - service: switch.turn_off
         entity_id: switch.away 
-
+        
 # Force temperature_away, immediately, when vacation switched ON
   - alias: Vacation ON
     trigger:
@@ -336,9 +344,17 @@
         data_template:
           entity_id: climate.summer_fan
           temperature: !secret temperature_fan
+        
+# Unconditional switch.away tracking of input_boolean.vacation
+  - alias: Vacation OFF to Away OFF
+    trigger:
+      platform: state
+      entity_id: input_boolean.vacation
+      to: 'off'
+    action:
       - service: switch.turn_off
         entity_id: switch.away
-        
+                
   - alias: Furnace Ramp ON
     trigger:
       platform: state
