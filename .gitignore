@@ -3,6 +3,7 @@ secrets.yaml
 options.txt
 zwave_device_config.yaml
 known_devices.yaml
+mysensors1.json
 *.pid
 *.xml
 *.csr

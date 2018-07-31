@@ -29,6 +29,18 @@ mqtt:
   broker: core-mosquitto
   username: !secret mos_id
   password: !secret mos_password
+  client_id: home-assistant-1
+  
+mysensors:
+  gateways:
+    - device: mqtt
+      persistence_file: '/config/mysensors1.json'
+      topic_in_prefix: 'mygateway1-out'
+      topic_out_prefix: 'mygateway1-in'
+  optimistic: false
+  persistence: true
+  retain: true
+  version: '2.0'
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -63,7 +75,13 @@ python_script:
   # logs:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
-
+    
+# For Mysensors debug only
+# logger:
+  # default: info
+  # logs:
+    # homeassistant.components.mysensors: debug
+    # mysensors: debug
 
 # Keep database from growing too large by purging
 # No need to record some entities
