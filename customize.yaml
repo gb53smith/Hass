@@ -8,6 +8,22 @@
     switch.leviton_dz15s_light_switch_switch:
       friendly_name: "Bed Room Light"
       icon: mdi:lightbulb
+    sensor.mysensors_bme280_2_1:
+      friendly_name: "Remote Pressure"
+      icon: mdi:airballoon
+      unit_of_measurement: "hPa"      
+    sensor.mysensors_bme280_2_2:
+      friendly_name: "Remote Temperature"
+      icon: mdi:thermometer
+      unit_of_measurement: "°C"
+    sensor.mysensors_bme280_2_3:
+      friendly_name: "Remote Humidity"
+      icon: mdi:water-percent
+      unit_of_measurement: "%"
+    sensor.mysensors_bme280_2_4:
+      friendly_name: "Remote Voltage"
+      icon: mdi:battery
+      unit_of_measurement: "V"      
 
 # This hides but also from a group so I made it False  
     automation.living_room_light_on:

@@ -78,7 +78,14 @@
     - sensor.outdoor_temperature
     - sensor.outdoor_humidity
     - sensor.outdoor_pressure
-    - sensor.battery_voltage    
+    - sensor.battery_voltage
+
+  My Sensors:
+    entities:
+      - sensor.mysensors_bme280_2_2
+      - sensor.mysensors_bme280_2_1
+      - sensor.mysensors_bme280_2_3
+      - sensor.mysensors_bme280_2_4
 
 # Control what is seen on the WEB States page
 
@@ -116,4 +123,10 @@
       - switch.front_irrigation
       - switch.deck_irrigation
       - switch.watchdog
+      
+  MySensors:
+    view: True
+    entities:
+      - group.my_sensors
+    
 

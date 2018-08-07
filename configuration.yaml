@@ -76,7 +76,7 @@ python_script:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
     
-# For Mysensors debug only
+# #For Mysensors debug only
 # logger:
   # default: info
   # logs:
