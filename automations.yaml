@@ -406,7 +406,7 @@
   - alias: Notify Battery Needs Changing
     trigger:
       - platform: template
-        value_template: '{{ states.sensor.battery_voltage.state | float < 3.2 }}'
+        value_template: '{{ states.sensor.mysensors_bme280_2_4.state | float < 3.2 }}'
     action:
       service: notify.ios_grahams_iphone
       data:

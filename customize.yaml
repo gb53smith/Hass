@@ -9,19 +9,19 @@
       friendly_name: "Bed Room Light"
       icon: mdi:lightbulb
     sensor.mysensors_bme280_2_1:
-      friendly_name: "Remote Pressure"
+      friendly_name: "Outdoor Pressure"
       icon: mdi:airballoon
       unit_of_measurement: "hPa"      
     sensor.mysensors_bme280_2_2:
-      friendly_name: "Remote Temperature"
+      friendly_name: "Outdoor Temperature"
       icon: mdi:thermometer
       unit_of_measurement: "°C"
     sensor.mysensors_bme280_2_3:
-      friendly_name: "Remote Humidity"
+      friendly_name: "Outdoor Humidity"
       icon: mdi:water-percent
       unit_of_measurement: "%"
     sensor.mysensors_bme280_2_4:
-      friendly_name: "Remote Voltage"
+      friendly_name: "Outdoor Voltage"
       icon: mdi:battery
       unit_of_measurement: "V"      
 
