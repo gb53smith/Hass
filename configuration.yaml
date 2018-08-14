@@ -142,6 +142,7 @@ history:
       - input_boolean.watchdog
       - input_number.slider_home
       - input_number.slider_away
+      - input_number.slider_delay
       - input_datetime.lr_off_time
       - input_datetime.lr_off_time_random
       - input_datetime.br_on_time_random
@@ -234,6 +235,12 @@ input_number:
     max: 20
     step: 0.5
     icon: mdi:target
+  slider_delay:
+    name: Duration
+    min: 5
+    max: 14
+    step: 1.0
+    icon: mdi:target
 
 input_datetime:
   lr_off_time:
@@ -264,7 +271,8 @@ input_datetime:
   heat_off_time:
     name: Heat OFF time
     has_date: false
-    has_time: true    
+    has_time: true
+
 
 history_graph:
   gr1:

@@ -29,11 +29,9 @@
         - condition: template
           value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
-      - service: switch.turn_on
-        entity_id: switch.back_irrigation
-      - delay: '00:10:00'
-      - service: switch.turn_off
-        entity_id: switch.back_irrigation
+      service: script.turn_on
+      entity_id: script.ir_back
+
 
   - alias: 'Front Irrigation'
     trigger:
@@ -53,11 +51,8 @@
         - condition: template
           value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
-      - service: switch.turn_on
-        entity_id: switch.front_irrigation
-      - delay: '00:10:00'
-      - service: switch.turn_off
-        entity_id: switch.front_irrigation  
+      service: script.turn_on
+      entity_id: script.ir_front  
         
   - alias: 'Deck Irrigation'
     trigger:
@@ -77,11 +72,8 @@
         - condition: template
           value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
     action:
-      - service: switch.turn_on
-        entity_id: switch.deck_irrigation
-      - delay: '00:10:00'
-      - service: switch.turn_off
-        entity_id: switch.deck_irrigation
+      service: script.turn_on
+      entity_id: script.ir_deck
         
   - alias: 'Irrigation Safety'
 # In case some interruption occurs while a zone is ON
@@ -579,8 +571,42 @@
         to: 'Down'
       - platform: state
         entity_id: sensor.medalert1_check
-        to: 'URLError'
+        to: 'FIX'
     action:
       service: notify.ios_grahams_iphone
       data:
         message: "Medalert1 System Down!"
+        
+        
+# Create an input_number entity for irrigation delay / ON time
+# Reset at 12:00 to 10 minutes
+#Increase at 16:00 to 14 minutes if temperature above 30 degrees.
+  - alias: 'Irrigation ON Time Reset'
+    trigger:
+      platform: time
+      at: '12:00:00'
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.slider_delay
+        value: '10'
+        
+  - alias: 'Irrigation ON Time Adjust'
+    trigger:
+      platform: time
+      at: '16:00:00'        
+    condition:
+      - condition: template
+        value_template: >
+          {{states.sensor.mysensors_bme280_2_2.state | float > 30.0}}        
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.slider_delay
+        value: '14'
+        
+#        alias: 'Activando el temporizador del calefactor'
+#  sequence:
+#    - delay: '00:{{ states.input_select.tiempo_calefactor.state | int }}:00'
+#    - service: homeassistant.turn_off
+#      entity_id: switch.sonoff_1

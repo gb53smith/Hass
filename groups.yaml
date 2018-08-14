@@ -6,6 +6,7 @@
     - automation.back_irrigation
     - automation.front_irrigation
     - automation.deck_irrigation
+    - input_number.slider_delay
 
   Light Automation:
     entities:

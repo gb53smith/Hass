@@ -39,3 +39,29 @@
         data:
           entity_id: switch.heat0
 
+  ir_back:
+    alias: "Irrigate Back"
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.back_irrigation
+      - delay: '00:{{ states.input_number.slider_delay.state | int }}:00'
+      - service: switch.turn_off
+        entity_id: switch.back_irrigation
+
+  ir_front:
+    alias: "Irrigate Front"
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.front_irrigation
+      - delay: '00:{{ states.input_number.slider_delay.state | int }}:00'
+      - service: switch.turn_off
+        entity_id: switch.front_irrigation
+        
+  ir_deck:
+    alias: "Irrigate Deck"
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.deck_irrigation
+      - delay: '00:{{ states.input_number.slider_delay.state | int }}:00'
+      - service: switch.turn_off
+        entity_id: switch.deck_irrigation
