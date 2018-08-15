@@ -238,7 +238,7 @@ input_number:
   slider_delay:
     name: Duration
     min: 5
-    max: 14
+    max: 29
     step: 1.0
     icon: mdi:target
 
