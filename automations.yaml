@@ -7,7 +7,7 @@
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
-      at: '07:00:00'
+      at: '06:30:00'
     - platform: time
       at: '19:00:00'
     condition:
@@ -36,7 +36,7 @@
   - alias: 'Front Irrigation'
     trigger:
     - platform: time
-      at: '07:30:00'
+      at: '07:00:00'
     - platform: time
       at: '19:30:00'
     condition: 
@@ -57,7 +57,7 @@
   - alias: 'Deck Irrigation'
     trigger:
     - platform: time
-      at: '08:00:00'
+      at: '07:30:00'
     - platform: time
       at: '20:00:00'
     condition: 
