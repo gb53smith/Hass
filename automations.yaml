@@ -568,9 +568,6 @@
     trigger:
       - platform: state
         entity_id: sensor.medalert1_check
-        to: 'Down'
-      - platform: state
-        entity_id: sensor.medalert1_check
         to: 'FIX'
     action:
       service: notify.ios_grahams_iphone
