@@ -177,7 +177,20 @@
       service: notify.ios_grahams_iphone
       data:
         message: "Oliver Unlocked Door"
-
+# Temperature Control Notes
+# binary_sensor.away is controlled only by sensor.back_lock_last_action.  Set by locking back door either by Me or Oliver.
+# input_binary.vacation is controlled by GUI slide switch.
+# When either binary_sensor.away or input_binary.vacation is ON the temperature set point is set to away temp.
+# The home temperature set point is enabled once if input_binary.vacation goes OFF.
+# The back door must be unlocked or locked from the inside to turn OFF the binary_sensor.away and return
+# to normal heating schedule.
+### Vacation mode can be cleared upon arrival at the airport but the back door must
+### be unlocked to resume heating next morning 
+# switch.away state is used to control the indicator LED on the thermostat.  
+#   It is set OFF when either binary_sensor.away goes OFF or
+#   input_binary.vacation goes OFF. 
+#   It is set ON when either binary_sensor.away goes ON or
+#   input_binary.vacation goes ON. 
 # Change thermostat set point to slider_home temp at datetime.heat_on_time
 # but only if home and not on vacation
   - alias: Set Home Setpoint
@@ -205,6 +218,7 @@
           entity_id: climate.summer_fan
           temperature: !secret temperature_fan
 
+# Change thermostat set point to slider_away temp at datetime.heat_off_time
   - alias: Set Away or Asleep Setpoint
     trigger:
       platform: template
