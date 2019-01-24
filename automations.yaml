@@ -4,6 +4,7 @@
 #and the ON time in the delay section
 #Note that the start time must be staggered to meet conditions
   - alias: 'Back Irrigation'
+    initial_state: False
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
@@ -34,6 +35,7 @@
 
 
   - alias: 'Front Irrigation'
+    initial_state: False
     trigger:
     - platform: time
       at: '07:00:00'
@@ -55,6 +57,7 @@
       entity_id: script.ir_front  
         
   - alias: 'Deck Irrigation'
+    initial_state: False
     trigger:
     - platform: time
       at: '07:30:00'
@@ -91,6 +94,7 @@
         
 # Turn ON on hour before sunset an setup random ON/OFF time for lights when Away    
   - alias: 'Living Room Light ON'
+    initial_state: True
     trigger:
       platform: sun
       event: sunset
@@ -103,6 +107,7 @@
           
 # Turn OFF at input_datetime.lr_off_time ONLY when not on vacation
   - alias: 'Living Room Light OFF at Home'
+    initial_state: True
     trigger:
       platform: template
       value_template: >
@@ -117,6 +122,7 @@
       entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch    
       
   - alias: 'Living Room Light OFF when Vacation'
+    initial_state: True
     trigger:
       platform: template
       value_template: >
@@ -131,6 +137,7 @@
       entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
 
   - alias: 'Bedroom Room Light ON when on Vacation'
+    initial_state: True
     trigger:
       platform: template
       value_template: >
@@ -145,6 +152,7 @@
       entity_id: switch.leviton_dz15s_light_switch_switch
 
   - alias: 'Bedroom Room Light OFF when on Vacation'
+    initial_state: True
     trigger:
       platform: template
       value_template: >
@@ -159,6 +167,7 @@
       entity_id: switch.leviton_dz15s_light_switch_switch   
 
   - alias: Notify iOS App Joyce
+    initial_state: True
     trigger:
       platform: state
       entity_id: sensor.back_lock_last_action
@@ -169,6 +178,7 @@
         message: "Joyce Unlocked Door"
         
   - alias: Notify iOS App Oliver
+    initial_state: True
     trigger:
       platform: state
       entity_id: sensor.back_lock_last_action
@@ -194,6 +204,7 @@
 # Change thermostat set point to slider_home temp at datetime.heat_on_time
 # but only if home and not on vacation
   - alias: Set Home Setpoint
+    initial_state: True
     trigger:
       platform: template
       value_template: >
@@ -220,6 +231,7 @@
 
 # Change thermostat set point to slider_away temp at datetime.heat_off_time
   - alias: Set Away or Asleep Setpoint
+    initial_state: True
     trigger:
       platform: template
       value_template: >
@@ -234,6 +246,7 @@
 # Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
 # Needs to be tested       
   - alias: Furnace Safety
+    initial_state: True
     trigger:
       platform: state
       entity_id: switch.furnace
@@ -252,6 +265,7 @@
 # Turn temperature set point down if away set when door locked from outside keypad
 #Note: A normal template sensor did not trigger so the binary_sensor was used instead.
   - alias: Away
+    initial_state: True
     trigger:
       platform: state
       entity_id: binary_sensor.away
@@ -272,6 +286,7 @@
 # Return temperature set point when returning
 # between heat ON and OFF times if not on vacation
   - alias: Home
+    initial_state: True
     trigger:
       platform: state
       entity_id: binary_sensor.away
@@ -300,6 +315,7 @@
 
 # Unconditional switch.away tracking of binary_sensor.away
   - alias: Home to Away OFF
+    initial_state: True
     trigger:
       platform: state
       entity_id: binary_sensor.away
@@ -310,6 +326,7 @@
         
 # Force temperature_away, immediately, when vacation switched ON
   - alias: Vacation ON
+    initial_state: True
     trigger:
       platform: state
       entity_id: input_boolean.vacation
@@ -330,6 +347,7 @@
 # Force temperature_home when vacation switched OFF
 # and time is between heat ON and OFF times.
   - alias: Vacation OFF
+    initial_state: True
     trigger:
       platform: state
       entity_id: input_boolean.vacation
@@ -353,6 +371,7 @@
         
 # Unconditional switch.away tracking of input_boolean.vacation
   - alias: Vacation OFF to Away OFF
+    initial_state: True
     trigger:
       platform: state
       entity_id: input_boolean.vacation
@@ -362,6 +381,7 @@
         entity_id: switch.away
                 
   - alias: Furnace Ramp ON
+    initial_state: True
     trigger:
       platform: state
       entity_id: switch.furnace
@@ -371,6 +391,7 @@
       entity_id: script.furnace_timer
       
   - alias: Furnace OFF
+    initial_state: True
     trigger:
       platform: state
       entity_id: switch.furnace
@@ -386,6 +407,7 @@
         
 # Send Notification if temperature reaches min_temp or max_temp.
   - alias: Notify House Out of Range Temperature
+    initial_state: True
     trigger:
       - platform: template
         value_template: '{{ states.sensor.temperature.state | float > 25.0 }}'
@@ -398,6 +420,7 @@
         
 # Send Notification if Wine Cellar temperature reaches min_temp or max_temp.
   - alias: Notify Wine Out of Range Temperature
+    initial_state: True
     trigger:
       - platform: template
         value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
@@ -410,6 +433,7 @@
         
 # Send Notification if Outdoor battery voltage is below 3.2 volts and needs to be charged
   - alias: Notify Battery Needs Changing
+    initial_state: True
     trigger:
       - platform: template
         value_template: '{{ states.sensor.mysensors_bme280_2_4.state | float < 3.2 }}'
@@ -419,6 +443,7 @@
         message: "Outdoor battery needs to be charged."
 
   - alias: Basement Flood Alarm
+    initial_state: True
     trigger:
       platform: state
       entity_id: sensor.flood
@@ -429,6 +454,7 @@
         message: "Basement Flood Detected!"
         
   - alias: Watchdog
+    initial_state: True
     trigger:
       platform: time
       minutes: '/10'
@@ -442,6 +468,7 @@
         
 # Send a notice to iPhone if watchdog state stays in ON state too long
   - alias: Watchdog Alarm ON
+    initial_state: True
     trigger:
       platform: state
       entity_id: switch.watchdog
@@ -464,6 +491,7 @@
         
 # Send a notice to iPhone if watchdog state stays in OFF state too long
   - alias: Watchdog Alarm OFF
+    initial_state: True
     trigger:
       platform: state
       entity_id: switch.watchdog
@@ -486,6 +514,7 @@
   # Restore heat if not on vacation and  time is between heat ON and heat OFF times.
   # Restore summer fan depending on vacation status.  Note !secrets does not work in template.
   - alias: HA Restarted
+    initial_state: True
     trigger:
       platform: homeassistant
       event: start
@@ -525,6 +554,7 @@
 # When home slider changes, change heating set point only when home
 # and the time is between heat ON and heat OFF times.          
   - alias: Home Slider Changed
+    initial_state: True
     trigger:
       platform: state
       entity_id: input_number.slider_home
@@ -552,6 +582,7 @@
 # When home slider changes, change heating set point only when away
 # or the time is between heat OFF and heat ON times. 
   - alias: Away Slider Changed
+    initial_state: True
     trigger:
       platform: state
       entity_id: input_number.slider_away
@@ -579,6 +610,7 @@
 # Monitor Mom's Medical Alert System and notify if system has lost connection
 # to the internet.          
   - alias: Medalert1 Alarm
+    initial_state: True
     trigger:
       - platform: state
         entity_id: sensor.medalert1_check
@@ -593,6 +625,7 @@
 # Reset at 12:00 to 10 minutes
 # Increase at 16:00 to 10 minutes plus 1 minute for every degree above 24.0
   - alias: 'Irrigation ON Time Reset'
+    initial_state: True
     trigger:
       platform: time
       at: '12:00:00'
@@ -603,6 +636,7 @@
         value: '10'
         
   - alias: 'Irrigation ON Time Adjust'
+    initial_state: True
     trigger:
       platform: time
       at: '16:00:00'        
