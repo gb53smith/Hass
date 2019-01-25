@@ -452,13 +452,13 @@
       service: notify.ios_grahams_iphone
       data:
         message: "Basement Flood Detected!"
-        
+
+# Changed time to time_pattern for HA86.1        
   - alias: Watchdog
     initial_state: True
     trigger:
-      platform: time
+      platform: time_pattern
       minutes: '/10'
-      seconds: 00
     action:
       - service: switch.turn_on
         entity_id: switch.watchdog

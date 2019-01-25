@@ -23,13 +23,13 @@ http:
   ip_ban_enabled: True
   login_attempts_threshold: 5
 
-#This start the MQTT server on Raspberry setup using the HA install script
+#This section removed for HA 0.85+ using new authorization system
 #To access from an Arduino device I had to use the IP address for the Raspberry
-mqtt:
-  broker: core-mosquitto
-  username: !secret mos_id
-  password: !secret mos_password
-  client_id: home-assistant-1
+# mqtt:
+  # broker: core-mosquitto
+  # username: !secret mos_id
+  # password: !secret mos_password
+  # client_id: home-assistant-1
   
 mysensors:
   gateways:
@@ -104,6 +104,7 @@ recorder:
       - sensor.joyce_ipad_battery_level
       - sensor.joyce_ipad_battery_state
       - device_tracker.grahams_iphone
+      - device_tracker.joyce_ipad
       - sensor.lr_random
       - sensor.br_random
     domains:
@@ -139,6 +140,8 @@ history:
       - zwave
     entities:
       - binary_sensor.away
+      - device_tracker.grahams_iphone
+      - device_tracker.joyce_ipad
       - history_graph.rain_fall
       - input_boolean.vacation
       - input_boolean.watchdog
@@ -163,6 +166,7 @@ history:
       - sensor.yesterday_rainfall
       - sensor.medalert1_check
       - updater.updater
+
 
 #Send notifications to the iOS app on my iPhone
 ios:
