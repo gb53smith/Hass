@@ -16,6 +16,8 @@
     entities:
     - input_datetime.heat_on_time
     - input_datetime.heat_off_time
+    - input_boolean.fan_reset
+    - counter.fan_on_minutes
     
   Z-Wave Components:
     entities:

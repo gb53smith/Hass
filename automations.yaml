@@ -649,4 +649,37 @@
       data_template:
         entity_id: input_number.slider_delay
         value: '{{states.sensor.mysensors_bme280_2_2.state | int - 14}}'
+
+# Count how many minutes the furnace fan in ON to determine 
+# when the air filter needs replacing.        
+  - alias: Increment fan on counter
+    initial_state: True
+    trigger:
+      platform: time_pattern
+      minutes: '/1'   
+    condition: 
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: switch.fan
+          state: 'on'
+        - condition: state
+          entity_id: switch.furnace
+          state: 'on'
+    action:
+      - service: counter.increment
+        entity_id: counter.fan_on_minutes
+        
+  - alias: Reset fan on counter
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: input_boolean.fan_reset
+      to: 'on'
+    action:
+      - service: counter.reset
+        entity_id: counter.fan_on_minutes    
+
+        
+        
         

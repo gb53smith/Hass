@@ -144,9 +144,11 @@ history:
       - zwave
     entities:
       - binary_sensor.away
+      - counter.fan_on_minutes
       - device_tracker.grahams_iphone
       - device_tracker.joyce_ipad
       - history_graph.rain_fall
+      - input_boolean.fan_reset
       - input_boolean.vacation
       - input_boolean.watchdog
       - input_number.slider_home
@@ -170,7 +172,6 @@ history:
       - sensor.yesterday_rainfall
       - sensor.medalert1_check
       - updater.updater
-
 
 #Send notifications to the iOS app on my iPhone
 ios:
@@ -220,6 +221,10 @@ binary_sensor:
           or is_state("sensor.back_lock_last_action", "Locked: Oliver")}}
         friendly_name: 'I am away'
 
+counter:
+  fan_on_minutes:
+    icon: mdi:fan
+
 input_boolean:
   vacation:
     name: "ON Vacation"
@@ -229,6 +234,11 @@ input_boolean:
     name: "Watchdog Alarm Override"
     initial: off
     icon: mdi:lock
+    
+  fan_reset:
+    name: Fan on counter reset
+    initial: off
+    icon: mdi:numeric-0-box
 
 input_number:
   slider_home:
