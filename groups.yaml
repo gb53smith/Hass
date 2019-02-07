@@ -106,6 +106,7 @@
       - group.irrigation_automation
       - group.light_automation
       - history_graph.rain_fall
+      - history_graph.house_energy_use
       - group.heat_automation
       - sensor.humidity
       - sensor.yesterday_rainfall
