@@ -14,7 +14,7 @@ homeassistant:
 
 #Show links to resources in log and frontend
 #introduction:
-
+system_health:
 #Uncomment to use ui-lovelace.yaml instead of UI
 # lovelace:
   # mode: yaml
@@ -293,21 +293,21 @@ input_datetime:
     has_date: false
     has_time: true
 
-
-history_graph:
-  gr1:
-    name: Rain Fall
-    entities:
-      - sensor.yesterday_rainfall
-    hours_to_show: 168
-    refresh: 0
-  gr2:
-    name: House Energy Use
-    entities:
-      - sensor.temp_diff
-      - sensor.furnace_energy
-    hours_to_show: 168
-    refresh: 0
+# Now done using LoveLace Editor
+# history_graph:
+  # gr1:
+    # name: Rain Fall
+    # entities:
+      # - sensor.yesterday_rainfall
+    # hours_to_show: 168
+    # refresh: 0
+  # gr2:
+    # name: House Energy Use
+    # entities:
+      # - sensor.temp_diff
+      # - sensor.furnace_energy
+    # hours_to_show: 168
+    # refresh: 0
 
 #This worked with a Google Home Mini to control all switches and light using a voice command
 #Joyce considered this an invasion of privacy so I had to disconnect the service.

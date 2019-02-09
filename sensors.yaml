@@ -91,35 +91,14 @@
         unit_of_measurement: 'watts'
         value_template: >
           {% if
-          is_state('switch.heat1','off') and  is_state('switch.heat0','off') %} 0
-          {% endif %}
-          {% if
           is_state('switch.heat1','off') and  is_state('switch.heat0','on') %} 4
-          {% endif %}
-          {% if
-          is_state('switch.heat1','on') and  is_state('switch.heat0','off') %} 7
-          {% endif %}        
-          {% if
+          {% elif
+          is_state('switch.heat1','on') and  is_state('switch.heat0','off') %} 7      
+          {% elif
           is_state('switch.heat1','on') and  is_state('switch.heat0','on') %} 10
+          {% else %} 0
           {% endif %}
-          
-  - platform: template
-    sensors:
-      daily_avg_temp_diff:
-        value_template: '{{ states.sensor.daily_temp_diff.state }}'
-# Using sensor.date causes update when date changes
-        entity_id: sensor.date
-        friendly_name: 'Daily Average Temperature Difference'
-        unit_of_measurement:  '°C'
 
-  - platform: template
-    sensors:
-      daily_furnace_energy:
-        value_template: '{{ states.sensor.daily_furn_power.state }}'
-        entity_id: sensor.date
-        friendly_name: 'Daily Furnace Energy'
-        unit_of_measurement: '~Joules'
-       
   - platform: command_line
     name: Yesterday Rainfall
     unit_of_measurement: 'mm'
@@ -191,38 +170,33 @@
     display_options:
       - 'time'
       - 'date'
-      
-  - platform: filter
-    name: "s_temp_diff"
-    entity_id: sensor.temp_diff
-    filters:
-      - filter: lowpass
-        time_constant: 10
-        precision: 1
-        
-  - platform: filter
-    name: "ha_furn_power"
-    entity_id: sensor.furnace_power
-    filters:
-      - filter: time_simple_moving_average
-        window_size: 1:00
-        precision: 1 
 
-# Calculates average over last 24 hours and is sampled at
-# date change by template sensors above
+# Integration Sensors      
+  - platform: integration 
+    source: sensor.temp_diff
+    name: temp_diff_integ
+    unit_time: d
 
-  - platform: filter
-    name: "daily_temp_diff"
-    entity_id: sensor.temp_diff
-    filters:
-      - filter: time_simple_moving_average
-        window_size: 24:00
-        precision: 1
-        
-  - platform: filter
-    name: "daily_furn_power"
-    entity_id: sensor.furnace_power
-    filters:
-      - filter: time_simple_moving_average
-        window_size: 24:00
-        precision: 1 
+  - platform: integration 
+    source: sensor.furnace_power
+    name: furnace_power_integ
+    unit_time: d
+
+# Daily Result Reporting
+  - platform: template
+    sensors:
+      daily_avg_temp_diff:
+        value_template: '{{ states.sensor.temp_diff_integ.state }}'
+# Using sensor.date causes update when date changes
+# Probably need to scale result
+        entity_id: sensor.date
+        friendly_name: 'Daily Average Temperature Difference'
+        unit_of_measurement:  '°C'
+
+  - platform: template
+    sensors:
+      daily_furnace_energy:
+        value_template: '{{ states.sensor.furnace_power_integ.state }}'
+        entity_id: sensor.date
+        friendly_name: 'Daily Average Furnace Energy'
+        unit_of_measurement: 'kWh'
