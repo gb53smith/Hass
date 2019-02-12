@@ -84,21 +84,49 @@
         value_template: '{{ ((states.sensor.temperature.state | float) - (states.sensor.mysensors_bme280_2_2.state | float)) | round(1) }}'
         unit_of_measurement: '°C'
 
+# Converts input_number into a sensor
+  - platform: template
+    sensors:
+      hour_temp_diff:
+        friendly_name: 'Hourly Average Temperature Difference'
+        unit_of_measurement: '°C'
+        value_template: '{{ (states.input_number.hour_temp_diff.state | float) | round(1)}}'
+        
   - platform: template
     sensors:
       furnace_power:
         friendly_name: 'Furnace Power'
-        unit_of_measurement: 'watts'
-        value_template: >
-          {% if
-          is_state('switch.heat1','off') and  is_state('switch.heat0','on') %} 4
-          {% elif
-          is_state('switch.heat1','on') and  is_state('switch.heat0','off') %} 7      
-          {% elif
-          is_state('switch.heat1','on') and  is_state('switch.heat0','on') %} 10
-          {% else %} 0
-          {% endif %}
+        unit_of_measurement: 'kW'
+        value_template: '{{ states.input_number.slider_power.state | float }}'
 
+  - platform: template
+    sensors:
+      power_test:
+        friendly_name: 'Power Test'
+        unit_of_measurement: 'kW'
+        value_template: '{{ states.input_number.power_test.state | float }}'
+
+  - platform: template
+    sensors:
+      last_power:
+        friendly_name: 'Last Power'
+        unit_of_measurement: 'kW'
+        value_template: '0'
+
+  - platform: template
+    sensors:
+      energy_accum:
+        friendly_name: 'Energy Accumulator'
+        unit_of_measurement: 'kWh'
+        value_template: '0'
+
+  - platform: template
+    sensors:
+      hourly_energy:
+        friendly_name: 'Hourly Energy'
+        unit_of_measurement: 'kWh'
+        value_template: '0'
+        
   - platform: command_line
     name: Yesterday Rainfall
     unit_of_measurement: 'mm'
@@ -171,32 +199,6 @@
       - 'time'
       - 'date'
 
-# Integration Sensors      
-  - platform: integration 
-    source: sensor.temp_diff
-    name: temp_diff_integ
-    unit_time: d
-
   - platform: integration 
     source: sensor.furnace_power
-    name: furnace_power_integ
-    unit_time: d
-
-# Daily Result Reporting
-  - platform: template
-    sensors:
-      daily_avg_temp_diff:
-        value_template: '{{ states.sensor.temp_diff_integ.state }}'
-# Using sensor.date causes update when date changes
-# Probably need to scale result
-        entity_id: sensor.date
-        friendly_name: 'Daily Average Temperature Difference'
-        unit_of_measurement:  '°C'
-
-  - platform: template
-    sensors:
-      daily_furnace_energy:
-        value_template: '{{ states.sensor.furnace_power_integ.state }}'
-        entity_id: sensor.date
-        friendly_name: 'Daily Average Furnace Energy'
-        unit_of_measurement: 'kWh'
+    unit_time: h

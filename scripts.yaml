@@ -12,7 +12,11 @@
         data:
           entity_id: 
             - switch.heat0
-            - script.timer_heat0 
+            - script.timer_heat0
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.slider_power
+          value: 4
 
   timer_heat0:
     alias: "Heat0 Timer"
@@ -20,7 +24,7 @@
       - delay:
           minutes: 7
           # Purge and ignition delay
-          seconds: 80
+          seconds: 80  
       - service: switch.turn_off
         data:
           entity_id: switch.heat0
@@ -28,7 +32,11 @@
         data:
           entity_id: 
             - switch.heat1
-            - script.timer_heat1    
+            - script.timer_heat1
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.slider_power
+          value: 7
 
   timer_heat1:
     alias: "Heat1 Timer"
@@ -38,6 +46,10 @@
       - service: switch.turn_on
         data:
           entity_id: switch.heat0
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.slider_power
+          value: 10
 
   ir_back:
     alias: "Irrigate Back"

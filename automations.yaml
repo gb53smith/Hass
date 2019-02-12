@@ -397,13 +397,17 @@
       entity_id: switch.furnace
       to: 'off'
     action:
-      service: homeassistant.turn_off
-      entity_id: 
-        - script.furnace_timer
-        - script.timer_heat0
-        - script.timer_heat1
-        - switch.heat1
-        - switch.heat0
+      - service: homeassistant.turn_off
+        entity_id: 
+          - script.furnace_timer
+          - script.timer_heat0
+          - script.timer_heat1
+          - switch.heat1
+          - switch.heat0
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.slider_power
+          value: 0
         
 # Send Notification if temperature reaches min_temp or max_temp.
   - alias: Notify House Out of Range Temperature
@@ -679,7 +683,135 @@
     action:
       - service: counter.reset
         entity_id: counter.fan_on_minutes    
+        
+  - alias: Temperature Difference Accumulator
+    initial_state: True
+    trigger:
+      platform: time_pattern
+      minutes: '/5'       
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.temp_diff_accum
+        value: '{{ (states.input_number.temp_diff_accum.state | float) + ( states.sensor.temp_diff.state | float) }}' 
 
-        
-        
-        
+# Sample Accumulated Temperature Difference Each Hour
+  - alias: Sample Accumulated Temperature Difference one minute pass each hour
+    initial_state: True
+    trigger:
+      platform: time_pattern 
+      minutes: 1        
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.hour_temp_diff
+        value: '{{ (states.input_number.temp_diff_accum.state | float / 12) | round(1) }}' 
+
+# Reset at 1 minute pass each hour
+  - alias: Reset Temperature Difference Accumulator two minute pass each hour
+    initial_state: True
+    trigger:
+      platform: time_pattern 
+      minutes: 2        
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.temp_diff_accum
+        value: 0
+      
+  - alias: Hourly Energy
+    initial_state: True
+    trigger:
+      - platform: state
+        entity_id: sensor.power_test
+      - platform: time_pattern
+        hours: '/1'      
+    action:
+      service: python_script.energy
+      data:
+        power: furnace power
+        last_power: last_power
+        energy_accum: energy_accum
+        hourly_energy: hourly_energy
+ 
+# Followinf automatic used to test energy.py script 
+  - alias: Power Pattern within window
+    initial_state: False
+    trigger:
+      - platform: time_pattern
+        minutes: '/1'      
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '0'
+      - delay:
+          seconds: 20
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '10'
+      - delay:
+          seconds: 10
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '30'
+      - delay:
+          seconds: 10
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '5'
+      - delay:
+          seconds: 10
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '0'
+
+  - alias: Power Pattern crossing window
+    initial_state: False
+    trigger:
+      - platform: time_pattern
+        minutes: '/2'      
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '0'
+      - delay:
+          seconds: 50
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '10'
+      - delay:
+          seconds: 60
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '0'
+
+  - alias: Power Pattern On Boundary
+    initial_state: False
+    trigger:
+      - platform: time_pattern
+        minutes: '/3'      
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '0'
+      - delay:
+          seconds: 60
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '10'
+      - delay:
+          seconds: 60
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.power_test
+          value: '0'          

@@ -23,7 +23,29 @@
     sensor.mysensors_bme280_2_4:
       friendly_name: "Outdoor Voltage"
       icon: mdi:battery
-      unit_of_measurement: "V"      
+      unit_of_measurement: "V"
+    sensor.temp_hourly:
+      friendly_name: "Hourly Average Temperature"
+      icon: mdi:thermometer
+      unit_of_measurement: "°C"
+    sensor.temp_daily:
+      friendly_name: "Daily Average Temperature"
+      icon: mdi:thermometer
+      unit_of_measurement: "°C"
+    sensor.furnace_hourly:
+      friendly_name: "HA Hourly Energy Consumption"
+      icon: mdi:radiator
+      unit_of_measurement: "kWh"
+    sensor.furnace_daily:
+      friendly_name: "Daily Energy Consumption"
+      icon: mdi:radiator
+      unit_of_measurement: "kWh"
+    sensor.furnace_power:
+      unit_of_measurement: "kW"
+    sensor.hourly_energy:
+      friendly_name: "My Hourly Energy Consumption"
+      icon: mdi:radiator
+      unit_of_measurement: "kWh"
 
 # This hides but also from a group so I made it False  
     automation.living_room_light_on:

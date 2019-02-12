@@ -111,6 +111,7 @@ recorder:
       - device_tracker.joyce_ipad
       - sensor.lr_random
       - sensor.br_random
+      - input_number.temp_diff_accum
     domains:
       - zwave
 
@@ -132,6 +133,7 @@ logbook:
       - switch.leviton_dz15s_light_switch_switch
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.medalert1_check
+
 
 # View the history of only some components
 # Depends on recorder settings.
@@ -261,6 +263,42 @@ input_number:
     max: 29
     step: 1.0
     icon: mdi:target
+  slider_power:
+    name: Power
+    initial: 0
+    min: 0
+    max: 100 
+  temp_diff_accum:
+    name: Temperature Difference Accumulator
+    min: 0
+    max: 1000
+    step: 0.1
+  hour_temp_diff:
+    name: Hour Average Temperature Difference
+    min: 0
+    max: 50
+    step: 0.1
+  power_test:
+    name: Power Test
+    initial: 0
+    min: 0
+    max: 50
+    step: 1    
+  last_power:
+    name: Last Power Level
+    min: 0
+    max: 20
+    step: 0.1
+  energy_accum:
+    name: Energy Accumulator
+    min: 0
+    max: 10
+    step: 0.1
+  hourly_energy:
+    name: Hourly Energy
+    min: 0
+    max: 10
+    step: 0.1
 
 input_datetime:
   lr_off_time:
@@ -292,6 +330,15 @@ input_datetime:
     name: Heat OFF time
     has_date: false
     has_time: true
+    
+utility_meter:
+  furnace_hourly:
+    source: sensor.sensor_furnace_power_integral
+    cycle: hourly
+  furnace_daily:
+    source: sensor.sensor_furnance_power_integral
+    cycle: daily
+
 
 # Now done using LoveLace Editor
 # history_graph:
