@@ -705,7 +705,7 @@
       service: input_number.set_value
       data_template:
         entity_id: input_number.hour_temp_diff
-        value: '{{ (states.input_number.temp_diff_accum.state | float / 12) | round(1) }}' 
+        value: '{{ (states.input_number.temp_diff_accum.state | float / 13) | round(1) }}' 
 
 # Reset at 1 minute pass each hour
   - alias: Reset Temperature Difference Accumulator two minute pass each hour
@@ -718,53 +718,67 @@
       data_template:
         entity_id: input_number.temp_diff_accum
         value: 0
-      
+        
+  - alias: Hourly Temperature Difference
+    initial_state: True
+    trigger:
+      - platform: time_pattern
+        minutes: '/5'      
+    action:
+      service: python_script.temp_diff
+      data:
+        temp_diff: temp_diff
+        temp_diff_accum: temp_diff_accum
+        hour_diff: hour_diff
+
+        
   - alias: Hourly Energy
     initial_state: True
     trigger:
       - platform: state
-        entity_id: sensor.power_test
+        entity_id: sensor.furnace
       - platform: time_pattern
         hours: '/1'      
     action:
       service: python_script.energy
       data:
-        power: furnace power
+        power: furnace_power
         last_power: last_power
         energy_accum: energy_accum
         hourly_energy: hourly_energy
  
-# Followinf automatic used to test energy.py script 
+# Following automation is used to test energy.py script
+# The Total Energy in one hour should be (10 + 30 + 5) * 10 /60 =  7.5 kWh
   - alias: Power Pattern within window
     initial_state: False
     trigger:
       - platform: time_pattern
-        minutes: '/1'      
+        minutes: 0      
     action:
       - service: input_number.set_value
         data_template:
           entity_id: input_number.power_test
           value: '0'
       - delay:
-          seconds: 20
+          minutes: 20
       - service: input_number.set_value
         data_template:
           entity_id: input_number.power_test
           value: '10'
       - delay:
-          seconds: 10
+          minutes: 10
       - service: input_number.set_value
         data_template:
           entity_id: input_number.power_test
           value: '30'
       - delay:
-          seconds: 10
+          minutes: 10
       - service: input_number.set_value
         data_template:
           entity_id: input_number.power_test
           value: '5'
       - delay:
-          seconds: 10
+          minutes: 10
       - service: input_number.set_value
         data_template:
           entity_id: input_number.power_test

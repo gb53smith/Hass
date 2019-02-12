@@ -91,13 +91,14 @@
         friendly_name: 'Hourly Average Temperature Difference'
         unit_of_measurement: '°C'
         value_template: '{{ (states.input_number.hour_temp_diff.state | float) | round(1)}}'
-        
+
+# Scaling factor used to convert 10 to the actual maximum furnace BTU value        
   - platform: template
     sensors:
       furnace_power:
         friendly_name: 'Furnace Power'
         unit_of_measurement: 'kW'
-        value_template: '{{ states.input_number.slider_power.state | float }}'
+        value_template: '{{ states.input_number.slider_power.state | float * 1.948}}'
 
   - platform: template
     sensors:
@@ -106,27 +107,35 @@
         unit_of_measurement: 'kW'
         value_template: '{{ states.input_number.power_test.state | float }}'
 
+# Added for the energy.py script.
+# Units derived from the input power sensor
   - platform: template
     sensors:
       last_power:
-        friendly_name: 'Last Power'
-        unit_of_measurement: 'kW'
         value_template: '0'
 
   - platform: template
     sensors:
       energy_accum:
-        friendly_name: 'Energy Accumulator'
-        unit_of_measurement: 'kWh'
         value_template: '0'
 
   - platform: template
     sensors:
       hourly_energy:
-        friendly_name: 'Hourly Energy'
-        unit_of_measurement: 'kWh'
         value_template: '0'
         
+# Added for the energy.py script.
+# Units derived from the temp_diff sensor       
+  - platform: template
+    sensors:
+      temp_diff_accum:
+        value_template: '0'
+
+  - platform: template
+    sensors:
+      hour_diff_accum:
+        value_template: '0'
+ 
   - platform: command_line
     name: Yesterday Rainfall
     unit_of_measurement: 'mm'

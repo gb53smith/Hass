@@ -37,15 +37,12 @@
       icon: mdi:radiator
       unit_of_measurement: "kWh"
     sensor.furnace_daily:
-      friendly_name: "Daily Energy Consumption"
+      friendly_name: "HA Daily Energy Consumption"
       icon: mdi:radiator
       unit_of_measurement: "kWh"
-    sensor.furnace_power:
-      unit_of_measurement: "kW"
     sensor.hourly_energy:
       friendly_name: "My Hourly Energy Consumption"
       icon: mdi:radiator
-      unit_of_measurement: "kWh"
 
 # This hides but also from a group so I made it False  
     automation.living_room_light_on:
