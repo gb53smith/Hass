@@ -736,7 +736,7 @@
     initial_state: True
     trigger:
       - platform: state
-        entity_id: sensor.furnace
+        entity_id: sensor.furnace_power
       - platform: time_pattern
         hours: '/1'      
     action:

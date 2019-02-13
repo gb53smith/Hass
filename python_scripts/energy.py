@@ -30,7 +30,7 @@ Instructions:
   - platform: template
     sensors:
       hourly_energy:
-        value_template: '0'
+        value_template: ''
         
 3.  Add this automation to automations.yaml
     * items are your choosing but must match your sensor names above

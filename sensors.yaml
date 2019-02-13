@@ -122,9 +122,9 @@
   - platform: template
     sensors:
       hourly_energy:
-        value_template: '0'
+        value_template: ''
         
-# Added for the energy.py script.
+# Added for the temp_diff.py script.
 # Units derived from the temp_diff sensor       
   - platform: template
     sensors:
@@ -133,8 +133,8 @@
 
   - platform: template
     sensors:
-      hour_diff_accum:
-        value_template: '0'
+      hour_diff:
+        value_template: ''
  
   - platform: command_line
     name: Yesterday Rainfall
