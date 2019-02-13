@@ -1,6 +1,6 @@
 
 '''
-Date:  Feb. 12, 2019
+Date:  Feb. 13, 2019
 
 Versions used: HA87.0, HassOS and Raspberry PI 3 B
 
@@ -115,8 +115,8 @@ if time_sec == 0 and time_min == 0:
     #refresh last_power to change the timestamp to beginning of window period
     hass.states.set(sensor_last_power, (last_power + 0.1), {"unit_of_measurement": power_unit})
     hass.states.set(sensor_last_power, last_power, {"unit_of_measurement": power_unit})
-    hass.states.set(sensor_hourly_energy, round(energy_accum, 2), {"unit_of_measurement": power_unit})        
-    hass.states.set(sensor_energy_accum, 0, {"unit_of_measurement": power_unit})
+    hass.states.set(sensor_hourly_energy, round(energy_accum, 2), {"unit_of_measurement": energy_unit})        
+    hass.states.set(sensor_energy_accum, 0, {"unit_of_measurement": energy_unit})
     
     #logger.warning("Last Window energy_accum = {}".format(energy_accum))    
 else:

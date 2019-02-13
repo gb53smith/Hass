@@ -705,7 +705,7 @@
       service: input_number.set_value
       data_template:
         entity_id: input_number.hour_temp_diff
-        value: '{{ (states.input_number.temp_diff_accum.state | float / 13) | round(1) }}' 
+        value: '{{ (states.input_number.temp_diff_accum.state | float / 12) | round(1) }}' 
 
 # Reset at 1 minute pass each hour
   - alias: Reset Temperature Difference Accumulator two minute pass each hour
