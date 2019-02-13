@@ -273,16 +273,6 @@ input_number:
     min: 0
     max: 50
     step: 1  
-  temp_diff_accum:
-    name: Temperature Difference Accumulator
-    min: 0
-    max: 1000
-    step: 0.1
-  hour_temp_diff:
-    name: Hour Average Temperature Difference
-    min: 0
-    max: 50
-    step: 0.1
  
 # Used to generate at test pattern to power
   power_test:

@@ -684,41 +684,6 @@
       - service: counter.reset
         entity_id: counter.fan_on_minutes    
         
-  - alias: Temperature Difference Accumulator
-    initial_state: True
-    trigger:
-      platform: time_pattern
-      minutes: '/5'       
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.temp_diff_accum
-        value: '{{ (states.input_number.temp_diff_accum.state | float) + ( states.sensor.temp_diff.state | float) }}' 
-
-# Sample Accumulated Temperature Difference Each Hour
-  - alias: Sample Accumulated Temperature Difference one minute pass each hour
-    initial_state: True
-    trigger:
-      platform: time_pattern 
-      minutes: 1        
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.hour_temp_diff
-        value: '{{ (states.input_number.temp_diff_accum.state | float / 12) | round(1) }}' 
-
-# Reset at 1 minute pass each hour
-  - alias: Reset Temperature Difference Accumulator two minute pass each hour
-    initial_state: True
-    trigger:
-      platform: time_pattern 
-      minutes: 2        
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.temp_diff_accum
-        value: 0
-        
   - alias: Hourly Temperature Difference
     initial_state: True
     trigger:

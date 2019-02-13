@@ -25,7 +25,7 @@ Instructions:
   - platform: template
     sensors:
       energy_accum:
-        value_template: '0'
+        value_template: ''
 
   - platform: template
     sensors:

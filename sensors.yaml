@@ -84,14 +84,6 @@
         value_template: '{{ ((states.sensor.temperature.state | float) - (states.sensor.mysensors_bme280_2_2.state | float)) | round(1) }}'
         unit_of_measurement: '°C'
 
-# Converts input_number into a sensor
-  - platform: template
-    sensors:
-      hour_temp_diff:
-        friendly_name: 'Hourly Average Temperature Difference'
-        unit_of_measurement: '°C'
-        value_template: '{{ (states.input_number.hour_temp_diff.state | float) | round(1)}}'
-
 # Scaling factor used to convert 10 to the actual maximum furnace BTU value        
   - platform: template
     sensors:
@@ -117,7 +109,7 @@
   - platform: template
     sensors:
       energy_accum:
-        value_template: '0'
+        value_template: ''
 
   - platform: template
     sensors:
@@ -129,7 +121,7 @@
   - platform: template
     sensors:
       temp_diff_accum:
-        value_template: '0'
+        value_template: ''
 
   - platform: template
     sensors:
