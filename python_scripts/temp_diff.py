@@ -87,10 +87,8 @@ temp_unit = temp_attr['unit_of_measurement']
 temp_diff = float(hass.states.get(sensor_temp_diff).state)
 temp_diff_accum = float(hass.states.get(sensor_temp_diff_accum).state)
 
-# logger.warning("temp_diff = {}".format(temp_diff))
-# logger.warning("temp_diff_accum = {}".format(temp_diff_accum))
-# logger.warning("time_min = {}".format(time_min))
-# logger.warning("time_sec = {}".format(time_sec))
+# Needed here for debug
+average = 0
 
 #Transfer average difference calculation to sensor_hour_diff
 #Clear temp_diff accumulation at start of interval.
@@ -100,9 +98,11 @@ if time_sec == 0 and time_min == 0:
     average = round((temp_diff_accum / 12), 1)
     hass.states.set(sensor_hour_diff, average, {"unit_of_measurement": temp_unit}) 
     hass.states.set(sensor_temp_diff_accum, 0, {"unit_of_measurement": temp_unit})
+    temp_diff_accum = 0
 else:
     temp_diff_accum = temp_diff_accum + temp_diff
     hass.states.set(sensor_temp_diff_accum, temp_diff_accum, {"unit_of_measurement": temp_unit}) 
 
 
+#logger.warning("time_min = {} time_sec = {} temp_diff = {} temp_diff_accum = {} average = {}".format(time_min, time_sec,temp_diff,temp_diff_accum,average))
 

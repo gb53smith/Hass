@@ -111,7 +111,13 @@ recorder:
       - device_tracker.joyce_ipad
       - sensor.lr_random
       - sensor.br_random
-      - input_number.temp_diff_accum
+      ## Several accumulators for which only the last value is required.
+      - sensor.sensor_furnace_power_integral
+      - sensor.furnace_hourly
+      - sensor.furnace_daily
+      - sensor.energy_accum
+      - sensor.temp_diff_accum
+      
     domains:
       - zwave
 
@@ -130,7 +136,7 @@ logbook:
       - switch.back_irrigation
       - switch.deck_irrigation
       - switch.front_irrigation
-      - switch.leviton_dz15s_light_switch_switch
+      - switch.leviton_dz15s_1bz_decora_smart_switch_switch
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.medalert1_check
 
@@ -163,6 +169,7 @@ history:
       - input_datetime.heat_on_time
       - input_datetime.heat_off_time
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - sensor.energy_accum
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -173,11 +180,12 @@ history:
       - sensor.lock_battery
       - sensor.yesterday_rainfall
       - sensor.medalert1_check
-      - sensor.temp_diff
-      - sensor.hour_temp_diff
+      - sensor.temp_diff_accum
+      - sensor.hour_diff
       - sensor.furnace_power
-      - sensor.hourly_energy
       - sensor.furnace_hourly
+      - sensor.furnace_daily
+      - sensor.sensor_furnace_power_integral
       - updater.updater
 
 #Send notifications to the iOS app on my iPhone
@@ -320,6 +328,12 @@ utility_meter:
   furnace_daily:
     source: sensor.sensor_furnace_power_integral
     cycle: daily
+    
+notify:
+  - platform: file
+    name: energy_notify
+    filename: hourly_energy.csv
+    timestamp: true
 
 
 # Now done using LoveLace Editor

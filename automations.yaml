@@ -149,7 +149,7 @@
       state: 'on'     
     action:
       service: switch.turn_on
-      entity_id: switch.leviton_dz15s_light_switch_switch
+      entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
 
   - alias: 'Bedroom Room Light OFF when on Vacation'
     initial_state: True
@@ -164,7 +164,7 @@
       state: 'on'     
     action:
       service: switch.turn_off
-      entity_id: switch.leviton_dz15s_light_switch_switch   
+      entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch   
 
   - alias: Notify iOS App Joyce
     initial_state: True
@@ -793,4 +793,14 @@
       - service: input_number.set_value
         data_template:
           entity_id: input_number.power_test
-          value: '0'          
+          value: '0'
+
+  - alias: energy_values_to_file
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: sensor.hourly_energy
+    action:
+      - service: notify.energy_notify
+        data_template: 
+          message: ',{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}'         

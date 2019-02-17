@@ -25,7 +25,7 @@
     - zwave.leviton_dzr151lz_binary_scene_switch
     - zwave.ge_12724_3way_dimmer_switch
     - zwave.schlage_be469nxcen_touchscreen_deadbolt
-    - zwave.leviton_dz15s_light_switch
+    - zwave.leviton_dz15s_1bz_decora_smart_switch
 
   Irrigation Switches:
     entities:
@@ -38,7 +38,7 @@
     entities:
     - switch.leviton_dzr151lz_binary_scene_switch_switch
     - light.ge_12724_3way_dimmer_switch_level
-    - switch.leviton_dz15s_light_switch_switch
+    - switch.leviton_dz15s_1bz_decora_smart_switch_switch
 
   Back Door Lock:
     entities:

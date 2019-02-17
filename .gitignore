@@ -4,6 +4,7 @@ options.txt
 zwave_device_config.yaml
 known_devices.yaml
 mysensors1.json
+*.csv
 *.pid
 *.xml
 *.csr
