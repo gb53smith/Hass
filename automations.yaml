@@ -803,4 +803,29 @@
     action:
       - service: notify.energy_notify
         data_template: 
-          message: ',{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}'         
+          message: ',{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}'
+
+  - alias: Daily Energy Total
+    initial_state: True
+    trigger:
+      - platform: time_pattern
+        minutes: '/30'      
+    action:
+      service: python_script.hour2day
+      data:
+        hourly: hourly_energy
+        hourly_accum: hourly_energy_accum
+        daily: daily_energy
+
+  - alias: Daily Temp Diff Average
+    initial_state: True
+    trigger:
+      - platform: time_pattern
+        minutes: '/30'      
+    action:
+      service: python_script.hour2day
+      data:
+        hourly: hour_diff
+        hourly_accum: hourly_temp_diff_accum
+        daily: daily_temp_diff
+        mode: average

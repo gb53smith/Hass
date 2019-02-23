@@ -115,6 +115,28 @@
     sensors:
       hourly_energy:
         value_template: ''
+ 
+ # Used by hour2day.py for energy      
+  - platform: template
+    sensors:
+      hourly_energy_accum:
+        value_template: '0'
+
+  - platform: template
+    sensors:
+      daily_energy:
+        value_template: ''
+
+# Used by hour2day.py for temp_diff      
+  - platform: template
+    sensors:
+      hourly_temp_diff_accum:
+        value_template: '0'
+
+  - platform: template
+    sensors:
+      daily_temp_diff:
+        value_template: ''
         
 # Added for the temp_diff.py script.
 # Units derived from the temp_diff sensor       
@@ -203,6 +225,7 @@
   - platform: integration 
     source: sensor.furnace_power
     unit_time: h
+    method: left
 
   - platform: template
     sensors:

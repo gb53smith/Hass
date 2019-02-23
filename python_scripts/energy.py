@@ -1,6 +1,6 @@
 
 '''
-Date:  Feb. 13, 2019
+Date:  Feb. 17, 2019
 
 Versions used: HA87.0, HassOS and Raspberry PI 3 B
 
@@ -53,7 +53,11 @@ Instructions:
 
 4. Use the history_graph lovelace card to display the result.
 
-5. Use the Statistics Sensor to average hourly energy over longer periods.  (Not tried yet)    
+5. Use the Statistics Sensor to average hourly energy over longer periods.  (Not tried yet)
+
+6. Save database size by not recording the last power and energy accumulator values.  
+   Only the last value needed by the algorithm to calculate the hourly energy.
+   The last value of all sensors is recorded in the database.  
 
 '''
 

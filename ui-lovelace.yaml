@@ -13,7 +13,7 @@ views:
         entities:
           - switch.leviton_dzr151lz_binary_scene_switch_switch
           - light.ge_12724_3way_dimmer_switch_level
-          - switch.leviton_dz15s_light_switch_switch
+          - switch.leviton_dz15s_1bz_decora_smart_switch_switch
       - type: entities
         title: Back Door Lock
         show_header_toggle: false

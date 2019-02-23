@@ -116,7 +116,11 @@ recorder:
       - sensor.furnace_hourly
       - sensor.furnace_daily
       - sensor.energy_accum
+      - sensor.last_power
       - sensor.temp_diff_accum
+      ## No need to see history after debug
+      - sensor.temp_diff
+      - counter.fan_on_minutes
       
     domains:
       - zwave
@@ -162,6 +166,8 @@ history:
       - input_number.slider_home
       - input_number.slider_away
       - input_number.slider_delay
+      - input_number.slider_power
+      - input_number.power_test
       - input_datetime.lr_off_time
       - input_datetime.lr_off_time_random
       - input_datetime.br_on_time_random
@@ -185,7 +191,10 @@ history:
       - sensor.furnace_power
       - sensor.furnace_hourly
       - sensor.furnace_daily
+      - sensor.power_test
       - sensor.sensor_furnace_power_integral
+      - sensor.hourly_energy_accum
+      - sensor.hourly_temp_diff_accum
       - updater.updater
 
 #Send notifications to the iOS app on my iPhone
@@ -278,6 +287,7 @@ input_number:
     icon: mdi:target
   slider_power:
     name: Slider Power
+    initial: 0
     min: 0
     max: 50
     step: 1  
