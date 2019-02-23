@@ -112,9 +112,6 @@ recorder:
       - sensor.lr_random
       - sensor.br_random
       ## Several accumulators for which only the last value is required.
-      - sensor.sensor_furnace_power_integral
-      - sensor.furnace_hourly
-      - sensor.furnace_daily
       - sensor.energy_accum
       - sensor.last_power
       - sensor.temp_diff_accum
@@ -189,10 +186,7 @@ history:
       - sensor.temp_diff_accum
       - sensor.hour_diff
       - sensor.furnace_power
-      - sensor.furnace_hourly
-      - sensor.furnace_daily
-      - sensor.power_test
-      - sensor.sensor_furnace_power_integral
+      - sensor.last_power
       - sensor.hourly_energy_accum
       - sensor.hourly_temp_diff_accum
       - updater.updater
@@ -293,12 +287,12 @@ input_number:
     step: 1  
  
 # Used to generate at test pattern to power
-  power_test:
-    name: Power Test
-    initial: 0
-    min: 0
-    max: 50
-    step: 1    
+  # power_test:
+    # name: Power Test
+    # initial: 0
+    # min: 0
+    # max: 50
+    # step: 1    
 
 input_datetime:
   lr_off_time:
@@ -330,14 +324,15 @@ input_datetime:
     name: Heat OFF time
     has_date: false
     has_time: true
-    
-utility_meter:
-  furnace_hourly:
-    source: sensor.sensor_furnace_power_integral
-    cycle: hourly
-  furnace_daily:
-    source: sensor.sensor_furnace_power_integral
-    cycle: daily
+
+# Replaced by Python energy.py script    
+# utility_meter:
+  # furnace_hourly:
+    # source: sensor.sensor_furnace_power_integral
+    # cycle: hourly
+  # furnace_daily:
+    # source: sensor.sensor_furnace_power_integral
+    # cycle: daily
     
 notify:
   - platform: file

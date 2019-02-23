@@ -92,12 +92,12 @@
         unit_of_measurement: 'kW'
         value_template: '{{ states.input_number.slider_power.state | float * 1.948}}'
 
-  - platform: template
-    sensors:
-      power_test:
-        friendly_name: 'Power Test'
-        unit_of_measurement: 'kW'
-        value_template: '{{ states.input_number.power_test.state | float }}'
+  # - platform: template
+    # sensors:
+      # power_test:
+        # friendly_name: 'Power Test'
+        # unit_of_measurement: 'kW'
+        # value_template: '{{ states.input_number.power_test.state | float }}'
 
 # Added for the energy.py script.
 # Units derived from the input power sensor
@@ -222,14 +222,15 @@
       - 'time'
       - 'date'
 
-  - platform: integration 
-    source: sensor.furnace_power
-    unit_time: h
-    method: left
+# Replaced by Python energy.py script
+  # - platform: integration 
+    # source: sensor.furnace_power
+    # unit_time: h
+    # method: left
 
-  - platform: template
-    sensors:
-      util_meter:
-        friendly_name: 'Hourly Utility Meter'
-        unit_of_measurement: 'kWh'
-        value_template: '{{ states.sensor.furnace_hourly.attributes.last_period | float }}'
+# - platform: template
+    # sensors:
+      # util_meter:
+        # friendly_name: 'Hourly Utility Meter'
+        # unit_of_measurement: 'kWh'
+        # value_template: '{{ states.sensor.furnace_hourly.attributes.last_period | float }}'

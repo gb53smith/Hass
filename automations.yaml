@@ -714,86 +714,86 @@
  
 # Following automation is used to test energy.py script
 # The Total Energy in one hour should be (10 + 30 + 5) * 10 /60 =  7.5 kWh
-  - alias: Power Pattern within window
-    initial_state: False
-    trigger:
-      - platform: time_pattern
-        minutes: 0      
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '0'
-      - delay:
-          minutes: 20
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '10'
-      - delay:
-          minutes: 10
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '30'
-      - delay:
-          minutes: 10
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '5'
-      - delay:
-          minutes: 10
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '0'
+  # - alias: Power Pattern within window
+    # initial_state: False
+    # trigger:
+      # - platform: time_pattern
+        # minutes: 0      
+    # action:
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '0'
+      # - delay:
+          # minutes: 20
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '10'
+      # - delay:
+          # minutes: 10
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '30'
+      # - delay:
+          # minutes: 10
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '5'
+      # - delay:
+          # minutes: 10
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '0'
 
-  - alias: Power Pattern crossing window
-    initial_state: False
-    trigger:
-      - platform: time_pattern
-        minutes: '/2'      
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '0'
-      - delay:
-          seconds: 50
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '10'
-      - delay:
-          seconds: 60
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '0'
+  # - alias: Power Pattern crossing window
+    # initial_state: False
+    # trigger:
+      # - platform: time_pattern
+        # minutes: '/2'      
+    # action:
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '0'
+      # - delay:
+          # seconds: 50
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '10'
+      # - delay:
+          # seconds: 60
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '0'
 
-  - alias: Power Pattern On Boundary
-    initial_state: False
-    trigger:
-      - platform: time_pattern
-        minutes: '/3'      
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '0'
-      - delay:
-          seconds: 60
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '10'
-      - delay:
-          seconds: 60
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.power_test
-          value: '0'
+  # - alias: Power Pattern On Boundary
+    # initial_state: False
+    # trigger:
+      # - platform: time_pattern
+        # minutes: '/3'      
+    # action:
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '0'
+      # - delay:
+          # seconds: 60
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '10'
+      # - delay:
+          # seconds: 60
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.power_test
+          # value: '0'
 
   - alias: energy_values_to_file
     initial_state: true
