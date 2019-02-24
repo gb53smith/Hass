@@ -1,6 +1,6 @@
 
 '''
-Date:  Feb. 23, 2019
+Date:  Feb. 24, 2019
 
 Versions used: HA88.1, HassOS and Raspberry PI 3 B
 
@@ -36,9 +36,10 @@ if sensor != '0':
     sensor_power = "sensor." + sensor
     power_state = hass.states.get(sensor_power)
     power = float(power_state.state)
-    power_attr = hass.states.get(sensor_power).attributes
-    hass.states.set(sensor_power, (power + 0.1), power_attr)
-    hass.states.set(sensor_power, power, power_attr)   
+    if power > 0:
+        power_attr = hass.states.get(sensor_power).attributes
+        hass.states.set(sensor_power, (power + 0.1), power_attr)
+        hass.states.set(sensor_power, power, power_attr)   
 else:
 	logger.error("Energy script missing sensor data.")
 

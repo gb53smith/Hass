@@ -1,6 +1,6 @@
 
 '''
-Date:  Feb. 17, 2019
+Date:  Feb. 24, 2019
 
 Versions used: HA87.0, HassOS and Raspberry PI 3 B
 
@@ -116,40 +116,43 @@ if time_sec == 0 and time_min == 0:
     if last_power > 0:
         remnant = last_power * delta_time / WINDOW_SIZE
         energy_accum = energy_accum + remnant
-    #refresh last_power to change the timestamp to beginning of window period
-    hass.states.set(sensor_last_power, (last_power + 0.1), {"unit_of_measurement": power_unit})
-    hass.states.set(sensor_last_power, last_power, {"unit_of_measurement": power_unit})
-    hass.states.set(sensor_hourly_energy, round(energy_accum, 2), {"unit_of_measurement": energy_unit})        
+        #refresh last_power to change the timestamp to beginning of window period
+        hass.states.set(sensor_last_power, (last_power + 0.1), {"unit_of_measurement": power_unit})
+        hass.states.set(sensor_last_power, last_power, {"unit_of_measurement": power_unit})
+        hass.states.set(sensor_hourly_energy, round(energy_accum, 2), {"unit_of_measurement": energy_unit})        
+    # Clear energy accumulation for the start of the next window
     hass.states.set(sensor_energy_accum, 0, {"unit_of_measurement": energy_unit})
-    
     #logger.warning("Last Window energy_accum = {}".format(energy_accum))    
 else:
     #logger.warning("Within Window")
+    power_state = hass.states.get(sensor_power)
+    power = float(power_state.state)
+ 
     #Need to get last_power_state since it is reset at start of window
     last_power_state = hass.states.get(sensor_last_power)
     last_power = float(last_power_state.state)
-    ##logger.warning("Last Power = {}".format(last_power))
-    last_power_change = last_power_state.last_changed.timestamp()
+    #No new energy if last power was zero.
+    if last_power > 0:
+        ##logger.warning("Last Power = {}".format(last_power))
+        last_power_change = last_power_state.last_changed.timestamp()
+
+        ##logger.warning("Power Test = {}".format(power))
+        power_change = power_state.last_changed.timestamp()
+        ##logger.warning("power_change = {}".format(power_change))
+
+        delta_time = power_change - last_power_change
+        #logger.warning("delta_time = {}".format(delta_time))
+
+        #Convert to energy per hour
+        delta_energy = delta_time * last_power / WINDOW_SIZE
+
+        ##logger.warning("energy_accum = {}".format(energy_accum))
+        #logger.warning("delta_energy = {}".format(delta_energy))
+        energy_accum = energy_accum + delta_energy
+        hass.states.set(sensor_energy_accum, energy_accum, {"unit_of_measurement": energy_unit})
+        #logger.warning("energy_accum next = {}".format(energy_accum))
     
-    power_state = hass.states.get(sensor_power)
-    power = float(power_state.state)
-
-    ##logger.warning("Power Test = {}".format(power))
-    power_change = power_state.last_changed.timestamp()
-    ##logger.warning("power_change = {}".format(power_change))
-
-    delta_time = power_change - last_power_change
-    #logger.warning("delta_time = {}".format(delta_time))
-
-    #Convert to energy per hour
-    delta_energy = delta_time * last_power / WINDOW_SIZE
-
-    ##logger.warning("energy_accum = {}".format(energy_accum))
-    #logger.warning("delta_energy = {}".format(delta_energy))
-    energy_accum = energy_accum + delta_energy
-    hass.states.set(sensor_energy_accum, energy_accum, {"unit_of_measurement": energy_unit})
-    #logger.warning("energy_accum next = {}".format(energy_accum))
-
+    #Update last_power with new power
     hass.states.set(sensor_last_power, power, {"unit_of_measurement": power_unit})
 
 
