@@ -1,6 +1,6 @@
 
 '''
-Date:  Feb. 19, 2019
+Date:  March 10, 2019
 
 Versions used: HA87.0, HassOS and Raspberry PI 3 B
 
@@ -8,7 +8,7 @@ Description:
 This Python Script sums 24 hourly energy accumulations to a daily energy use value at midnight.
 It needs four sensors to be passed as data values:  hour_energy, hourly_energy_accum and daily_energy
 The mode option when specified is used the average the values.
-mode: average #Divides sum by 12 for the average hourly value
+mode: average #Divides sum by 24 for the average hourly value
 
 Instructions:
 1. Python Script setup
@@ -97,13 +97,21 @@ hourly_accum = float(hourly_accum_state.state)
 #Clear energy accumulation at start of interval.
 #Transfer sum of energy from previous period to the hourly log
 if time_hour == 0 and time_min == 0:  #At midnight
+    if time.weekday() == 0 and time.month == 3 and time.day > 8 and time.day < 16:
+        samples = 23 # Switch to DST occured on previous day
+    if time.weekday() == 0 and time.month == 11 and time.day < 9:
+        samples = 25 # Switch to PST occured on previous day
     average = hourly_accum / samples
     hass.states.set(sensor_daily, round(average, 2), {"unit_of_measurement": hourly_attr_unit})
     hass.states.set(sensor_hourly_accum, 0, {"unit_of_measurement": hourly_attr_unit}) 
 elif time_min == 30:
     hourly_state = hass.states.get(sensor_hourly)
-    hourly = float(hourly_state.state)
+    try: #sensor_hourly may be unknown at startup
+        hourly = float(hourly_state.state)
+    except ValueError:
+        hourly = 0.0
     hourly_accum = hourly_accum + hourly
     hass.states.set(sensor_hourly_accum, hourly_accum, {"unit_of_measurement": hourly_attr_unit}) 
+
 
 
