@@ -227,6 +227,12 @@ climate:
     min_cycle_duration:
       seconds: 10
     ac_mode: true
+    
+  - platform: mitsubishi_mqtt
+    name: "Mitsubishi Heatpump"
+    command_topic: "heatpump/set"
+    temperature_state_topic: "heatpump/status"
+    state_topic: "heatpump"
 
 # Used in automations to detect when I leave and come home again.  'on' = away
 # Add special condition for Oliver since he sometimes locks using a key code

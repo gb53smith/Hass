@@ -23,4 +23,6 @@ pyozw.sqlite
 ios.conf
 www
 ozw_config
+custom_components/mitsubishi_mqtt/__pycache__
+
 
