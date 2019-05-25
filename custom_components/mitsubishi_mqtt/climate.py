@@ -45,7 +45,7 @@ PLATFORM_SCHEMA = mqtt.MQTT_RW_PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_TEMPERATURE_STATE_TOPIC): mqtt.valid_subscribe_topic
 })
 
-TARGET_TEMPERATURE_STEP = 1
+TARGET_TEMPERATURE_STEP = 0.5
 
 ha_to_me = {STATE_AUTO: 'AUTO', STATE_COOL: 'COOL', STATE_DRY: 'DRY', STATE_HEAT: 'HEAT', STATE_FAN_ONLY: 'FAN', STATE_OFF: 'OFF'}
 me_to_ha = {v: k for k, v in ha_to_me.items()}

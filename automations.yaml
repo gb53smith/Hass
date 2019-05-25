@@ -620,7 +620,7 @@
       entity_id: sensor.medalert1_check
       to: 'FIX'
       for:
-        minutes: 16
+        minutes: 31
     action:
       service: notify.ios_grahams_iphone
       data:
@@ -817,7 +817,7 @@
           # value: '0'
 
   - alias: energy_values_to_file
-    initial_state: true
+    initial_state: false
     trigger:
       platform: state
       entity_id: sensor.hourly_energy
