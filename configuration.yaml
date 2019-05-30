@@ -121,6 +121,22 @@ recorder:
       
     domains:
       - zwave
+    ## Recommended to reduce database activity  
+    event_types:
+      - service_removed
+      - service_executed
+      - platform_discovered
+      - homeassistant_start
+      - homeassistant_stop      
+      - feedreader
+      - service_registered
+      - call_service
+      - component_loaded
+      - logbook_entry
+      - system_log_event
+      - automation_triggered
+      - script_started
+      - timer_out_of_sync
 
 # View only some events in logbook
 # Depends on recorder settings.
@@ -164,6 +180,8 @@ history:
       - input_number.slider_away
       - input_number.slider_delay
       - input_number.slider_power
+      - input_number.slider_ac_home
+      - input_number.slider_ac_away
       - input_number.power_test
       - input_datetime.lr_off_time
       - input_datetime.lr_off_time_random
@@ -172,6 +190,7 @@ history:
       - input_datetime.heat_on_time
       - input_datetime.heat_off_time
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - sensor.cooling
       - sensor.energy_accum
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
@@ -234,6 +253,24 @@ climate:
     temperature_state_topic: "heatpump/status"
     state_topic: "heatpump"
 
+# # Using this thermostat to turn OFF AC whne not needed   
+  # - platform: generic_thermostat
+    # name: HVAC
+    # heater: switch.heat_pump
+    # target_sensor: sensor.ac_room_temperature
+    # min_temp: 20
+    # max_temp: 30
+    # target_temp: !secret temperature_fan
+    # cold_tolerance: 0.0
+    # hot_tolerance: 2.0
+    # min_cycle_duration:
+      # seconds: 60
+    # keep_alive:
+      # minutes: 3
+    # initial_operation_mode: "off"
+    # ac_mode: true
+    
+
 # Used in automations to detect when I leave and come home again.  'on' = away
 # Add special condition for Oliver since he sometimes locks using a key code
 binary_sensor:
@@ -266,14 +303,14 @@ input_boolean:
 
 input_number:
   slider_home:
-    name: Home Temp
+    name: Home
     #initial: 21
     min: 18
     max: 25
     step: 0.5
     icon: mdi:target
   slider_away:
-    name: Away Temp
+    name: Away
     #initial: 18
     min: 16
     max: 20
@@ -290,7 +327,21 @@ input_number:
     initial: 0
     min: 0
     max: 50
-    step: 1  
+    step: 1
+  slider_ac_home:
+    name: AC Home
+    #initial: 21
+    min: 20
+    max: 25
+    step: 0.5
+    icon: mdi:target
+  slider_ac_away:
+    name: AC Away
+    #initial: 18
+    min: 20
+    max: 30
+    step: 0.5
+    icon: mdi:target    
  
 # Used to generate at test pattern to power
   # power_test:

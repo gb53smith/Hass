@@ -850,3 +850,12 @@
         hourly_accum: hourly_temp_diff_accum
         daily: daily_temp_diff
         mode: average
+
+  - alias: HVAC
+    initial_state: True
+    trigger:
+      - platform: time_pattern
+        minutes: '/5'      
+    action:
+      service: python_script.hvac
+

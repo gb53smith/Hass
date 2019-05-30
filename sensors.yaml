@@ -200,7 +200,23 @@
     name: 'Remote Humidity'
     unit_of_measurement: '%'
     value_template: '{{ value_json.humidity }}'
-    
+
+  - platform: mqtt
+    state_topic: 'heatpump/status'
+    name: 'Cooling'
+    value_template: '{{ value_json.operating}}'
+
+  # Using sensor template to rename heatpump status from above sensor mqtt   
+  - platform: template
+    sensors:
+      ac_cooling:
+        friendly_name: 'AC Operation'
+        value_template: >
+          {% if is_state('sensor.cooling', 'True') -%}
+          Cooling
+          {% else -%}
+          Idle
+          {% endif %}   
 
   # - platform: systemmonitor
     # resources:
