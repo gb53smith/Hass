@@ -3,6 +3,8 @@ Support for Mitsubishi heatpumps using https://github.com/SwiCago/HeatPump over 
 
 For more details about this platform, please refer to the documentation at
 https://github.com/lekobob/mitsu_mqtt
+
+GBS: Needs update from repository for HA 90+
 """
 
 import logging

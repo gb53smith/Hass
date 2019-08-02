@@ -53,7 +53,7 @@ if away == 'off':
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_home}
         hass.services.call('climate', 'set_temperature', service_data, False)
     # Start cooling if 2 degress above set point
-    if float(current_temperature) >= float(ac_home) + 2.0 and operation_mode != 'cool':
+    if float(current_temperature) >= float(ac_home) + 1.5 and operation_mode != 'cool':
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'operation_mode': 'cool'}
         hass.services.call('climate', 'set_operation_mode', service_data, False)
     # Stop cooling if 1 degress below set point

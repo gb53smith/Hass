@@ -1,7 +1,6 @@
 title: Rose Cottage
 views:
-  - badges: []
-    cards:
+  - cards:
       - entities:
           - entity: switch.leviton_dzr151lz_binary_scene_switch_switch
           - entity: light.ge_12724_3way_dimmer_switch_level
@@ -21,7 +20,11 @@ views:
           - entity: climate.house
           - entity: input_number.slider_home
           - entity: input_number.slider_away
+          - entity: input_number.slider_ac_home
+          - entity: input_number.slider_ac_away
           - entity: sensor.heat_state
+          - entity: climate.mitsubishi_heatpump
+          - entity: sensor.ac_cooling
         show_header_toggle: false
         title: Temperature Control
         type: entities
@@ -45,9 +48,11 @@ views:
         show_header_toggle: false
         title: Outdoor Conditions
         type: entities
+    badges: []
     icon: 'mdi:home'
     path: default_view
     title: default_view
+    theme: default
   - badges:
       - sensor.humidity
       - sensor.yesterday_rainfall
@@ -58,7 +63,7 @@ views:
           - automation.front_irrigation
           - automation.deck_irrigation
           - input_number.slider_delay
-        show_header_toggle: true
+        show_header_toggle: false
         title: Irrigation Automation
         type: entities
       - entities:
@@ -71,19 +76,20 @@ views:
           - entity: input_datetime.heat_off_time
           - entity: counter.fan_on_minutes
           - entity: input_boolean.fan_reset
+          - entity: automation.hvac
         show_header_toggle: false
         title: Heat Automation
         type: entities
       - entities:
-          - switch.furnace
-          - switch.fan
-          - switch.away
-          - switch.heat0
-          - switch.heat1
-          - switch.back_irrigation
-          - switch.front_irrigation
-          - switch.deck_irrigation
-          - switch.watchdog
+          - entity: switch.furnace
+          - entity: switch.fan
+          - entity: switch.away
+          - entity: switch.heat0
+          - entity: switch.heat1
+          - entity: switch.back_irrigation
+          - entity: switch.front_irrigation
+          - entity: switch.deck_irrigation
+          - entity: switch.watchdog
         show_header_toggle: false
         title: Switch
         type: entities

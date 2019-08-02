@@ -617,33 +617,14 @@
     initial_state: True
     trigger:
       platform: state
-      entity_id: sensor.medalert1_check
-      to: 'FIX'
+      entity_id: binary_sensor.ruth_cottage
+      to: 'off'
       for:
-        minutes: 31
+        minutes: 11
     action:
       service: notify.ios_grahams_iphone
       data:
         message: "Medalert1 System Down!"
-        
-  # - alias: Medalert1 Curl
-    # initial_state: True
-    # trigger:
-      # - platform: state
-        # entity_id: sensor.medalert1_curl
-        # to: 'FIX'
-    # trigger:
-      # platform: template
-      # value_template: >
-        # {% if is_state('sensor.medalert1_curl', '200') %}
-          # false
-        # {% else %}
-          # true
-        # {% endif %}
-    # action:
-      # service: notify.ios_grahams_iphone
-      # data:
-        # message: "Medalert1 Curl Down!"
         
         
 # Create an input_number entity for irrigation delay / ON time

@@ -26,14 +26,6 @@ http:
   base_url: gb53smith.duckdns.org
   ip_ban_enabled: True
   login_attempts_threshold: 5
-
-#This section removed for HA 0.85+ using new authorization system
-#To access from an Arduino device I had to use the IP address for the Raspberry
-# mqtt:
-  # broker: core-mosquitto
-  # username: !secret mos_id
-  # password: !secret mos_password
-  # client_id: home-assistant-1
   
 mysensors:
   gateways:
@@ -281,6 +273,9 @@ binary_sensor:
           {{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")
           or is_state("sensor.back_lock_last_action", "Locked: Oliver")}}
         friendly_name: 'I am away'
+#Uptime robot monitor
+  - platform: uptimerobot
+    api_key: !secret api_uptime
 
 counter:
   fan_on_minutes:
