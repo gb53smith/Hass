@@ -239,28 +239,53 @@ climate:
       seconds: 10
     ac_mode: true
     
-  - platform: mitsubishi_mqtt
+  - <<: &mitsu_platform
+      platform: mqtt
+      modes:
+        - "off"
+        - heat
+        - dry
+        - cool
+        - fan_only
+        - auto
+      fan_modes:
+        - AUTO
+        - QUIET
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+      swing_modes:
+        - AUTO
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - SWING
+      current_temperature_template: "{{ value_json.roomTemperature }}"
+      temperature_state_template: "{{ value_json.temperature }}"
+      swing_mode_state_template: "{{ value_json.vane }}"
+      fan_mode_state_template: "{{ value_json.fan }}"
+      mode_state_template: >
+        {% if value_json.power == "OFF" %}
+          off
+        {% elif value_json.mode == "FAN" %}
+          fan_only
+        {% else %}
+          {{ value_json.mode|lower }}
+        {% endif %}
+  - <<: *mitsu_platform      
     name: "Mitsubishi Heatpump"
-    command_topic: "heatpump/set"
-    temperature_state_topic: "heatpump/status"
-    state_topic: "heatpump"
-
-# # Using this thermostat to turn OFF AC whne not needed   
-  # - platform: generic_thermostat
-    # name: HVAC
-    # heater: switch.heat_pump
-    # target_sensor: sensor.ac_room_temperature
-    # min_temp: 20
-    # max_temp: 30
-    # target_temp: !secret temperature_fan
-    # cold_tolerance: 0.0
-    # hot_tolerance: 2.0
-    # min_cycle_duration:
-      # seconds: 60
-    # keep_alive:
-      # minutes: 3
-    # initial_operation_mode: "off"
-    # ac_mode: true
+    current_temperature_topic: "heatpump/status"
+    temperature_command_topic: "heatpump/_set/temperature"
+    temperature_state_topic: "heatpump"
+    swing_mode_command_topic: "heatpump/_set/vane"
+    swing_mode_state_topic: "heatpump"
+    fan_mode_command_topic: "heatpump/_set/fan"
+    fan_mode_state_topic: "heatpump"
+    mode_command_topic: "heatpump/_set/mode"
+    mode_state_topic: "heatpump"
     
 
 # Used in automations to detect when I leave and come home again.  'on' = away
@@ -273,9 +298,9 @@ binary_sensor:
           {{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")
           or is_state("sensor.back_lock_last_action", "Locked: Oliver")}}
         friendly_name: 'I am away'
-#Uptime robot monitor
-  - platform: uptimerobot
-    api_key: !secret api_uptime
+#Uptime robot monitor  (Too many log file entres when connection with uptime server fails
+  # - platform: uptimerobot
+    # api_key: !secret api_uptime
 
 counter:
   fan_on_minutes:

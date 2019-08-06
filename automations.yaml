@@ -840,3 +840,23 @@
     action:
       service: python_script.hvac
 
+  - alias: 'Redirect all MQTT HVAC set commands to the heatpumps'
+    trigger:
+      - platform: mqtt
+        topic: heatpump/_set/+
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic:  '{{ "heatpump/set" }}'
+          payload: >
+            {% if trigger.topic.split("/")[-1] == "mode" %}
+              {% if trigger.payload|upper == "OFF" %}
+                {"power":"OFF"}
+              {% elif trigger.payload == "fan_only" %}
+                {"power":"ON","mode":"FAN"}
+              {% else %}
+                {{ "{\"power\":\"ON\",\"mode\":"|safe + trigger.payload|upper|tojson + "}" }}
+              {% endif %}
+            {% else %}
+              {{ "{" + trigger.topic.split("/")[-1]|tojson + ":" + trigger.payload|tojson + "}" }}
+            {% endif %}
