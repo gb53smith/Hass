@@ -617,10 +617,10 @@
     initial_state: True
     trigger:
       platform: state
-      entity_id: binary_sensor.ruth_cottage
+      entity_id: sensor.medalert1_check
       to: 'off'
       for:
-        minutes: 11
+        minutes: 21
     action:
       service: notify.ios_grahams_iphone
       data:

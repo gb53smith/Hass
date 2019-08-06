@@ -156,16 +156,11 @@
     scan_interval: 10800
     command: 'python3 /config/getrain.py'
     
-  # Replaced by Uptime Robot
-  # - platform: command_line
-    # name: Medalert1 Check
-    # scan_interval: 600
-    # command: 'python3 /config/medalert1_check.py'
-    
-  # - platform: command_line
-    # name: Medalert1 Check
-    # scan_interval: 600
-    # command: 'curl -m 5 -s https://medalert1.duckdns.org:8123 > /dev/null && echo UP || echo FIX' 
+# This works even after certificate expired
+  - platform: command_line
+    name: Medalert1 Check
+    scan_interval: 600
+    command: 'curl -m 5 -sSf --insecure https://medalert1.duckdns.org:8123 > /dev/null && echo UP || echo FIX' 
 
   - platform: mqtt
     state_topic: '/home/multisensor1'
