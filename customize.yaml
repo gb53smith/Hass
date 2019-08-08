@@ -1,60 +1,60 @@
-    switch.leviton_dzr151lz_binary_scene_switch_switch:
-      friendly_name: "Living Room Receptacle"
-      icon: mdi:power-plug
-    lock.schlage_be469nxcen_touchscreen_deadbolt_locked:
-      friendly_name: "Back Door"
-    light.ge_12724_3way_dimmer_switch_level:
-      friendly_name: "Dining Room Dimmer"
-    switch.leviton_dz15s_1bz_decora_smart_switch_switch:
-      friendly_name: "Bed Room Light"
-      icon: mdi:lightbulb
-    sensor.mysensors_bme280_2_1:
-      friendly_name: "Outdoor Pressure"
-      icon: mdi:airballoon
-      unit_of_measurement: "hPa"      
-    sensor.mysensors_bme280_2_2:
-      friendly_name: "Outdoor Temperature"
-      icon: mdi:thermometer
-      unit_of_measurement: "°C"
-    sensor.mysensors_bme280_2_3:
-      friendly_name: "Outdoor Humidity"
-      icon: mdi:water-percent
-      unit_of_measurement: "%"
-    sensor.mysensors_bme280_2_4:
-      friendly_name: "Outdoor Voltage"
-      icon: mdi:battery
-      unit_of_measurement: "V"
-    sensor.hour_diff:
-      friendly_name: "Hourly Temperature Difference"
-      icon: mdi:thermometer
-      unit_of_measurement: "°C"
-    sensor.daily_temp_diff:
-      friendly_name: "Daily Average Temperature Difference"
-      icon: mdi:thermometer
-      unit_of_measurement: "°C"
-    sensor.furnace_hourly:
-      friendly_name: "HA Hourly Energy Consumption"
-      icon: mdi:radiator
-      unit_of_measurement: "kWh"
-    sensor.furnace_daily:
-      friendly_name: "HA Daily Energy Consumption"
-      icon: mdi:radiator
-      unit_of_measurement: "kWh"
-    sensor.hourly_energy:
-      friendly_name: "Hourly Energy Consumption"
-      icon: mdi:radiator
-      unit_of_measurement: "kWh"
-    sensor.daily_energy:
-      friendly_name: "Daily Total Energy Consumption"
-      icon: mdi:radiator
-      unit_of_measurement: "kWh"
-# This hides but also from a group so I made it False  
-    automation.living_room_light_on:
-      hidden: False
-    automation.living_room_light_off:
-      hidden: False
-
-# To getting tracking with iOS App working
-    zone.home:
-      track_ios: False
-
+switch.leviton_dzr151lz_binary_scene_switch_switch:
+  friendly_name: Living Room Receptacle
+  icon: mdi:power-plug
+lock.schlage_be469nxcen_touchscreen_deadbolt_locked:
+  friendly_name: Back Door
+light.ge_12724_3way_dimmer_switch_level:
+  friendly_name: Dining Room Dimmer
+switch.leviton_dz15s_1bz_decora_smart_switch_switch:
+  friendly_name: Bed Room Light
+  icon: mdi:lightbulb
+sensor.mysensors_bme280_2_1:
+  friendly_name: Outdoor Pressure
+  icon: mdi:airballoon
+  unit_of_measurement: hPa
+sensor.mysensors_bme280_2_2:
+  friendly_name: Outdoor Temperature
+  icon: mdi:thermometer
+  unit_of_measurement: °C
+sensor.mysensors_bme280_2_3:
+  friendly_name: Outdoor Humidity
+  icon: mdi:water-percent
+  unit_of_measurement: '%'
+sensor.mysensors_bme280_2_4:
+  friendly_name: Outdoor Voltage
+  icon: mdi:battery
+  unit_of_measurement: V
+sensor.hour_diff:
+  friendly_name: Hourly Temperature Difference
+  icon: mdi:thermometer
+  unit_of_measurement: °C
+sensor.daily_temp_diff:
+  friendly_name: Daily Average Temperature Difference
+  icon: mdi:thermometer
+  unit_of_measurement: °C
+sensor.furnace_hourly:
+  friendly_name: HA Hourly Energy Consumption
+  icon: mdi:radiator
+  unit_of_measurement: kWh
+sensor.furnace_daily:
+  friendly_name: HA Daily Energy Consumption
+  icon: mdi:radiator
+  unit_of_measurement: kWh
+sensor.hourly_energy:
+  friendly_name: Hourly Energy Consumption
+  icon: mdi:radiator
+  unit_of_measurement: kWh
+sensor.daily_energy:
+  friendly_name: Daily Total Energy Consumption
+  icon: mdi:radiator
+  unit_of_measurement: kWh
+automation.living_room_light_on:
+  hidden: false
+automation.living_room_light_off:
+  hidden: false
+zone.home:
+  track_ios: false
+climate.mitsubishi_heatpump:
+  target_temp_step: 0.5
+# climate.mqtt_hvac:
+  # target_temp_step: 0.5
