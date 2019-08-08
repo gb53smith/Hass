@@ -32,8 +32,8 @@ hvac_attr = hvac.attributes
 
 current_temperature = hvac_attr['current_temperature']
 temperature = hvac_attr['temperature']
-operation_mode = hvac_attr['operation_mode']
-
+operation_mode = hvac_attr['hvac_modes']
+#logger.warning("operation_mode = {}".format(operation_mode))
 #logger.warning("hvac_attr ct = {}".format(current_temperature))
 #logger.warning("hvac_attr t = {}".format(temperature))
 
@@ -54,23 +54,23 @@ if away == 'off':
         hass.services.call('climate', 'set_temperature', service_data, False)
     # Start cooling if 2 degress above set point
     if float(current_temperature) >= float(ac_home) + 1.5 and operation_mode != 'cool':
-        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'operation_mode': 'cool'}
-        hass.services.call('climate', 'set_operation_mode', service_data, False)
+        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
+        hass.services.call('climate', 'set_hvac_mode', service_data, False)
     # Stop cooling if 1 degress below set point
     if float(current_temperature) <= float(ac_home) - 1.0 and operation_mode != 'off':
-        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'operation_mode': 'off'}
-        hass.services.call('climate', 'set_operation_mode', service_data, False)
+        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
+        hass.services.call('climate', 'set_hvac_mode', service_data, False)
         
 if away == 'on':
     if float(temperature) != float(ac_away):
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_away}
         hass.services.call('climate', 'set_temperature', service_data, False)
     if float(current_temperature) >= float(ac_away) + 2.0 and operation_mode != 'cool':
-        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'operation_mode': 'cool'}
-        hass.services.call('climate', 'set_operation_mode', service_data, False)
+        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
+        hass.services.call('climate', 'set_hvac_mode', service_data, False)
     if float(current_temperature) <= float(ac_away) - 1.0 and operation_mode != 'off':
-        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'operation_mode': 'off'}
-        hass.services.call('climate', 'set_operation_mode', service_data, False)
+        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
+        hass.services.call('climate', 'set_hvac_mode', service_data, False)
 
 
 
