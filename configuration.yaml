@@ -20,11 +20,11 @@ system_health:
   # mode: yaml
 
 http:
-  #api_password: !secret api_password
-  #ssl_certificate: /ssl/fullchain.pem
-  #ssl_key: /ssl/privkey.pem
-  base_url: gb53smith.duckdns.org
-  ip_ban_enabled: True
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  ssl_profile: intermediate
+  base_url: https://gb53smith.duckdns.org:8123
+  ip_ban_enabled: true
   login_attempts_threshold: 5
   
 mysensors:
