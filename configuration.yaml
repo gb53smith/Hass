@@ -225,6 +225,7 @@ climate:
       seconds: 10
     keep_alive:
       minutes: 3
+    initial_hvac_mode: "heat"
 
   - platform: generic_thermostat
     name: Summer Fan
@@ -238,6 +239,7 @@ climate:
     min_cycle_duration:
       seconds: 10
     ac_mode: true
+    initial_hvac_mode: "cool"
     
   - <<: &mitsu_platform
       platform: mqtt
@@ -286,6 +288,13 @@ climate:
     fan_mode_state_topic: "heatpump"
     mode_command_topic: "heatpump/_set/mode"
     mode_state_topic: "heatpump"
+    action_topic: "heatpump"
+    action_template: >
+      {% if value_json.power == "ON" %}
+        cooling
+      {% else %}
+        idle
+      {% endif %}
     
 
 # Used in automations to detect when I leave and come home again.  'on' = away
