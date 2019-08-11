@@ -241,53 +241,49 @@ climate:
     ac_mode: true
     initial_hvac_mode: "cool"
     
-  - <<: &mitsu_platform
-      platform: mqtt
-      modes:
-        - "off"
-        - heat
-        - dry
-        - cool
-        - fan_only
-        - auto
-      fan_modes:
-        - AUTO
-        - QUIET
-        - "1"
-        - "2"
-        - "3"
-        - "4"
-      swing_modes:
-        - AUTO
-        - "1"
-        - "2"
-        - "3"
-        - "4"
-        - "5"
-        - SWING
-      current_temperature_template: "{{ value_json.roomTemperature }}"
-      temperature_state_template: "{{ value_json.temperature }}"
-      swing_mode_state_template: "{{ value_json.vane }}"
-      fan_mode_state_template: "{{ value_json.fan }}"
-      mode_state_template: >
-        {% if value_json.power == "OFF" %}
-          off
-        {% elif value_json.mode == "FAN" %}
-          fan_only
-        {% else %}
-          {{ value_json.mode|lower }}
-        {% endif %}
-  - <<: *mitsu_platform      
+  - platform: mqtt
     name: "Mitsubishi Heatpump"
+    # Mode Definitions
+    modes:
+      - "off"
+      - heat
+      - dry
+      - cool
+      - fan_only
+      - auto
+    fan_modes:
+      - AUTO
+      - QUIET
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+    swing_modes:
+      - AUTO
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - SWING
+    # MQTT Status Topic Processing
     current_temperature_topic: "heatpump/status"
-    temperature_command_topic: "heatpump/_set/temperature"
-    temperature_state_topic: "heatpump"
-    swing_mode_command_topic: "heatpump/_set/vane"
-    swing_mode_state_topic: "heatpump"
-    fan_mode_command_topic: "heatpump/_set/fan"
-    fan_mode_state_topic: "heatpump"
-    mode_command_topic: "heatpump/_set/mode"
+    current_temperature_template: "{{ value_json.roomTemperature }}"
     mode_state_topic: "heatpump"
+    mode_state_template: >
+      {% if value_json.power == "OFF" %}
+        off
+      {% elif value_json.mode == "FAN" %}
+        fan_only
+      {% else %}
+        {{ value_json.mode|lower }}
+      {% endif %}
+    temperature_state_topic: "heatpump"
+    temperature_state_template: "{{ value_json.temperature }}"
+    fan_mode_state_topic: "heatpump"
+    fan_mode_state_template: "{{ value_json.fan }}"
+    swing_mode_state_topic: "heatpump"
+    swing_mode_state_template: "{{ value_json.vane }}"    
     action_topic: "heatpump"
     action_template: >
       {% if value_json.power == "ON" %}
@@ -295,8 +291,14 @@ climate:
       {% else %}
         idle
       {% endif %}
+    # MQTT Command Topics
+    # Additional automation is required to process HQTT HVAC topics into a single set topic
+    # with a json payload.
+    mode_command_topic: "heatpump/_set/mode"
+    temperature_command_topic: "heatpump/_set/temperature"
+    fan_mode_command_topic: "heatpump/_set/fan"
+    swing_mode_command_topic: "heatpump/_set/vane"
     
-
 # Used in automations to detect when I leave and come home again.  'on' = away
 # Add special condition for Oliver since he sometimes locks using a key code
 binary_sensor:

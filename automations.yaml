@@ -840,6 +840,9 @@
     action:
       service: python_script.hvac
 
+# This is required because MQTT HVAC uses a separate topic for each command
+# while the Mitsubishi Heatpump uses one set topic for all settings in a json message
+# ie heatpump/_set/temperature 23  --> heatpump/set {"temperature":"23.5"}
   - alias: 'Redirect all MQTT HVAC set commands to the heatpumps'
     trigger:
       - platform: mqtt
