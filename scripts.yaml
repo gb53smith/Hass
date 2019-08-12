@@ -56,7 +56,7 @@
     sequence:
       - service: switch.turn_on
         entity_id: switch.back_irrigation
-      - delay: '00:{{ states.input_number.slider_delay.state | int }}:00'
+      - delay: '00:{{ states.input_number.slider_delay_b.state | int }}:00'
       - service: switch.turn_off
         entity_id: switch.back_irrigation
 
@@ -65,7 +65,7 @@
     sequence:
       - service: switch.turn_on
         entity_id: switch.front_irrigation
-      - delay: '00:{{ states.input_number.slider_delay.state | int }}:00'
+      - delay: '00:{{ states.input_number.slider_delay_f.state | int }}:00'
       - service: switch.turn_off
         entity_id: switch.front_irrigation
         
@@ -74,6 +74,6 @@
     sequence:
       - service: switch.turn_on
         entity_id: switch.deck_irrigation
-      - delay: '00:{{ states.input_number.slider_delay.state | int }}:00'
+      - delay: '00:{{ states.input_number.slider_delay_d.state | int }}:00'
       - service: switch.turn_off
         entity_id: switch.deck_irrigation
