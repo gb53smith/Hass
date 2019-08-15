@@ -110,6 +110,34 @@ recorder:
       ## No need to see history after debug
       - sensor.temp_diff
       - counter.fan_on_minutes
+      # environment canada sensors
+      - sensor.temperature_2
+      - sensor.forecast
+      - sensor.chance_of_precip
+      - sensor.dewpoint
+      - sensor.wind_chill
+      - sensor.humidex
+      - sensor.pressure
+      - sensor.tendency
+      - sensor.humidity
+      - sensor.visibility
+      - sensor.humidity_2
+      - sensor.condition
+      - sensor.wind_speed
+      - sensor.wind_gust
+      - sensor.wind_direction
+      - sensor.wind_bearing
+      - sensor.high_temperature
+      - sensor.low_temperature
+      - sensor.uv_index
+      - sensor.pop
+      - sensor.text_summary
+      - sensor.warnings
+      - sensor.watches
+      - sensor.advisories
+      - sensor.statements
+      - sensor.endings
+      
       
     domains:
       - zwave
@@ -170,7 +198,9 @@ history:
       - input_boolean.watchdog
       - input_number.slider_home
       - input_number.slider_away
-      - input_number.slider_delay
+      - input_number.slider_delay_f
+      - input_number.slider_delay_b
+      - input_number.slider_delay_d
       - input_number.slider_power
       - input_number.slider_ac_home
       - input_number.slider_ac_away
@@ -192,7 +222,7 @@ history:
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_sourcenodeid
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_system
       - sensor.lock_battery
-      - sensor.yesterday_rainfall
+      - sensor.precipitation_yesterday
       - sensor.medalert1_check
       - sensor.temp_diff_accum
       - sensor.hour_diff
@@ -200,6 +230,33 @@ history:
       - sensor.last_power
       - sensor.hourly_energy_accum
       - sensor.hourly_temp_diff_accum
+      # environment canada sensors
+      - sensor.temperature_2
+      - sensor.forecast
+      - sensor.chance_of_precip
+      - sensor.dewpoint
+      - sensor.wind_chill
+      - sensor.humidex
+      - sensor.pressure
+      - sensor.tendency
+      - sensor.humidity
+      - sensor.visibility
+      - sensor.humidity_2
+      - sensor.condition
+      - sensor.wind_speed
+      - sensor.wind_gust
+      - sensor.wind_direction
+      - sensor.wind_bearing
+      - sensor.high_temperature
+      - sensor.low_temperature
+      - sensor.uv_index
+      - sensor.pop
+      - sensor.text_summary
+      - sensor.warnings
+      - sensor.watches
+      - sensor.advisories
+      - sensor.statements
+      - sensor.endings
       - updater.updater
 
 #Send notifications to the iOS app on my iPhone
@@ -354,7 +411,7 @@ input_number:
     step: 1.0
     icon: mdi:target
   slider_delay_b:
-    name: Back_Duration
+    name: Back Duration
     min: 5
     max: 29
     step: 1.0
