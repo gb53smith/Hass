@@ -25,8 +25,8 @@ http:
   # ssl_key: /ssl/privkey.pem
   # ssl_profile: intermediate
   base_url: !secret base_url
-  ip_ban_enabled: true
-  login_attempts_threshold: 5
+  # ip_ban_enabled: true
+  # login_attempts_threshold: 5
   
 mysensors:
   gateways:
