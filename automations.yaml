@@ -618,7 +618,7 @@
     trigger:
       platform: state
       entity_id: sensor.medalert1_check
-      to: 'off'
+      to: 'FIX'
       for:
         minutes: 21
     action:

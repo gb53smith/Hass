@@ -161,7 +161,7 @@
   - platform: command_line
     name: Medalert1 Check
     scan_interval: 600
-    command: 'curl -m 5 -sSf --insecure https://medalert1.duckdns.org:8123 > /dev/null && echo UP || echo FIX' 
+    command: 'curl -m 5 -sSf https://medalert1.duckdns.org > /dev/null && echo UP || echo FIX' 
 
   - platform: mqtt
     state_topic: '/home/multisensor1'
