@@ -255,4 +255,4 @@
         
   - platform: environment_canada
     station: BC/s0000141
-    scan_interval: 10800
+    scan_interval: 600

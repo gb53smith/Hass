@@ -121,7 +121,7 @@ recorder:
       - sensor.pressure
       - sensor.tendency
       - sensor.visibility
-      - sensor.humidity_2
+      # - sensor.humidity_2
       - sensor.condition
       - sensor.wind_speed
       - sensor.wind_gust
@@ -240,7 +240,7 @@ history:
       - sensor.pressure
       - sensor.tendency
       - sensor.visibility
-      - sensor.humidity_2
+      # - sensor.humidity_2
       - sensor.condition
       - sensor.wind_speed
       - sensor.wind_gust
