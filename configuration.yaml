@@ -81,6 +81,9 @@ python_script:
   # logs:
     # homeassistant.components.mysensors: debug
     # mysensors: debug
+    
+#Enable IOS App, Home Assistant Companion
+mobile_app:
 
 # Keep database from growing too large by purging
 # No need to record some entities
