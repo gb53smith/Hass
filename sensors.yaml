@@ -256,3 +256,15 @@
   - platform: environment_canada
     station: BC/s0000141
     scan_interval: 600
+
+#Replace trace with 0.1 to prevent graphing error
+  - platform: template
+    sensors:
+      precipitation:
+        value_template: >
+          {%- if
+          is_state('sensor.precipitation_yesterday', 'trace') -%}
+          0.1
+          {%- else -%}
+          {{states.sensor.precipitation_yesterday.state}}
+          {%- endif %}

@@ -140,10 +140,21 @@ recorder:
       - sensor.advisories
       - sensor.statements
       - sensor.endings
+      - sensor.sim_1
+      - sensor.ssid
+      - sensors.statements
+      - binary_sensor.updater
+      - sensor.geocoded_location
+      - sensor.last_update_trigger
+      - sensor.bssid
+      - sensor.connection_type
+      - sensor.battery_state
+      - sensor.battery_level
       
       
     domains:
       - zwave
+      - device_tracker
     ## Recommended to reduce database activity  
     event_types:
       - service_removed
@@ -190,6 +201,7 @@ history:
       - script
       - group
       - zwave
+      - device_tracker
     entities:
       - binary_sensor.away
       - counter.fan_on_minutes
@@ -226,6 +238,7 @@ history:
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_system
       - sensor.lock_battery
       - sensor.precipitation_yesterday
+      - sensor.precipitation
       - sensor.medalert1_check
       - sensor.temp_diff_accum
       - sensor.hour_diff
@@ -259,7 +272,16 @@ history:
       - sensor.advisories
       - sensor.statements
       - sensor.endings
-      - updater.updater
+      - sensor.sim_1
+      - sensor.ssid
+      - sensors.statements
+      - binary_sensor.updater
+      - sensor.geocoded_location
+      - sensor.last_update_trigger
+      - sensor.bssid
+      - sensor.connection_type
+      - sensor.battery_state
+      - sensor.battery_level
 
 #Send notifications to the iOS app on my iPhone
 ios:
@@ -500,21 +522,6 @@ notify:
     timestamp: true
 
 
-# Now done using LoveLace Editor
-# history_graph:
-  # gr1:
-    # name: Rain Fall
-    # entities:
-      # - sensor.yesterday_rainfall
-    # hours_to_show: 168
-    # refresh: 0
-  # gr2:
-    # name: House Energy Use
-    # entities:
-      # - sensor.temp_diff
-      # - sensor.furnace_energy
-    # hours_to_show: 168
-    # refresh: 0
 
 #This worked with a Google Home Mini to control all switches and light using a voice command
 #Joyce considered this an invasion of privacy so I had to disconnect the service.
