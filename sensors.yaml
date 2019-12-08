@@ -266,5 +266,6 @@
           is_state('sensor.precipitation_yesterday', 'trace') -%}
           0.1
           {%- else -%}
-          {{states.sensor.precipitation_yesterday.state}}
+          {{states.sensor.precipitation_yesterday.state | float}}
           {%- endif %}
+        unit_of_measurement: 'mm'
