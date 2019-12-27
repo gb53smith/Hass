@@ -173,7 +173,7 @@
       entity_id: sensor.back_lock_last_action
       to: 'Unlocked: Joyce'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Joyce Unlocked Door"
         
@@ -184,7 +184,7 @@
       entity_id: sensor.back_lock_last_action
       to: 'Unlocked: Oliver'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Oliver Unlocked Door"
 # Temperature Control Notes
@@ -418,7 +418,7 @@
       - platform: template
         value_template: '{{ states.sensor.temperature.state | float < 15.0 }}'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "House Temperature Out of Range"
         
@@ -431,7 +431,7 @@
       - platform: template
         value_template: '{{ states.sensor.remote_temperature.state | float < 10.0 }}'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Wine Cellar Temperature Out of Range"
         
@@ -442,7 +442,7 @@
       - platform: template
         value_template: '{{ states.sensor.mysensors_bme280_2_4.state | float < 3.2 }}'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Outdoor battery needs to be charged."
 
@@ -453,7 +453,7 @@
       entity_id: sensor.flood
       to: 'ON'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Basement Flood Detected!"
 
@@ -489,7 +489,7 @@
         entity_id: input_boolean.watchdog
         state: 'off'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Multisensor ON Failed!"
         
@@ -510,7 +510,7 @@
         entity_id: input_boolean.watchdog
         state: 'off'
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Multisensor OFF Failed!"
   
@@ -551,7 +551,7 @@
       - service: python_script.random_lights
       - delay:
           minutes: 10
-      - service: notify.ios_grahams_iphone
+      - service: notify.mobile_app_iphone
         data:
           message: "HA Restarted"
 
@@ -622,7 +622,7 @@
       for:
         minutes: 21
     action:
-      service: notify.ios_grahams_iphone
+      service: notify.mobile_app_iphone
       data:
         message: "Medalert1 System Down!"
         
