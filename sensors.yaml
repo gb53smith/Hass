@@ -269,3 +269,72 @@
           {{states.sensor.precipitation_yesterday.state | float}}
           {%- endif %}
         unit_of_measurement: 'mm'
+
+# Multisensor2 Support        
+  - platform: mqtt
+    state_topic: '/home/ble4/ms2'
+    name: 'MultiSensor2 Temperature'
+    unit_of_measurement: '°C'
+    #Keep last received value if topic does not contain a json element
+    value_template: >
+      {%- if value_json.temperature -%}
+        {{value_json.temperature}}
+      {%- else -%}
+        {{ states('sensor.multisensor2_temperature')}}
+      {%- endif -%}
+
+  - platform: mqtt
+    state_topic: '/home/ble4/ms2'
+    name: 'MultiSensor2 Humidity'
+    unit_of_measurement: '%'
+    value_template: >
+      {%- if value_json.humidity -%}
+        {{value_json.humidity}}
+      {%- else -%}
+        {{ states('sensor.multisensor2_humidity')}}
+      {%- endif -%}    
+    
+  - platform: mqtt
+    state_topic: '/home/ble4/ms2'
+    name: 'MultiSensor2 Pressure'
+    unit_of_measurement: 'hPa'
+    value_template: >
+      {%- if value_json.pressure -%}
+        {{value_json.pressure}}
+      {%- else -%}
+        {{ states('sensor.multisensor2_pressure')}}
+      {%- endif -%}
+
+  - platform: mqtt
+    state_topic: '/home/ble4/ms2'
+    name: 'MultiSensor2 Gas'
+    unit_of_measurement: 'Kohms'
+    value_template: >
+      {%- if value_json.gas -%}
+        {{value_json.gas}}
+      {%- else -%}
+        {{ states('sensor.multisensor2_gas')}}
+      {%- endif -%}
+      
+  - platform: mqtt
+    state_topic: '/home/ble4/ms2'
+    name: 'MultiSensor2 GasAVG'
+    unit_of_measurement: 'Kohms'
+    value_template: >
+      {%- if value_json.gasavg -%}
+        {{value_json.gasavg}}
+      {%- else -%}
+        {{ states('sensor.multisensor2_gasavg')}}
+      {%- endif -%}
+    
+  - platform: mqtt
+    state_topic: '/home/ble4/ms2'
+    name: 'MultiSensor2 RSSI'
+    unit_of_measurement: 'dBm'
+    value_template: >
+      {%- if value_json.rssi -%}
+        {{value_json.rssi}}
+      {%- else -%}
+        {{ states('sensor.multisensor2_rssi')}}
+      {%- endif -%}
+

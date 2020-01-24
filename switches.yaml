@@ -56,5 +56,30 @@
     command_topic: "/home/multisensor1/watchdog"
     retain: False
 
+# Multisensor2 support
+# Using ble4 to detect a BLE topic in BLE Client/Gateway
+# All BLE communication must use JSON formated messages
+  - platform: mqtt
+    name: "MultiSensor2 Watchdog"
+    state_topic: "/home/ble4/ms2/wc"
+    command_topic: "/home/ble4/ms2/w"
+    payload_on: '{"s":"ON"}'
+    payload_off: '{"s":"OFF"}'
+    state_on: "ON"
+    state_off: "OFF"
+    value_template: "{{ value_json.s }}"
+    retain: False
+    
+  - platform: mqtt
+    name: "MultiSensor2 LED"
+    state_topic: "/home/ble4/ms2/sc"
+    command_topic: "/home/ble4/ms2/s"
+    payload_on: '{"s":"ON"}'
+    payload_off: '{"s":"OFF"}'
+    state_on: "ON"
+    state_off: "OFF"
+    value_template: "{{ value_json.s }}"
+    retain: False
+
     
   

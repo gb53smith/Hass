@@ -548,6 +548,16 @@ notify:
   # exposed_domains:
     # - switch
     # - light
+    
+# MultiSensor2 Support
+# ble added to prevent possible conflict with Z-wave light
+light ble:
+  - platform: mqtt
+    schema: json
+    command_topic: "/home/ble4/ms2/l"
+    state_topic: "/home/ble4/ms2/lc"
+    rgb: true
+
 
 # Include other files to better organize code
 group: !include groups.yaml
