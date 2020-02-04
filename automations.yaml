@@ -863,3 +863,37 @@
             {% else %}
               {{ "{" + trigger.topic.split("/")[-1]|tojson + ":" + trigger.payload|tojson + "}" }}
             {% endif %}
+
+# Sends colour info to RGB LED in MultiSensor2          
+  - alias: Furnace State
+    initial_state: True
+    trigger:
+      - platform: state
+        entity_id: switch.away
+      - platform: state
+        entity_id: switch.heat0
+      - platform: state
+        entity_id: switch.heat1
+    action:
+      service: light.turn_on
+      data_template:
+        # Turn off whichever entity triggered the automation.
+        entity_id: light.mqtt_json_light 
+        brightness: 100        
+        color_name: >
+          {% if is_state("switch.away", "on") %}
+          blue
+          {% else %}
+          {% if is_state("switch.heat1", "off")  and  is_state("switch.heat0", "off")%}
+          green
+          {% endif -%}
+          {% if is_state("switch.heat1", "off")  and  is_state("switch.heat0", "on")%}
+          yellow
+          {% endif -%}
+          {% if is_state("switch.heat1", "on")  and  is_state("switch.heat0", "off")%}
+          purple
+          {% endif -%}
+          {% if is_state("switch.heat1", "on")  and  is_state("switch.heat0", "on")%}
+          red
+          {% endif -%}
+          {% endif -%}

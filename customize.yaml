@@ -56,5 +56,8 @@ zone.home:
   track_ios: false
 climate.mitsubishi_heatpump:
   target_temp_step: 0.5
-# climate.mqtt_hvac:
-  # target_temp_step: 0.5
+sensor.iaq:
+  friendly_name: Air Quality Index
+ 
+  
+  

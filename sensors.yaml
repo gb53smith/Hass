@@ -272,7 +272,7 @@
 
 # Multisensor2 Support        
   - platform: mqtt
-    state_topic: '/home/ble4/ms2'
+    state_topic: '/home/ms2'
     name: 'MultiSensor2 Temperature'
     unit_of_measurement: '°C'
     #Keep last received value if topic does not contain a json element
@@ -284,7 +284,7 @@
       {%- endif -%}
 
   - platform: mqtt
-    state_topic: '/home/ble4/ms2'
+    state_topic: '/home/ms2'
     name: 'MultiSensor2 Humidity'
     unit_of_measurement: '%'
     value_template: >
@@ -295,7 +295,7 @@
       {%- endif -%}    
     
   - platform: mqtt
-    state_topic: '/home/ble4/ms2'
+    state_topic: '/home/ms2'
     name: 'MultiSensor2 Pressure'
     unit_of_measurement: 'hPa'
     value_template: >
@@ -306,7 +306,7 @@
       {%- endif -%}
 
   - platform: mqtt
-    state_topic: '/home/ble4/ms2'
+    state_topic: '/home/ms2'
     name: 'MultiSensor2 Gas'
     unit_of_measurement: 'Kohms'
     value_template: >
@@ -317,7 +317,7 @@
       {%- endif -%}
       
   - platform: mqtt
-    state_topic: '/home/ble4/ms2'
+    state_topic: '/home/ms2'
     name: 'MultiSensor2 GasAVG'
     unit_of_measurement: 'Kohms'
     value_template: >
@@ -328,7 +328,7 @@
       {%- endif -%}
     
   - platform: mqtt
-    state_topic: '/home/ble4/ms2'
+    state_topic: '/home/ms2'
     name: 'MultiSensor2 RSSI'
     unit_of_measurement: 'dBm'
     value_template: >
@@ -338,3 +338,36 @@
         {{ states('sensor.multisensor2_rssi')}}
       {%- endif -%}
 
+  - platform: template
+    sensors:
+      iaq:
+        value_template: >
+          {% set humOffset = states('sensor.multisensor2_humidity')|float - 40.0 %}
+          {% set gas = states('sensor.multisensor2_gas')|float %}
+          {% set gasavg = states('input_number.box_gas')|float %}
+          {% if humOffset > 0 %}
+          {% set humScore = (60 - humOffset) * 0.417 %}
+          {% else %}
+          {% set humScore = (40 + humOffset) * 0.625 %}
+          {% endif %}
+          {% if (gasavg - gas) > 0 %}
+          {% set gasScore =  gas / gasavg * 75  %}
+          {% else %}
+          {% set gasScore = 75 %}
+          {% endif %}
+          {% set score = (100 - humScore - gasScore) * 5 %}
+          {% if score >= 301 %}
+          6
+          {% elif score >= 201  and  score <= 300 %}
+          5
+          {% elif score >= 176  and  score <= 200 %}
+          4
+          {% elif score >= 151  and  score <= 175 %}
+          3
+          {% elif score >= 51  and  score <= 150 %}
+          2
+          {% elif score >= 0  and  score <= 50 %}
+          1
+          {% endif %}
+
+        
