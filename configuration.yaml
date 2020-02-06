@@ -94,7 +94,6 @@ recorder:
   purge_keep_days: 10
   exclude:
     entities:
-      - switch.watchdog
       - sensor.time
       - sensor.rgb_state
       - sun.sun
@@ -156,6 +155,8 @@ recorder:
       - sensor.geocoded_location_2
       - sensor.connection_type
       - sensor.connection_type_2
+      - switch.watchdog
+      - switch.watchdog_delayed
       
     domains:
       - zwave
@@ -301,6 +302,8 @@ history:
       - sensor.air_quality_health_index
       - sensor.icon_code
       - sensor.iqa
+      - switch.watchdog
+      - switch.watchdog_delayed
 
 #Send notifications to the iOS app on my iPhone
 #ios:
@@ -319,6 +322,7 @@ climate:
     min_temp: 15
     max_temp: 25
     target_temp: !secret temperature_home
+    precision: 0.1
     cold_tolerance: 0.3
     hot_tolerance: 0.3
     min_cycle_duration:
@@ -334,6 +338,7 @@ climate:
     min_temp: 22
     max_temp: 35
     target_temp: !secret temperature_fan
+    precision: 0.1
     cold_tolerance: 0.3
     hot_tolerance: 0.3
     min_cycle_duration:
@@ -562,8 +567,8 @@ notify:
     # - light
     
 # MultiSensor2 Support
-# ble added to prevent possible conflict with Z-wave light
-light ble:
+# ms2 added to prevent possible conflict with Z-wave light.  It is needed.
+light ms2:
   - platform: mqtt
     schema: json
     command_topic: "/home/ms2/l"

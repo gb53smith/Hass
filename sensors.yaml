@@ -275,10 +275,11 @@
     state_topic: '/home/ms2'
     name: 'MultiSensor2 Temperature'
     unit_of_measurement: '°C'
-    #Keep last received value if topic does not contain a json element
+    # Keep last received value if topic does not contain a json element
+    # Doing temperature calibration here
     value_template: >
       {%- if value_json.temperature -%}
-        {{value_json.temperature}}
+        {{value_json.temperature | float - 1.5}}
       {%- else -%}
         {{ states('sensor.multisensor2_temperature')}}
       {%- endif -%}
@@ -341,6 +342,7 @@
   - platform: template
     sensors:
       iaq:
+        unit_of_measurement: 'Index'
         value_template: >
           {% set humOffset = states('sensor.multisensor2_humidity')|float - 40.0 %}
           {% set gas = states('sensor.multisensor2_gas')|float %}
@@ -370,4 +372,11 @@
           1
           {% endif %}
 
-        
+# The BME280 reacts too quickly for thermostat and needs smoothing
+  # - platform: filter
+    # name: "Filtered Temperature"
+    # entity_id: sensor.multisensor2_temperature
+    # filters:
+      # - filter: time_simple_moving_average
+        # window_size: '00:05:00'
+        # precision: 1

@@ -464,55 +464,35 @@
       platform: time_pattern
       minutes: '/10'
     action:
-      - service: switch.turn_on
-        entity_id: switch.watchdog
-      - delay:  0:05:00
-      - service: switch.turn_off
-        entity_id: switch.watchdog
-        
-# Send a notice to iPhone if watchdog state stays in ON state too long
-  - alias: Watchdog Alarm ON
+      - service: homeassistant.turn_on
+        entity_id: 
+          - script.watchdog_timer
+ 
+# Send a notice to iPhone if watchdog state does not turn ON
+  - alias: Watchdog Alarm
     initial_state: True
     trigger:
       platform: state
-      entity_id: switch.watchdog
-      # Must be lower case for internal state
-      to: 'on'
-      for:
-        hours: 0
-        minutes: 5
-        seconds: 10
+      entity_id: switch.watchdog_delayed
 # Disable watchdog alarm if getting too many alarms
-# Not that useful since only one alarm is generated if multisensor hangs up.
     condition:
-      - condition: state
-        entity_id: input_boolean.watchdog
-        state: 'off'
+      condition: template
+      value_template: >
+        {%- if is_state("input_boolean.watchdog", "off") and 
+        ((is_state("switch.watchdog", "off") and 
+        is_state("switch.watchdog_delayed", "on")) or 
+        (is_state("switch.watchdog", "on") and 
+        is_state("switch.watchdog_delayed", "off"))) -%}
+        true
+        {%-else -%}
+        false
+        {%- endif %}
     action:
       service: notify.mobile_app_iphone
       data:
-        message: "Multisensor ON Failed!"
+        message: "Multisensor Failed!"
         
-# Send a notice to iPhone if watchdog state stays in OFF state too long
-  - alias: Watchdog Alarm OFF
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: switch.watchdog
-      to: 'off'
-      for:
-        hours: 0
-        minutes: 5
-        seconds: 10
-  # Disable watchdog alarm if getting too many alarms
-    condition:
-      - condition: state
-        entity_id: input_boolean.watchdog
-        state: 'off'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Multisensor OFF Failed!"
+
   
   # Turn all switches OFF on reboot and send notification 10 minutes later
   # Restore heat if not on vacation and  time is between heat ON and heat OFF times.

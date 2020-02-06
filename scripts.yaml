@@ -77,3 +77,20 @@
       - delay: '00:{{ states.input_number.slider_delay_d.state | int }}:00'
       - service: switch.turn_off
         entity_id: switch.deck_irrigation
+        
+  watchdog_timer:  
+    alias: "Watchdog Toggle"
+    sequence:  
+      - service: switch.turn_on
+        entity_id: switch.watchdog
+      - service: switch.turn_off
+        entity_id: switch.watchdog_delayed
+      - delay:  0:02:30
+      - service: switch.turn_on
+        entity_id: switch.watchdog_delayed
+      - delay:  0:02:30
+      - service: switch.turn_off
+        entity_id: switch.watchdog
+      - delay:  0:02:30
+      - service: switch.turn_off
+        entity_id: switch.watchdog_delayed

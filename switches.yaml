@@ -68,5 +68,8 @@
     value_template: "{{ value_json.s }}"
     retain: False
 
+  - platform: rpi_gpio
+    ports:
+      17: Watchdog Delayed
     
   
