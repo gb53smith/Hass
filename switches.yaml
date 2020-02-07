@@ -31,30 +31,27 @@
     retain: False
 
 # Mirrors binary_sensor
+# state_topic not needed for MultiSensor2
   - platform: mqtt
     name: "Away"
-    state_topic: "/home/presence/confirm"
+    #state_topic: "/home/presence/confirm"
     command_topic: "/home/presence/away"
     retain: False
 
-# Heat Bits 0 and 1 are sent to the Arduino Multisensor to indicate heatin stage    
+# Heat Bits 0 and 1 are sent to the Arduino Multisensor to indicate heating stage    
   - platform: mqtt
     name: "Heat0"
-    state_topic: "/home/furnace/heat0confirm"
+    # state_topic not needed for MultiSensor2
+    #state_topic: "/home/furnace/heat0confirm"
     command_topic: "/home/furnace/heat0"
     retain: False
     
   - platform: mqtt
     name: "Heat1"
-    state_topic: "/home/furnace/heat1confirm"
+    # state_topic not needed for MultiSensor2
+    #state_topic: "/home/furnace/heat1confirm"
     command_topic: "/home/furnace/heat1"
     retain: False
-    
-  # - platform: mqtt
-    # name: "Watchdog"
-    # state_topic: "/home/multisensor1/watchdogconfirm"
-    # command_topic: "/home/multisensor1/watchdog"
-    # retain: False
 
 # Multisensor2 support
   - platform: mqtt
@@ -68,6 +65,7 @@
     value_template: "{{ value_json.s }}"
     retain: False
 
+# Dummy local switch used to compare against remote MQTT switch above.
   - platform: rpi_gpio
     ports:
       17: Watchdog Delayed

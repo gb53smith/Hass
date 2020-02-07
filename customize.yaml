@@ -58,6 +58,15 @@ climate.mitsubishi_heatpump:
   target_temp_step: 0.5
 sensor.iaq:
   friendly_name: Air Quality Index
- 
+  unit_of_measurement: Index
+sensor.soil_moisture_sensor_4_1:
+  friendly_name: Indoor Moisture
+  icon: mdi:water-percent
+  unit_of_measurement: '%'
+sensor.soil_moisture_sensor_4_2:
+  friendly_name: Indoor Voltage
+  icon: mdi:battery
+  unit_of_measurement: V
+  
   
   

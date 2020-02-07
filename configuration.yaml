@@ -304,6 +304,8 @@ history:
       - sensor.iqa
       - switch.watchdog
       - switch.watchdog_delayed
+      - sensor.soil_moisture_sensor_4_1
+      - sensor.soil_moisture_sensor_4_2
 
 #Send notifications to the iOS app on my iPhone
 #ios:
@@ -318,7 +320,7 @@ climate:
   - platform: generic_thermostat
     name: House
     heater: switch.furnace
-    target_sensor: sensor.temperature
+    target_sensor: sensor.multisensor2_temperature
     min_temp: 15
     max_temp: 25
     target_temp: !secret temperature_home
@@ -334,7 +336,7 @@ climate:
   - platform: generic_thermostat
     name: Summer Fan
     heater: switch.fan
-    target_sensor: sensor.temperature
+    target_sensor: sensor.multisensor2_temperature
     min_temp: 22
     max_temp: 35
     target_temp: !secret temperature_fan
@@ -493,7 +495,7 @@ input_number:
   box_gas:
     name: Base Gas Resistance
     min: 100
-    max: 500
+    max: 1000
     step: 10
     mode: box    
  
