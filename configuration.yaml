@@ -326,7 +326,8 @@ climate:
     target_temp: !secret temperature_home
     precision: 0.1
     cold_tolerance: 0.3
-    hot_tolerance: 0.3
+    # Reduce overshoot on the hot side with MultiSensor2
+    hot_tolerance: 0.1
     min_cycle_duration:
       seconds: 10
     keep_alive:
@@ -495,7 +496,7 @@ input_number:
   box_gas:
     name: Base Gas Resistance
     min: 100
-    max: 1000
+    max: 2000
     step: 10
     mode: box    
  

@@ -279,7 +279,7 @@
     # Doing temperature calibration here
     value_template: >
       {%- if value_json.temperature -%}
-        {{ '%0.1f'|format(value_json.temperature | float - 3.4) }}
+        {{ '%0.1f'|format(value_json.temperature | float - 3.0) }}
       {%- else -%}
         {{ states('sensor.multisensor2_temperature')}}
       {%- endif -%}

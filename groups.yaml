@@ -34,7 +34,6 @@
     - switch.deck_irrigation
 
   Lights:
-    control: hidden
     entities:
     - switch.leviton_dzr151lz_binary_scene_switch_switch
     - light.ge_12724_3way_dimmer_switch_level
@@ -68,7 +67,6 @@
     - sensor.heat_state
 
   Alarms:
-    control: hidden
     entities:
     - input_boolean.watchdog
     - sensor.flood
@@ -85,42 +83,5 @@
     - sensor.mysensors_bme280_2_3
     - sensor.mysensors_bme280_2_4
 
-# Control what is seen on the WEB States page
-
-# Block comment this section out to see all available components
-# Display order is determined by the order in which groups are defined above,
-# not by the list of group entities in the the default view.
-  default_view:
-    view: True  
-    icon: mdi:home
-    entities:
-      - group.lights
-      - group.back_door_lock
-      - group.temperature_control
-      - group.alarms
-      - group.wine_cellar
-      - group.outdoor_conditions
-
-# Use a second tab for back end information not regularly accessed
-  Back End:
-    view: True
-    entities:
-      - group.irrigation_automation
-      - group.light_automation
-      - history_graph.rain_fall
-      - history_graph.house_energy_use
-      - group.heat_automation
-      - sensor.humidity
-      - sensor.yesterday_rainfall
-      - sensor.medalert1_check
-      - switch.furnace
-      - switch.fan
-      - switch.away
-      - switch.heat0
-      - switch.heat1
-      - switch.back_irrigation
-      - switch.front_irrigation
-      - switch.deck_irrigation
-      - switch.watchdog
 
 

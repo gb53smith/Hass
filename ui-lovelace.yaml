@@ -1,6 +1,7 @@
 title: Rose Cottage
 views:
-  - cards:
+  - badges: []
+    cards:
       - entities:
           - entity: switch.leviton_dzr151lz_binary_scene_switch_switch
           - entity: light.ge_12724_3way_dimmer_switch_level
@@ -9,24 +10,30 @@ views:
         title: Lights
         type: entities
       - entities:
-          - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-          - sensor.back_lock_last_action
-          - sensor.lock_battery
-        show_header_toggle: false
-        title: Back Door Lock
-        type: entities
-      - entities:
           - entity: input_boolean.vacation
           - entity: climate.house
           - entity: input_number.slider_home
           - entity: input_number.slider_away
+          - entity: climate.mitsubishi_heatpump
           - entity: input_number.slider_ac_home
           - entity: input_number.slider_ac_away
-          - entity: sensor.heat_state
-          - entity: climate.mitsubishi_heatpump
-          - entity: sensor.ac_cooling
+          - entity: sensor.multisensor2_humidity
+          - entity: sensor.iaq
         show_header_toggle: false
         title: Temperature Control
+        type: entities
+      - entities:
+          - entity: lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+          - entity: sensor.back_lock_last_action
+        show_header_toggle: false
+        title: Back Door Lock
+        type: entities
+      - entities:
+          - entity: sensor.mysensors_bme280_2_2
+          - entity: sensor.mysensors_bme280_2_1
+          - entity: sensor.mysensors_bme280_2_3
+        show_header_toggle: false
+        title: Outdoor Conditions
         type: entities
       - entities:
           - sensor.remote_temperature
@@ -35,34 +42,34 @@ views:
         title: Wine Cellar
         type: entities
       - entities:
-          - input_boolean.watchdog
-          - sensor.flood
+          - entity: sensor.flood
+          - entity: sensor.medalert1_check
         show_header_toggle: false
         title: Alarms
         type: entities
-      - entities:
-          - sensor.mysensors_bme280_2_2
-          - sensor.mysensors_bme280_2_1
-          - sensor.mysensors_bme280_2_3
-          - sensor.mysensors_bme280_2_4
-        show_header_toggle: false
-        title: Outdoor Conditions
-        type: entities
-    badges: []
+      - entity: sensor.soil_moisture_sensor_4_1
+        max: 100
+        min: 0
+        name: Plant Soil Moisture
+        severity:
+          green: 50
+          red: 10
+          yellow: 40
+        theme: default
+        type: gauge
     icon: 'mdi:home'
     path: default_view
-    title: default_view
     theme: default
-  - badges:
-      - sensor.humidity
-      - sensor.yesterday_rainfall
-      - sensor.medalert1_check
+    title: default_view
+  - badges: null
     cards:
       - entities:
-          - automation.back_irrigation
-          - automation.front_irrigation
-          - automation.deck_irrigation
-          - input_number.slider_delay
+          - entity: automation.back_irrigation
+          - entity: input_number.slider_delay_b
+          - entity: automation.front_irrigation
+          - entity: input_number.slider_delay_f
+          - entity: automation.deck_irrigation
+          - entity: input_number.slider_delay_d
         show_header_toggle: false
         title: Irrigation Automation
         type: entities
@@ -84,15 +91,36 @@ views:
           - entity: switch.furnace
           - entity: switch.fan
           - entity: switch.away
-          - entity: switch.heat0
-          - entity: switch.heat1
           - entity: switch.back_irrigation
           - entity: switch.front_irrigation
           - entity: switch.deck_irrigation
           - entity: switch.watchdog
+          - entity: input_boolean.watchdog
         show_header_toggle: false
         title: Switch
         type: entities
+      - entities:
+          - entity: sensor.multisensor2_gas
+          - entity: sensor.multisensor2_gasavg
+          - entity: input_number.box_gas
+          - entity: sensor.iaq
+          - entity: sensor.multisensor2_pressure
+          - entity: sensor.multisensor2_humidity
+          - entity: sensor.multisensor2_temperature
+          - entity: sensor.multisensor2_rssi
+        show_header_toggle: false
+        title: MultiSensor 2
+        type: entities
+      - entities:
+          - entity: sensor.mysensors_bme280_2_4
+          - entity: sensor.soil_moisture_sensor_4_2
+          - entity: sensor.lock_battery
+        show_header_toggle: false
+        title: Remote Battery Voltages
+        type: entities
+      - entity: light.mqtt_json_light
+        name: Heat State
+        type: light
     path: back_end
     title: Back End
   - badges: []
@@ -120,12 +148,37 @@ views:
         type: history-graph
       - entities:
           - sensor.date
-          - sensor.yesterday_rainfall
+          - sensor.precipitation
+          - climate.mitsubishi_heatpump
         hours_to_show: 168
         refresh_interval: 0
         show_header_toggle: false
         theme: default
         title: Week Rainfall History
         type: history-graph
+      - entities:
+          - climate.house
+        hours_to_show: 168
+        type: history-graph
     panel: false
     title: GRAPHS
+  - badges: []
+    cards:
+      - entities:
+          - sensor.condition
+          - sensor.forecast
+          - sensor.temperature_2
+          - sensor.humidity_2
+          - sensor.pressure
+          - sensor.tendency
+          - sensor.high_temperature
+          - sensor.low_temperature
+          - sensor.uv_index
+          - sensor.visibility
+          - sensor.wind_speed
+          - sensor.wind_direction
+        show_header_toggle: false
+        title: Vancouver Weather
+        type: entities
+    path: weather
+    title: WEATHER
