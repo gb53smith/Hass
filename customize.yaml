@@ -74,6 +74,10 @@ sensor.multisensor2_humidity:
 sensor.lock_battery:
   friendly_name: Lock Battery
   icon: mdi:battery
-  unit_of_measurement: '%' 
+  unit_of_measurement: '%'
+sensor.house_temperature:
+  friendly_name: House Temperature
+  icon: mdi:thermometer
+  unit_of_measurement: °C
   
   

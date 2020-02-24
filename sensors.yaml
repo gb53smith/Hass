@@ -81,7 +81,7 @@
     sensors:
       temp_diff:
         friendly_name: 'In-Out Temperature Diff'
-        value_template: '{{ ((states.sensor.temperature.state | float) - (states.sensor.mysensors_bme280_2_2.state | float)) | round(1) }}'
+        value_template: '{{ ((states.sensor.house_temperature.state | float) - (states.sensor.mysensors_bme280_2_2.state | float)) | round(1) }}'
         unit_of_measurement: '°C'
 
 # Scaling factor used to convert 10 to the actual maximum furnace BTU value        
