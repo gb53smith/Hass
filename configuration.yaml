@@ -320,7 +320,7 @@ climate:
   - platform: generic_thermostat
     name: House
     heater: switch.furnace
-    target_sensor: sensor.multisensor2_temperature
+    target_sensor: sensor.house_temperature
     min_temp: 15
     max_temp: 25
     target_temp: !secret temperature_home
@@ -337,7 +337,7 @@ climate:
   - platform: generic_thermostat
     name: Summer Fan
     heater: switch.fan
-    target_sensor: sensor.multisensor2_temperature
+    target_sensor: sensor.house_temperature
     min_temp: 22
     max_temp: 35
     target_temp: !secret temperature_fan

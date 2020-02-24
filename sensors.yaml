@@ -279,7 +279,7 @@
     # Doing temperature calibration here
     value_template: >
       {%- if value_json.temperature -%}
-        {{ '%0.1f'|format(value_json.temperature | float - 3.0) }}
+        {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
       {%- else -%}
         {{ states('sensor.multisensor2_temperature')}}
       {%- endif -%}
@@ -380,3 +380,15 @@
       # - filter: time_simple_moving_average
         # window_size: '00:05:00'
         # precision: 1
+
+# If watchdog fails switch temperature sensors        
+  - platform: template
+    sensors:
+      house_temperature:
+        friendly_name: 'House Temperature'
+        value_template: >
+          {% if is_state("input_boolean.watchdog", "off") %}
+            {{states.sensor.multisensor2_temperature.state | float}}
+          {% else %}
+            {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float - 2.0}}
+          {% endif %}
