@@ -70,7 +70,7 @@ sensor.soil_moisture_sensor_4_2:
 sensor.multisensor2_humidity:
   friendly_name: Indoor Humidity
   icon: mdi:water-percent
-  unit_of_measurement: '%'  
+  unit_of_measurement: '%'
 sensor.lock_battery:
   friendly_name: Lock Battery
   icon: mdi:battery
@@ -78,6 +78,30 @@ sensor.lock_battery:
 sensor.house_temperature:
   friendly_name: House Temperature
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: °C 
+sensor.soil_moisture_sensor_5_1:
+  friendly_name: Test Count
+  unit_of_measurement: int
+sensor.soil_moisture_sensor_5_2:
+  friendly_name: Test Voltage
+  icon: mdi:battery
+  unit_of_measurement: V
+sensor.soil_moisture_sensor_5_3:
+  friendly_name: RFM69 RSSI
+  unit_of_measurement: dBm
+sensor.soil_moisture_sensor_7_1:
+  friendly_name: Outdoor Moisture
+  icon: mdi:water-percent
+  unit_of_measurement: '%'
+sensor.soil_moisture_sensor_7_2:
+  friendly_name: Outdoor Moisture Voltage
+  icon: mdi:battery
+  unit_of_measurement: V
+sensor.soil_moisture_sensor_7_3:
+  friendly_name: Up Days
+  unit_of_measurement: int
+sensor.soil_moisture_sensor_7_4:
+  friendly_name: Debug RFM69 RSSI
+  unit_of_measurement: dBm
   
   

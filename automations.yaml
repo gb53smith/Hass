@@ -605,36 +605,6 @@
       service: notify.mobile_app_iphone
       data:
         message: "Medalert1 System Down!"
-        
-        
-# Create an input_number entity for irrigation delay / ON time
-# Reset at 12:00 to 10 minutes
-# Increase at 16:00 to 10 minutes plus 1 minute for every degree above 24.0
-  - alias: 'Irrigation ON Time Reset'
-    initial_state: True
-    trigger:
-      platform: time
-      at: '12:00:00'
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.slider_delay
-        value: '10'
-        
-  - alias: 'Irrigation ON Time Adjust'
-    initial_state: True
-    trigger:
-      platform: time
-      at: '16:00:00'        
-    condition:
-      - condition: template
-        value_template: >
-          {{states.sensor.mysensors_bme280_2_2.state | float > 24.0}}        
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.slider_delay
-        value: '{{states.sensor.mysensors_bme280_2_2.state | int - 14}}'
 
 # Count how many minutes the furnace fan in ON to determine 
 # when the air filter needs replacing.        
@@ -877,3 +847,16 @@
           red
           {% endif -%}
           {% endif -%}
+          
+  - alias: Burglar Alarm
+    initial_state: True
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.ecolink_motion_detector_sensor
+        to: 'on'
+    action:
+      service: mqtt.publish
+      data: 
+        topic: /home/sound
+        payload: "{\"sound_id\":\"Claxon\",\"playcount\":2}"
+

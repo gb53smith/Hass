@@ -157,6 +157,7 @@ recorder:
       - sensor.connection_type_2
       - switch.watchdog
       - switch.watchdog_delayed
+      - sensor.soil_moisture_sensor_5_3
       
     domains:
       - zwave
@@ -306,9 +307,20 @@ history:
       - switch.watchdog_delayed
       - sensor.soil_moisture_sensor_4_1
       - sensor.soil_moisture_sensor_4_2
-
-#Send notifications to the iOS app on my iPhone
-#ios:
+      - sensor.soil_moisture_sensor_4_3
+      - sensor.soil_moisture_sensor_4_4
+      - sensor.soil_moisture_sensor_5_1
+      - sensor.soil_moisture_sensor_5_2
+      - sensor.soil_moisture_sensor_5_3
+      - sensor.soil_moisture_sensor_6_1
+      - sensor.soil_moisture_sensor_6_2
+      - sensor.soil_moisture_sensor_6_3
+      - sensor.soil_moisture_sensor_6_4
+      - sensor.ecolink_motion_detector_alarm_level
+      - sensor.ecolink_motion_detector_alarm_type
+      - sensor.ecolink_motion_detector_battery_level
+      - sensor.ecolink_motion_detector_burglar
+      - sensor.ecolink_motion_detector_power_management
 
 # Track the sun
 sun:
