@@ -86,6 +86,21 @@ python_script:
 #Enable IOS App, Home Assistant Companion
 mobile_app:
 
+# Send SMS if burgular alarm triggered
+twilio:
+  account_sid: !secret account_sid
+  auth_token: !secret auth_token
+
+notify:
+  - name: Burglar Alarm SMS
+    platform: twilio_sms
+    from_number: !secret from_number
+  - name: energy_notify
+    platform: file
+    filename: hourly_energy.csv
+    timestamp: true
+
+
 # Keep database from growing too large by purging
 # No need to record some entities
 # Must log automations to restore_state of automations on restart
@@ -97,8 +112,8 @@ recorder:
       - sensor.time
       - sensor.rgb_state
       - sun.sun
-      - switch.heat0
-      - switch.heat1
+      - input_boolean.heat0
+      - input_boolean.heat1
       - device_tracker.joyce_ipad2
       - device_tracker.iphone
       - sensor.lr_random
@@ -156,7 +171,7 @@ recorder:
       - sensor.connection_type
       - sensor.connection_type_2
       - switch.watchdog
-      - switch.watchdog_delayed
+      - input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_5_3
       
     domains:
@@ -190,7 +205,7 @@ logbook:
       - sensor.heat_state
       - sensor.back_lock_last_action
       - sensor.flood
-      - switch.away
+      - binary_sensor.away
       - switch.back_irrigation
       - switch.deck_irrigation
       - switch.front_irrigation
@@ -304,7 +319,7 @@ history:
       - sensor.icon_code
       - sensor.iqa
       - switch.watchdog
-      - switch.watchdog_delayed
+      - input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_4_1
       - sensor.soil_moisture_sensor_4_2
       - sensor.soil_moisture_sensor_4_3
@@ -321,6 +336,7 @@ history:
       - sensor.ecolink_motion_detector_battery_level
       - sensor.ecolink_motion_detector_burglar
       - sensor.ecolink_motion_detector_power_management
+      - sensor.ecolink_motion_detector_sourcenodeid
 
 # Track the sun
 sun:
@@ -421,17 +437,16 @@ climate:
     
 # Used in automations to detect when I leave and come home again.  'on' = away
 # Add special condition for Oliver since he sometimes locks using a key code
+# Consolates input_boolean.vacation to override when on vacation.
 binary_sensor:
   - platform: template
     sensors:
       away:
         value_template: >
           {{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")
-          or is_state("sensor.back_lock_last_action", "Locked: Oliver")}}
+          or is_state("sensor.back_lock_last_action", "Locked: Oliver")
+          or is_state("input_boolean.vacation", "on") }}
         friendly_name: 'I am away'
-#Uptime robot monitor  (Too many log file entres when connection with uptime server fails
-  # - platform: uptimerobot
-    # api_key: !secret api_uptime
 
 counter:
   fan_on_minutes:
@@ -451,6 +466,18 @@ input_boolean:
     name: Fan on counter reset
     initial: off
     icon: mdi:numeric-0-box
+    
+  watchdog_delayed:
+    name: "Watchdog Delayed"
+    initial: off
+
+  heat0:    
+    name: "Heat State 0"
+    initial: off
+
+  heat1:    
+    name: "Heat State 1"
+    initial: off
 
 input_number:
   slider_home:
@@ -559,14 +586,7 @@ input_datetime:
   # furnace_daily:
     # source: sensor.sensor_furnace_power_integral
     # cycle: daily
-    
-notify:
-  - platform: file
-    name: energy_notify
-    filename: hourly_energy.csv
-    timestamp: true
-
-
+ 
 
 #This worked with a Google Home Mini to control all switches and light using a voice command
 #Joyce considered this an invasion of privacy so I had to disconnect the service.

@@ -280,9 +280,11 @@
     value_template: >
       {%- if value_json.temperature -%}
         {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
-      {%- else -%}
-        {{ states('sensor.multisensor2_temperature')}}
-      {%- endif -%}
+      {% elif  states('sensor.multisensor2_temperature') |float > 0 %}
+        {{states('sensor.multisensor2_temperature')}}
+      {% else %}
+        21.0
+      {%- endif %}
 
   - platform: mqtt
     state_topic: '/home/ms2'

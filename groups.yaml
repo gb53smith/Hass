@@ -51,11 +51,8 @@
     - switch.front_irrigation
     - switch.deck_irrigation
     - switch.furnace
-    - switch.heat0
-    - switch.heat1
     - switch.fan
     - switch.watchdog
-    - switch.watchdog_delayed
 
   Temperature Control:
     entities:

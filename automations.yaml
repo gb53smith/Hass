@@ -187,22 +187,18 @@
       service: notify.mobile_app_iphone
       data:
         message: "Oliver Unlocked Door"
+
 # Temperature Control Notes
-# binary_sensor.away is controlled only by sensor.back_lock_last_action.  Set by locking back door either by Me or Oliver.
+# binary_sensor.away is controlled by sensor.back_lock_last_action
+# and by input_boolean.vacation.
+# Set by locking back door either by Me or Oliver or input_boolean.vacation = "on" .
 # input_binary.vacation is controlled by GUI slide switch.
-# When either binary_sensor.away or input_binary.vacation is ON the temperature set point is set to away temp.
-# The home temperature set point is enabled once if input_binary.vacation goes OFF.
+# When binary_sensor.away is ON the temperature set point is set to away temp.
 # The back door must be unlocked or locked from the inside to turn OFF the binary_sensor.away and return
 # to normal heating schedule.
-### Vacation mode can be cleared upon arrival at the airport but the back door must
-### be unlocked to resume heating next morning 
-# switch.away state is used to control the indicator LED on the thermostat.  
-#   It is set OFF when either binary_sensor.away goes OFF or
-#   input_binary.vacation goes OFF. 
-#   It is set ON when either binary_sensor.away goes ON or
-#   input_binary.vacation goes ON. 
-# Change thermostat set point to slider_home temp at datetime.heat_on_time
-# but only if home and not on vacation
+# The away temperature can be adjusted to pre-heat the house remotely.
+# binary_sensor.away state is used to control the indicator LED on the thermostat.   
+
   - alias: Set Home Setpoint
     initial_state: True
     trigger:
@@ -279,9 +275,6 @@
         data_template:
           entity_id: climate.summer_fan
           temperature: !secret temperature_fan_away
-      - service: switch.turn_on
-        entity_id: switch.away
-
 
 # Return temperature set point when returning
 # between heat ON and OFF times if not on vacation
@@ -292,17 +285,12 @@
       entity_id: binary_sensor.away
       to: 'off'
     condition: 
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.vacation
-          state: 'off'
-        - condition: template
-          value_template: >
-            {{ (now().hour * 60 + now().minute) * 60  
-              > states.input_datetime.heat_on_time.attributes.timestamp and 
-              (now().hour * 60 + now().minute) * 60 
-              < states.input_datetime.heat_off_time.attributes.timestamp }}  
+      condition: template
+      value_template: >
+        {{ (now().hour * 60 + now().minute) * 60  
+            > states.input_datetime.heat_on_time.attributes.timestamp and 
+            (now().hour * 60 + now().minute) * 60 
+            < states.input_datetime.heat_off_time.attributes.timestamp }}  
     action:
       - service: climate.set_temperature
         data_template:
@@ -313,72 +301,48 @@
           entity_id: climate.summer_fan
           temperature: !secret temperature_fan
 
-# Unconditional switch.away tracking of binary_sensor.away
-  - alias: Home to Away OFF
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: binary_sensor.away
-      to: 'off'
-    action:
-      - service: switch.turn_off
-        entity_id: switch.away 
-        
 # Force temperature_away, immediately, when vacation switched ON
-  - alias: Vacation ON
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_boolean.vacation
-      to: 'on'
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_away')}}"
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.summer_fan
-          temperature: !secret temperature_fan_away
-      - service: switch.turn_on
-        entity_id: switch.away
+  # - alias: Vacation ON
+    # initial_state: True
+    # trigger:
+      # platform: state
+      # entity_id: input_boolean.vacation
+      # to: 'on'
+    # action:
+      # - service: climate.set_temperature
+        # data_template:
+          # entity_id: climate.house
+          # temperature: "{{ states('input_number.slider_away')}}"
+      # - service: climate.set_temperature
+        # data_template:
+          # entity_id: climate.summer_fan
+          # temperature: !secret temperature_fan_away
 
 
 # Force temperature_home when vacation switched OFF
 # and time is between heat ON and OFF times.
-  - alias: Vacation OFF
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_boolean.vacation
-      to: 'off'
-    condition:
-      - condition: template
-        value_template: >
-          {{ (now().hour * 60 + now().minute) * 60  
-            > states.input_datetime.heat_on_time.attributes.timestamp and 
-            (now().hour * 60 + now().minute) * 60 
-            < states.input_datetime.heat_off_time.attributes.timestamp }} 
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_home')}}"
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.summer_fan
-          temperature: !secret temperature_fan
-        
-# Unconditional switch.away tracking of input_boolean.vacation
-  - alias: Vacation OFF to Away OFF
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_boolean.vacation
-      to: 'off'
-    action:
-      - service: switch.turn_off
-        entity_id: switch.away
+  # - alias: Vacation OFF
+    # initial_state: True
+    # trigger:
+      # platform: state
+      # entity_id: input_boolean.vacation
+      # to: 'off'
+    # condition:
+      # - condition: template
+        # value_template: >
+          # {{ (now().hour * 60 + now().minute) * 60  
+            # > states.input_datetime.heat_on_time.attributes.timestamp and 
+            # (now().hour * 60 + now().minute) * 60 
+            # < states.input_datetime.heat_off_time.attributes.timestamp }} 
+    # action:
+      # - service: climate.set_temperature
+        # data_template:
+          # entity_id: climate.house
+          # temperature: "{{ states('input_number.slider_home')}}"
+      # - service: climate.set_temperature
+        # data_template:
+          # entity_id: climate.summer_fan
+          # temperature: !secret temperature_fan
                 
   - alias: Furnace Ramp ON
     initial_state: True
@@ -402,8 +366,8 @@
           - script.furnace_timer
           - script.timer_heat0
           - script.timer_heat1
-          - switch.heat1
-          - switch.heat0
+          - input_boolean.heat1
+          - input_boolean.heat0
       - service: input_number.set_value
         data:
           entity_id: input_number.slider_power
@@ -473,16 +437,16 @@
     initial_state: True
     trigger:
       platform: state
-      entity_id: switch.watchdog_delayed
+      entity_id: input_boolean.watchdog_delayed
 # Disable watchdog alarm if getting too many alarms
     condition:
       condition: template
       value_template: >
         {%- if is_state("input_boolean.watchdog", "off") and 
         ((is_state("switch.watchdog", "off") and 
-        is_state("switch.watchdog_delayed", "on")) or 
+        is_state("input_boolean.watchdog_delayed", "on")) or 
         (is_state("switch.watchdog", "on") and 
-        is_state("switch.watchdog_delayed", "off"))) -%}
+        is_state("input_boolean.watchdog_delayed", "off"))) -%}
         true
         {%-else -%}
         false
@@ -819,11 +783,11 @@
     initial_state: True
     trigger:
       - platform: state
-        entity_id: switch.away
+        entity_id: input_boolean.away
       - platform: state
-        entity_id: switch.heat0
+        entity_id: input_boolean.heat0
       - platform: state
-        entity_id: switch.heat1
+        entity_id: input_boolean.heat1
     action:
       service: light.turn_on
       data_template:
@@ -831,19 +795,19 @@
         entity_id: light.mqtt_json_light 
         brightness: 100        
         color_name: >
-          {% if is_state("switch.away", "on") %}
+          {% if is_state("input_boolean.away", "on") %}
           blue
           {% else %}
-          {% if is_state("switch.heat1", "off")  and  is_state("switch.heat0", "off")%}
+          {% if is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
           green
           {% endif -%}
-          {% if is_state("switch.heat1", "off")  and  is_state("switch.heat0", "on")%}
+          {% if is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
           yellow
           {% endif -%}
-          {% if is_state("switch.heat1", "on")  and  is_state("switch.heat0", "off")%}
+          {% if is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
           purple
           {% endif -%}
-          {% if is_state("switch.heat1", "on")  and  is_state("switch.heat0", "on")%}
+          {% if is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
           red
           {% endif -%}
           {% endif -%}
@@ -854,9 +818,19 @@
       - platform: state
         entity_id: binary_sensor.ecolink_motion_detector_sensor
         to: 'on'
+    condition:
+      - condition: state  
+        entity_id: binary_sensor.away
+        state: 'on' 
     action:
-      service: mqtt.publish
-      data: 
-        topic: /home/sound
-        payload: "{\"sound_id\":\"Claxon\",\"playcount\":2}"
-
+      - service: mqtt.publish
+        data: 
+          topic: /home/sound
+          payload: "{\"sound\":\"claxon\",\"playcount\":5}"
+      - service: notify.burglar_alarm_sms
+        data:
+          message: 'Burglar Alarm Triggered!'
+          target:
+            - !secret local_phone
+            - !secret travel_phone
+            
