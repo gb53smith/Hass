@@ -252,23 +252,28 @@
         # friendly_name: 'Hourly Utility Meter'
         # unit_of_measurement: 'kWh'
         # value_template: '{{ states.sensor.furnace_hourly.attributes.last_period | float }}'
-        
-  - platform: environment_canada
-    station: BC/s0000141
-    scan_interval: 600
+
+  # - platform: environment_canada
+    # station: BC/s0000141
+    # scan_interval: 600
 
 #Replace trace with 0.1 to prevent graphing error
-  - platform: template
-    sensors:
-      precipitation:
-        value_template: >
-          {%- if
-          is_state('sensor.precipitation_yesterday', 'trace') -%}
-          0.1
-          {%- else -%}
-          {{states.sensor.precipitation_yesterday.state | float}}
-          {%- endif %}
-        unit_of_measurement: 'mm'
+  # - platform: template
+    # sensors:
+      # precipitation:
+        # value_template: >
+          # {%- if
+          # is_state('sensor.precipitation_yesterday', 'trace') -%}
+          # 0.1
+          # {%- else -%}
+          # {{states.sensor.precipitation_yesterday.state | float}}
+          # {%- endif %}
+        # unit_of_measurement: 'mm'
+  - platform: command_line
+    name: Yesterday Rainfall
+    unit_of_measurement: 'mm'
+    scan_interval: 10800
+    command: 'python3 /config/getrain.py'
 
 # Multisensor2 Support        
   - platform: mqtt
