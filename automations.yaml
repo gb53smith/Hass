@@ -783,7 +783,7 @@
     initial_state: True
     trigger:
       - platform: state
-        entity_id: input_boolean.away
+        entity_id: binary_sensor.away
       - platform: state
         entity_id: input_boolean.heat0
       - platform: state
@@ -795,7 +795,7 @@
         entity_id: light.mqtt_json_light 
         brightness: 100        
         color_name: >
-          {% if is_state("input_boolean.away", "on") %}
+          {% if is_state("binary_sensor.away", "on") %}
           blue
           {% else %}
           {% if is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
