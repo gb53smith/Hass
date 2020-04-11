@@ -103,5 +103,7 @@ sensor.soil_moisture_sensor_7_3:
 sensor.soil_moisture_sensor_7_4:
   friendly_name: Debug RFM69 RSSI
   unit_of_measurement: dBm
-  
+input_number.last_house_temp:
+  friendly_name: Last House Temp
+  unit_of_measurement: °C  
   

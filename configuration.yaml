@@ -124,6 +124,9 @@ recorder:
       - sensor.last_power
       - input_number.temp_diff_accum
       - input_number.hourly_temp_diff_accum
+      - input_number.last_house_temp
+      - input_number.last_house_humidity
+      - input_number.last_gas
       ## No need to see history after debug
       - sensor.temp_diff
       - counter.fan_on_minutes
@@ -217,6 +220,9 @@ history:
       - input_number.slider_ac_away
       - input_number.power_test
       - input_number.box_gas
+      - input_number.last_house_temp
+      - input_number.last_house_humidity
+      - input_number.last_gas
       - input_datetime.lr_off_time
       - input_datetime.lr_off_time_random
       - input_datetime.br_on_time_random
@@ -242,6 +248,7 @@ history:
       - input_number.energy_accum
       - input_number.hourly_energy_accum
       - input_number.hourly_temp_diff_accum
+      - input_number.last_house_temp
       - binary_sensor.updater
       - sensor.last_update_trigger
       - sensor.last_update_trigger_2
@@ -524,7 +531,18 @@ input_number:
     max: 100
     step: 0.1
     mode: box
-
+# Save last sensor.multisensor2_humidity for HA restart
+  last_house_humidity:
+    min: 0
+    max: 100
+    step: 1
+    mode: box
+# Save last sensor.multisensor2_gasavg for HA restart
+  last_gas:
+    min: 0
+    max: 5000
+    step: 1
+    mode: box
 # Used to generate at test pattern to power
   # power_test:
     # name: Power Test

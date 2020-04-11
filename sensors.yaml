@@ -241,7 +241,7 @@
       {%- if value_json.humidity -%}
         {{value_json.humidity}}
       {%- else -%}
-        {{ states('sensor.multisensor2_humidity')}}
+        {{ states('input_number.last_house_humidity')}}
       {%- endif -%}    
     
   - platform: mqtt
@@ -274,7 +274,7 @@
       {%- if value_json.gasavg -%}
         {{value_json.gasavg}}
       {%- else -%}
-        {{ states('sensor.multisensor2_gasavg')}}
+        {{ states('input_number.last_gas')}}
       {%- endif -%}
     
   - platform: mqtt

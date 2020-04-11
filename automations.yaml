@@ -848,6 +848,26 @@
         data_template:
           entity_id: input_number.last_house_temp
           value: "{{ states('sensor.multisensor2_temperature')}}"
-    
 
+  - alias: Last House Humidity
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: sensor.multisensor2_humidity
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.last_house_humidity
+          value: "{{ states('sensor.multisensor2_humidity')}}"
+       
+  - alias: Last Gas
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: sensor.multisensor2_gasavg
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.last_gas
+          value: "{{ states('sensor.multisensor2_gasavg')}}"
       
