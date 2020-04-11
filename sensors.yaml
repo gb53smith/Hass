@@ -85,12 +85,12 @@
         unit_of_measurement: '°C'
 
 # Scaling factor used to convert 10 to the actual maximum furnace BTU value        
-  - platform: template
-    sensors:
-      furnace_power:
-        friendly_name: 'Furnace Power'
-        unit_of_measurement: 'kW'
-        value_template: '{{ states.input_number.slider_power.state | float * 1.948}}'
+  # - platform: template
+    # sensors:
+      # furnace_power:
+        # friendly_name: 'Furnace Power'
+        # unit_of_measurement: 'kW'
+        # value_template: '{{ states.input_number.slider_power.state | float * 1.948}}'
 
   # - platform: template
     # sensors:
@@ -101,62 +101,27 @@
 
 # Added for the energy.py script.
 # Units derived from the input power sensor
-  - platform: template
-    sensors:
-      last_power:
-        value_template: '0'
-
-  - platform: template
-    sensors:
-      energy_accum:
-        value_template: '0'
 
   - platform: template
     sensors:
       hourly_energy:
         value_template: ''
- 
- # Used by hour2day.py for energy      
-  - platform: template
-    sensors:
-      hourly_energy_accum:
-        value_template: '0'
 
   - platform: template
     sensors:
       daily_energy:
         value_template: ''
 
-# Used by hour2day.py for temp_diff      
-  - platform: template
-    sensors:
-      hourly_temp_diff_accum:
-        value_template: '0'
-
-  - platform: template
-    sensors:
-      daily_temp_diff:
-        value_template: ''
-        
-# Added for the temp_diff.py script.
-# Units derived from the temp_diff sensor       
-  - platform: template
-    sensors:
-      temp_diff_accum:
-        value_template: '0'
-
   - platform: template
     sensors:
       hour_diff:
         value_template: ''
  
-# Replaced by sensor environmnent_canada
-  # - platform: command_line
-    # name: Yesterday Rainfall
-    # unit_of_measurement: 'mm'
-    # scan_interval: 10800
-    # command: 'python3 /config/getrain.py'
-    
+  - platform: template
+    sensors:
+      daily_temp_diff:
+        value_template: ''
+         
 # This works even after certificate expired
   - platform: command_line
     name: Medalert1 Check
@@ -174,11 +139,6 @@
     name: 'Humidity'
     unit_of_measurement: '%'
     value_template: '{{ value_json.humidity }}'
-
-  # - platform: mqtt
-    # state_topic: '/home/heatstate'
-    # name: 'Heat State'
-    # value_template: '{{ value_json.heatstate }}'
 
   - platform: mqtt
     state_topic: '/home/basement/flood'
@@ -253,22 +213,6 @@
         # unit_of_measurement: 'kWh'
         # value_template: '{{ states.sensor.furnace_hourly.attributes.last_period | float }}'
 
-  # - platform: environment_canada
-    # station: BC/s0000141
-    # scan_interval: 600
-
-#Replace trace with 0.1 to prevent graphing error
-  # - platform: template
-    # sensors:
-      # precipitation:
-        # value_template: >
-          # {%- if
-          # is_state('sensor.precipitation_yesterday', 'trace') -%}
-          # 0.1
-          # {%- else -%}
-          # {{states.sensor.precipitation_yesterday.state | float}}
-          # {%- endif %}
-        # unit_of_measurement: 'mm'
   - platform: command_line
     name: Yesterday Rainfall
     unit_of_measurement: 'mm'
@@ -280,15 +224,13 @@
     state_topic: '/home/ms2'
     name: 'MultiSensor2 Temperature'
     unit_of_measurement: '°C'
-    # Keep last received value if topic does not contain a json element
-    # Doing temperature calibration here
+    # Keep last house temperature if topic does not contain a json element
+    # Also doing temperature calibration here
     value_template: >
       {%- if value_json.temperature -%}
         {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
-      {% elif  states('sensor.multisensor2_temperature') |float > 0 %}
-        {{states('sensor.multisensor2_temperature')}}
       {% else %}
-        21.0
+        {{states('input_number.last_house_temp')}}
       {%- endif %}
 
   - platform: mqtt
@@ -399,3 +341,10 @@
           {% else %}
             {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float - 2.0}}
           {% endif %}
+          
+  - platform: template
+    sensors:
+      furnace_power_plot:
+        friendly_name: 'Furnace Power Plot'
+        unit_of_measurement: 'kW'
+        value_template: '{{ states.input_number.furnace_power.state}}'

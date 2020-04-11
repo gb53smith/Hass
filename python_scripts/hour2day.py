@@ -22,15 +22,17 @@ Instructions:
         
   - platform: template
     sensors:
-      hourly_energy_accum:
-        value_template: '0'
-
-  - platform: template
-    sensors:
       daily_energy:
         value_template: ''
         
-3.  Add this automation to automations.yaml
+3. Add these input_number entities to configuration.yaml
+
+  hourly_energy_accum:
+    min: 0
+    max: 1000
+    step: 0.1
+      
+4.  Add this automation to automations.yaml
     * items are your choosing but must match your sensor names above
 
   - alias: Daily Energy
@@ -45,10 +47,23 @@ Instructions:
         hourly_accum: hourly_energy_accum
         daily: daily_energy
         mode: total
+        
+  - alias: Daily Temp Diff Average
+    initial_state: True
+    trigger:
+      - platform: time_pattern
+        minutes: '/30'      
+    action:
+      service: python_script.hour2day
+      data:
+        hourly: hour_diff
+        hourly_accum: hourly_temp_diff_accum
+        daily: daily_temp_diff
+        mode: average
 
-4. Use the history_graph lovelace card to display the result.
+5. Use the history_graph lovelace card to display the result.
 
-5. Save database size by not recording the hour_accum values.  
+6. Save database size by not recording the hour_accum values.  
    Only the last value needed by the algorithm to calculate the daily energy.
    The last value of all sensors is recorded in the database.  
 
@@ -67,7 +82,7 @@ else:
 	logger.error("Hour2day script missing hourly data.")
     
 if hourly_accum != '0':
-	sensor_hourly_accum = "sensor." + hourly_accum
+	sensor_hourly_accum = "input_number." + hourly_accum
 else:
 	logger.error("Hour2day script missing hourly_accum data.")
 
@@ -102,7 +117,7 @@ if time_hour == 0 and time_min == 0:  #At midnight
     if time.weekday() == 0 and time.month == 11 and time.day < 9:
         samples = 25 # Switch to PST occured on previous day
     average = hourly_accum / samples
-    hass.states.set(sensor_daily, round(average, 2), {"unit_of_measurement": hourly_attr_unit})
+    hass.states.set(sensor_daily, round(average, 1), {"unit_of_measurement": hourly_attr_unit})
     hass.states.set(sensor_hourly_accum, 0, {"unit_of_measurement": hourly_attr_unit}) 
 elif time_min == 30:
     hourly_state = hass.states.get(sensor_hourly)
@@ -110,7 +125,7 @@ elif time_min == 30:
         hourly = float(hourly_state.state)
     except ValueError:
         hourly = 0.0
-    hourly_accum = hourly_accum + hourly
+    hourly_accum = round(hourly_accum + hourly,1)
     hass.states.set(sensor_hourly_accum, hourly_accum, {"unit_of_measurement": hourly_attr_unit}) 
 
 

@@ -15,8 +15,8 @@
             - script.timer_heat0
       - service: input_number.set_value
         data:
-          entity_id: input_number.slider_power
-          value: 4
+          entity_id: input_number.furnace_power
+          value: 7.8
 
   timer_heat0:
     alias: "Heat0 Timer"
@@ -35,8 +35,8 @@
             - script.timer_heat1
       - service: input_number.set_value
         data:
-          entity_id: input_number.slider_power
-          value: 7
+          entity_id: input_number.furnace_power
+          value: 13.6
 
   timer_heat1:
     alias: "Heat1 Timer"
@@ -48,8 +48,8 @@
           entity_id: input_boolean.heat0
       - service: input_number.set_value
         data:
-          entity_id: input_number.slider_power
-          value: 10
+          entity_id: input_number.furnace_power
+          value: 19.5
 
   ir_back:
     alias: "Irrigate Back"
