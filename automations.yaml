@@ -370,7 +370,7 @@
           - input_boolean.heat0
       - service: input_number.set_value
         data:
-          entity_id: input_number.slider_power
+          entity_id: input_number.furnace_power
           value: 0
         
 # Send Notification if temperature reaches min_temp or max_temp.
@@ -492,6 +492,10 @@
             {% else %}
               30
             {% endif %}
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.furnace_power
+          value: 0
       - service: python_script.random_lights
       - delay:
           minutes: 10
@@ -617,7 +621,7 @@
     initial_state: True
     trigger:
       - platform: state
-        entity_id: sensor.furnace_power
+        entity_id: input_number.furnace_power
       - platform: time_pattern
         hours: '/1'      
     action:
@@ -833,4 +837,17 @@
           target:
             - !secret local_phone
             - !secret travel_phone
-            
+
+  - alias: Last House Temperature
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: sensor.multisensor2_temperature
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.last_house_temp
+          value: "{{ states('sensor.multisensor2_temperature')}}"
+    
+
+      

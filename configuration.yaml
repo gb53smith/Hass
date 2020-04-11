@@ -69,7 +69,7 @@ discovery:
 
 python_script:
 
-#Need this only to debug python scripts
+# #Need this only to debug python scripts
 # logger:
   # default: info
   # logs:
@@ -119,41 +119,14 @@ recorder:
       - sensor.lr_random
       - sensor.br_random
       ## Several accumulators for which only the last value is required.
-      - sensor.energy_accum
+      - input_number.energy_accum
+      - input_number.hourly_energy_accum
       - sensor.last_power
-      - sensor.temp_diff_accum
+      - input_number.temp_diff_accum
+      - input_number.hourly_temp_diff_accum
       ## No need to see history after debug
       - sensor.temp_diff
       - counter.fan_on_minutes
-      # environment canada sensors
-      # - sensor.temperature_2
-      # - sensor.forecast
-      # - sensor.chance_of_precip
-      # - sensor.dewpoint
-      # - sensor.wind_chill
-      # - sensor.humidex
-      # - sensor.pressure
-      # - sensor.tendency
-      # - sensor.visibility
-      # # - sensor.humidity_2
-      # - sensor.condition
-      # - sensor.wind_speed
-      # - sensor.wind_gust
-      # - sensor.wind_direction
-      # - sensor.wind_bearing
-      # - sensor.high_temperature
-      # - sensor.low_temperature
-      # - sensor.uv_index
-      # - sensor.pop
-      # - sensor.text_summary
-      # - sensor.warnings
-      # - sensor.watches
-      # - sensor.advisories
-      # - sensor.statements
-      # - sensor.endings
-      # - sensor.air_quality_health_index
-      # - sensor.sim_1
-      # - sensors.statements
       - binary_sensor.updater
       - sensor.last_update_trigger
       - sensor.last_update_trigger_2
@@ -238,7 +211,8 @@ history:
       - input_number.slider_delay_f
       - input_number.slider_delay_b
       - input_number.slider_delay_d
-      - input_number.slider_power
+      - input_number.furnace_power
+      - sensor.furnace_power_plot
       - input_number.slider_ac_home
       - input_number.slider_ac_away
       - input_number.power_test
@@ -251,7 +225,6 @@ history:
       - input_datetime.heat_off_time
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.cooling
-      - sensor.energy_accum
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
       - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
@@ -263,40 +236,12 @@ history:
       - sensor.yesterday_rainfall
       - sensor.precipitation
       - sensor.medalert1_check
-      - sensor.temp_diff_accum
+      - input_number.temp_diff_accum
       - sensor.hour_diff
-      - sensor.furnace_power
-      - sensor.last_power
-      - sensor.hourly_energy_accum
-      - sensor.hourly_temp_diff_accum
-      # environment canada sensors
-      # - sensor.temperature_2
-      # - sensor.forecast
-      # - sensor.chance_of_precip
-      # - sensor.dewpoint
-      # - sensor.wind_chill
-      # - sensor.humidex
-      # - sensor.pressure
-      # - sensor.tendency
-      # - sensor.visibility
-      # # - sensor.humidity_2
-      # - sensor.condition
-      # - sensor.wind_speed
-      # - sensor.wind_gust
-      # - sensor.wind_direction
-      # - sensor.wind_bearing
-      # - sensor.high_temperature
-      # - sensor.low_temperature
-      # - sensor.uv_index
-      # - sensor.pop
-      # - sensor.text_summary
-      # - sensor.warnings
-      # - sensor.watches
-      # - sensor.advisories
-      # - sensor.statements
-      # - sensor.endings
-      # - sensor.sim_1
-      # - sensors.statements
+      - input_number.last_power
+      - input_number.energy_accum
+      - input_number.hourly_energy_accum
+      - input_number.hourly_temp_diff_accum
       - binary_sensor.updater
       - sensor.last_update_trigger
       - sensor.last_update_trigger_2
@@ -512,12 +457,12 @@ input_number:
     max: 29
     step: 1.0
     icon: mdi:target
-  slider_power:
-    name: Slider Power
-    initial: 0
+  furnace_power:
+    name: Furnace Power
     min: 0
     max: 50
-    step: 1
+    step: 0.1
+    unit_of_measurement: 'kW'
   slider_ac_home:
     name: AC Home
     #initial: 21
@@ -537,8 +482,49 @@ input_number:
     min: 100
     max: 2000
     step: 10
+    mode: box
+#stores the last power level when outside of current window.
+  last_power:
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: 'kW'
+    mode: box
+# Accumulates temperature difference values over an hour.
+# Sum at end of hour is copied to sensor.hour_diff for graphing.
+  temp_diff_accum:
+    min: 0
+    max: 1000
+    step: 0.1
+    mode: box
+# Accumulates hourly temperature difference values.
+# Sum at the end of the day is copied to sensor.daily_temp_diff for graphing.
+  hourly_temp_diff_accum:
+    min: 0
+    max: 1000
+    step: 0.1
+    mode: box
+# Accumulates energy use over an hour.
+# Sum at end of hour is copied to sensor.hourly_energy for graphing.
+  energy_accum:
+    min: 0
+    max: 1000
+    step: 0.1
     mode: box    
- 
+# Accumulates hourly energy values.
+# Sum at the end of the day is copied to sensor.daily_energy for graphing.
+  hourly_energy_accum:
+    min: 0
+    max: 1000
+    step: 0.1
+    mode: box
+# Save for sensor.house_temperature restore after HA restart
+  last_house_temp:
+    min: 0
+    max: 100
+    step: 0.1
+    mode: box
+
 # Used to generate at test pattern to power
   # power_test:
     # name: Power Test

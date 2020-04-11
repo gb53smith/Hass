@@ -37,7 +37,7 @@ operation_mode = hvac_attr['hvac_modes']
 #logger.warning("hvac_attr ct = {}".format(current_temperature))
 #logger.warning("hvac_attr t = {}".format(temperature))
 
-away = hass.states.get('switch.away').state
+away = hass.states.get('binary_sensor.away').state
 #logger.warning("away = {}".format(away))
 
 ac_away = hass.states.get('input_number.slider_ac_away').state

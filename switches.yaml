@@ -17,7 +17,7 @@
     command_topic: "/home/irrigation/zone3"
     retain: False
     
-# For MKR1000_MultiSensor Arduino Project
+# For Furnace_Controller Arduino Project
   - platform: mqtt
     name: "Furnace"
     state_topic: "/home/furnace/heat/confirm"
