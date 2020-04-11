@@ -263,9 +263,9 @@
       {%- if value_json.gas -%}
         {{value_json.gas}}
       {%- else -%}
-        {{ states('sensor.multisensor2_gas')}}
+        {{ states('input_number.last_gas')}}
       {%- endif -%}
-      
+ 
   - platform: mqtt
     state_topic: '/home/ms2'
     name: 'MultiSensor2 GasAVG'
@@ -274,7 +274,7 @@
       {%- if value_json.gasavg -%}
         {{value_json.gasavg}}
       {%- else -%}
-        {{ states('input_number.last_gas')}}
+        {{ states('sensor.multisensor2_gasavg')}}
       {%- endif -%}
     
   - platform: mqtt

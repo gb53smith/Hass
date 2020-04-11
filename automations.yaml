@@ -864,10 +864,10 @@
     initial_state: True
     trigger:
       platform: state
-      entity_id: sensor.multisensor2_gasavg
+      entity_id: sensor.multisensor2_gas
     action:
       - service: input_number.set_value
         data_template:
           entity_id: input_number.last_gas
-          value: "{{ states('sensor.multisensor2_gasavg')}}"
+          value: "{{ states('sensor.multisensor2_gas')}}"
       
