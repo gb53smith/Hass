@@ -870,4 +870,38 @@
         data_template:
           entity_id: input_number.last_gas
           value: "{{ states('sensor.multisensor2_gas')}}"
-      
+
+#Added foor spline plotting of Outdoor temperature, pressure and humidity        
+          
+  - alias: Temperature
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: sensor.mysensors_bme280_2_2
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.temperature
+          value: "{{ states('sensor.mysensors_bme280_2_2')}}"
+          
+  - alias: Pressure
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: sensor.mysensors_bme280_2_1
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.pressure
+          value: "{{ states('sensor.mysensors_bme280_2_1')}}"
+
+  - alias: Humidity
+    initial_state: True
+    trigger:
+      platform: state
+      entity_id: sensor.mysensors_bme280_2_3
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.humidity
+          value: "{{ states('sensor.mysensors_bme280_2_3')}}"     

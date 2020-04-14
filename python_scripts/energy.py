@@ -6,7 +6,7 @@ Versions used: HA108.0, HassOS and Raspberry PI 3 B
 
 Description:
 This Python Script converts histograph type power to energy accumulation over one hour
-It needs three sensors to be passed as data values:  power, last_power and hourly_energy
+It needs three input_number entities to be passed as data values:  power, last_power and hourly_energy
 input_number.energy_accum is used to accumulate the energy calculation over an hoour period.
 input_number entities restore the last known value on HA restart.  Sensors do not restore.
 

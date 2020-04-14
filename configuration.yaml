@@ -121,7 +121,7 @@ recorder:
       ## Several accumulators for which only the last value is required.
       - input_number.energy_accum
       - input_number.hourly_energy_accum
-      - sensor.last_power
+      - input_number.last_power
       - input_number.temp_diff_accum
       - input_number.hourly_temp_diff_accum
       - input_number.last_house_temp
@@ -146,6 +146,10 @@ recorder:
       - sensor.geocoded_location_2
       - sensor.connection_type
       - sensor.connection_type_2
+      ## These are copied to input numbers for linear spline smoothing
+      - sensor.mysensors_bme280_2_1
+      - sensor.mysensors_bme280_2_2
+      - sensor.mysensors_bme280_2_3
       - switch.watchdog
       - input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_5_3
@@ -153,6 +157,9 @@ recorder:
     domains:
       - zwave
       - device_tracker
+      - automation
+      - script
+
     ## Recommended to reduce database activity  
     event_types:
       - service_removed
@@ -221,7 +228,10 @@ history:
       - input_number.power_test
       - input_number.box_gas
       - input_number.last_house_temp
-      - input_number.last_house_humidity
+      - input_number.last_house_humidity     
+      - input_number.temperature
+      - input_number.pressure
+      - input_number.humidity
       - input_number.last_gas
       - input_datetime.lr_off_time
       - input_datetime.lr_off_time_random
@@ -543,7 +553,24 @@ input_number:
     max: 5000
     step: 1
     mode: box
-# Used to generate at test pattern to power
+  temperature:
+    min: -20
+    max: 50
+    step: 0.1
+    mode: box
+  pressure:
+    min: 800
+    max: 1200
+    step: 0.1
+    mode: box
+  humidity:
+    min: 0
+    max: 100
+    step: 1
+    mode: box
+
+    
+ # Used to generate at test pattern to power
   # power_test:
     # name: Power Test
     # initial: 0
