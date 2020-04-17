@@ -105,22 +105,22 @@
   - platform: template
     sensors:
       hourly_energy:
-        value_template: ''
+        value_template: '{{ states.input_number.hourly_energy.state | float }}'
 
   - platform: template
     sensors:
       daily_energy:
-        value_template: ''
+        value_template: '{{ states.input_number.daily_energy.state | float }}'
 
   - platform: template
     sensors:
       hour_diff:
-        value_template: ''
+        value_template: '{{ states.input_number.hour_diff.state | float }}'
  
   - platform: template
     sensors:
       daily_temp_diff:
-        value_template: ''
+        value_template: '{{ states.input_number.daily_temp_diff.state | float }}'
          
 # This works even after certificate expired
   - platform: command_line

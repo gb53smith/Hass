@@ -1,6 +1,6 @@
 
 '''
-Date:  April 10, 2020
+Date:  April 16, 2020
 
 Versions used: HA108.0, HassOS and Raspberry PI 3 B
 
@@ -14,18 +14,9 @@ Instructions:
 1. Python Script setup
    1.1 Create /config/python_scripts directory and copy this file to it.
    1.2 Add this line to configuration.yaml
-       python_scripts:
-       
-2. Add these sensors to sensors.yaml
-
-# Units derived from the input power sensor
-
-  - platform: template
-    sensors:
-      hourly_energy:
-        value_template: ''
+       python_scripts:    
         
-3.  Add these input_number entity to configuration.yaml
+2.  Add these input_number entity to configuration.yaml
     input_number used because their values are restored after HA restarts.
     
     furnace_power:
@@ -45,8 +36,14 @@ Instructions:
       min: 0
       max: 1000
       step: 0.1 
+      
+    hourly_energy:
+      min: 0
+      max: 100
+      step: 0.1
+      mode: box 
         
-4.  Add this automation to automations.yaml
+3.  Add this automation to automations.yaml
     * items are your choosing but must match your sensor names above
     input_number.furnace_power is the input power sensor in this example
 
@@ -65,11 +62,11 @@ Instructions:
         energy_accum: energy_accum*
         hourly_energy: hourly_energy*
 
-5. Use the history_graph lovelace card to display the result.
+4. Use the history_graph lovelace card to display the result.
 
-6. Use the Statistics Sensor to average hourly energy over longer periods.  (Not tried yet)
+5. Use the Statistics Sensor to average hourly energy over longer periods.  (Not tried yet)
 
-7. Save database size by not recording the last power and energy accumulator values.  
+6. Save database size by not recording the last power and energy accumulator values.  
    Only the last value needed by the algorithm to calculate the hourly energy.
    The last value of all sensors is recorded in the database.  
 
@@ -99,7 +96,7 @@ else:
 	logger.error("Energy script missing energy_accum data.")
 
 if hourly_energy != '0':
-	sensor_hourly_energy = "sensor." + hourly_energy
+	input_number_hourly_energy = "input_number." + hourly_energy
 else:
 	logger.error("Energy script missing hourly_energy data.")
     
@@ -134,7 +131,7 @@ if time_sec == 0 and time_min == 0:
         hass.states.set(input_number_last_power, (last_power + 0.1), {"unit_of_measurement": power_unit})
         hass.states.set(input_number_last_power, last_power, {"unit_of_measurement": power_unit})
     #Update hourly energy
-    hass.states.set(sensor_hourly_energy, round(energy_accum, 1), {"unit_of_measurement": energy_unit})        
+    hass.states.set(input_number_hourly_energy, round(energy_accum, 1), {"unit_of_measurement": energy_unit})        
     # Clear energy accumulation for the start of the next window
     hass.states.set(input_number_energy_acum, 0, {"unit_of_measurement": energy_unit})
     #logger.warning("Last Window energy_accum = {}".format(energy_accum))    

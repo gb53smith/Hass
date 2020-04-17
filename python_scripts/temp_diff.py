@@ -1,6 +1,6 @@
 
 '''
-Date:  April 10, 2020
+Date:  April 16, 2020
 
 Versions used: HA108.0, HassOS and Raspberry PI 3 B
 
@@ -11,35 +11,35 @@ calculates its average over one hour.
 Uses:
 sensor.temp_diff - inside - outside temperature difference, measured every 5 minutes.
 input_number.temp_diff_accum  - accumulation of 12 sensor.temp_diff ie over one hour.
-sensor.hour_diff - records average of hourly accumulation.
+input_number.hour_diff - records average of hourly accumulation.
 
 Instructions:
 1. Python Script setup
    1.1 Create /config/python_scripts directory and copy this file to it.
    1.2 Add this line to configuration.yaml
-       python_scripts:
-       
-2. Add these sensors to sensors.yaml
-
-  - platform: template
-    sensors:
-      daily_temp_diff:
-        value_template: ''
-        
-  - platform: template
-    sensors:
-      hour_diff:
-        value_template: ''
+       python_scripts:       
  
-3. Add these input_number entities to configuration.yaml
+2. Add these input_number entities to configuration.yaml
 
   temp_diff_accum:
     min: 0
     max: 1000
     step: 0.1
+    
+  hour_diff:
+    min: -20
+    max: 100
+    step: 0.1
+    mode: box
+
+  daily_temp_diff:
+    min: -20
+    max: 100
+    step: 0.1
+    mode: box  
 
         
-4.  Add this automation to automations.yaml
+3.  Add this automation to automations.yaml
     * items are your choosing but must match your sensor/input_number names above
 
   - alias: Hourly Temperature Difference
@@ -54,7 +54,7 @@ Instructions:
         temp_diff_accum: temp_diff_accum*
         hour_diff: hour_diff*
 
-5. Use the history_graph lovelace card to display the result.
+4. Use the history_graph lovelace card to display the result.
    
 
 '''
@@ -76,7 +76,7 @@ else:
 	logger.error("Energy script missing temp_diff_accum data.")
 
 if data_hour_diff != '0':
-	sensor_hour_diff = "sensor." + data_hour_diff
+	input_number_hour_diff = "input_number." + data_hour_diff
 else:
 	logger.error("Energy script missing hour_diff data.")
     
@@ -94,13 +94,13 @@ temp_diff_accum = float(hass.states.get(input_number_temp_diff_accum).state)
 # Needed here for debug
 average = 0
 
-#Transfer average difference calculation to sensor_hour_diff
+#Transfer average difference calculation to input_number_hour_diff
 #Clear temp_diff accumulation at start of interval.
 
 if time_sec == 0 and time_min == 0:
     temp_diff_accum = temp_diff_accum + temp_diff
     average = round((temp_diff_accum / 12), 1)
-    hass.states.set(sensor_hour_diff, average, {"unit_of_measurement": temp_unit}) 
+    hass.states.set(input_number_hour_diff, average, {"unit_of_measurement": temp_unit}) 
     hass.states.set(input_number_temp_diff_accum, 0, {"unit_of_measurement": temp_unit})
     temp_diff_accum = 0
 else:

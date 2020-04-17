@@ -497,6 +497,8 @@
           entity_id: input_number.furnace_power
           value: 0
       - service: python_script.random_lights
+      - service: automation.trigger
+        entity_id: automation.furnace_state
       - delay:
           minutes: 10
       - service: notify.mobile_app_iphone
@@ -593,16 +595,6 @@
     action:
       - service: counter.increment
         entity_id: counter.fan_on_minutes
-        
-  - alias: Reset fan on counter
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_boolean.fan_reset
-      to: 'on'
-    action:
-      - service: counter.reset
-        entity_id: counter.fan_on_minutes    
         
   - alias: Hourly Temperature Difference
     initial_state: True
@@ -792,6 +784,8 @@
         entity_id: input_boolean.heat0
       - platform: state
         entity_id: input_boolean.heat1
+      - platform: state
+        entity_id: climate.mitsubishi_heatpump
     action:
       service: light.turn_on
       data_template:
@@ -813,6 +807,9 @@
           {% endif -%}
           {% if is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
           red
+          {% endif -%}
+          {% if is_state("climate.mitsubishi_heatpump", "cool")%}
+          cyan
           {% endif -%}
           {% endif -%}
           
@@ -871,7 +868,7 @@
           entity_id: input_number.last_gas
           value: "{{ states('sensor.multisensor2_gas')}}"
 
-#Added foor spline plotting of Outdoor temperature, pressure and humidity        
+#Added for spline plotting of Outdoor temperature, pressure and humidity        
           
   - alias: Temperature
     initial_state: True
@@ -904,4 +901,37 @@
       - service: input_number.set_value
         data_template:
           entity_id: input_number.humidity
-          value: "{{ states('sensor.mysensors_bme280_2_3')}}"     
+          value: "{{ states('sensor.mysensors_bme280_2_3')}}" 
+
+  # - alias: Hour Diff
+    # initial_state: True
+    # trigger:
+      # platform: state
+      # entity_id: sensor.hour_diff
+    # action:
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.hour_diff
+          # value: "{{ states('sensor.hour_diff')}}"    
+
+  # - alias: Daily Temp Diff
+    # initial_state: True
+    # trigger:
+      # platform: state
+      # entity_id: sensor.daily_temp_diff
+    # action:
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.daily_temp_diff
+          # value: "{{ states('sensor.daily_temp_diff')}}"    
+
+  # - alias: Daily Energy
+    # initial_state: True
+    # trigger:
+      # platform: state
+      # entity_id: sensor.daily_energy
+    # action:
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.daily_energy
+          # value: "{{ states('sensor.daily_energy')}}"              

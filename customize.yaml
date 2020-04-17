@@ -118,3 +118,17 @@ input_number.humidity:
   friendly_name: Outdoor Humidity
   icon: mdi:water-percent
   unit_of_measurement: '%'
+input_number.hour_diff:
+  friendly_name: Hourly Temp Diff
+  icon: mdi:thermometer
+  unit_of_measurement: °C
+input_number.hourly_energy:
+  friendly_name: Hourly Energy
+  unit_of_measurement: kWh
+input_number.daily_energy:
+  friendly_name: Daily Energy
+  unit_of_measurement: kWh
+input_number.daily_temp_diff:
+  friendly_name: Hourly Temp Diff
+  icon: mdi:thermometer
+  unit_of_measurement: °C 

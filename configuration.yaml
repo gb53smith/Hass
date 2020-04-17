@@ -37,7 +37,7 @@ mysensors:
   optimistic: false
   persistence: true
   retain: true
-  version: '2.0'
+  version: '2.3'
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -69,7 +69,7 @@ discovery:
 
 python_script:
 
-# #Need this only to debug python scripts
+#Need this only to debug python scripts
 # logger:
   # default: info
   # logs:
@@ -213,7 +213,6 @@ history:
       - device_tracker.joyce_ipad2
       - device_tracker.iphone
       - history_graph.rain_fall
-      - input_boolean.fan_reset
       - input_boolean.vacation
       - input_boolean.watchdog
       - input_number.slider_home
@@ -424,11 +423,6 @@ input_boolean:
     initial: off
     icon: mdi:lock
     
-  fan_reset:
-    name: Fan on counter reset
-    initial: off
-    icon: mdi:numeric-0-box
-    
   watchdog_delayed:
     name: "Watchdog Delayed"
     initial: off
@@ -568,8 +562,26 @@ input_number:
     max: 100
     step: 1
     mode: box
-
-    
+  hour_diff:
+    min: -20
+    max: 100
+    step: 0.1
+    mode: box
+  hourly_energy:
+    min: 0
+    max: 100
+    step: 0.1
+    mode: box
+  daily_energy:
+    min: 0
+    max: 100
+    step: 0.1
+    mode: box
+  daily_temp_diff:
+    min: -20
+    max: 100
+    step: 0.1
+    mode: box   
  # Used to generate at test pattern to power
   # power_test:
     # name: Power Test
