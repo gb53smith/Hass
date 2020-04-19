@@ -298,6 +298,7 @@ history:
       - sensor.ecolink_motion_detector_burglar
       - sensor.ecolink_motion_detector_power_management
       - sensor.ecolink_motion_detector_sourcenodeid
+      - sensor.sim_1
 
 # Track the sun
 sun:

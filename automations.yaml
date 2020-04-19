@@ -4,7 +4,7 @@
 #and the ON time in the delay section
 #Note that the start time must be staggered to meet conditions
   - alias: 'Back Irrigation'
-    initial_state: False
+    # initial_state: False
     trigger:
 # "-" needed only for multiple triggers/conditions/services
     - platform: time
@@ -35,7 +35,7 @@
 
 
   - alias: 'Front Irrigation'
-    initial_state: False
+    # initial_state: False
     trigger:
     - platform: time
       at: '07:00:00'
@@ -57,7 +57,7 @@
       entity_id: script.ir_front  
         
   - alias: 'Deck Irrigation'
-    initial_state: False
+    # initial_state: False
     trigger:
     - platform: time
       at: '07:30:00'
@@ -743,7 +743,7 @@
         mode: average
 
   - alias: HVAC
-    initial_state: True
+    # initial_state: True
     trigger:
       - platform: time_pattern
         minutes: '/5'      
@@ -795,22 +795,21 @@
         color_name: >
           {% if is_state("binary_sensor.away", "on") %}
           blue
-          {% else %}
-          {% if is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
+          {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
+          cyan
+          {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
           green
-          {% endif -%}
           {% if is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
           yellow
-          {% endif -%}
-          {% if is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
+          {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
           purple
-          {% endif -%}
-          {% if is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
+          {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
           red
-          {% endif -%}
-          {% if is_state("climate.mitsubishi_heatpump", "cool")%}
+          {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
           cyan
           {% endif -%}
+          {% else -%}
+          white
           {% endif -%}
           
   - alias: Burglar Alarm
