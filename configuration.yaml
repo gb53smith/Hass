@@ -153,12 +153,18 @@ recorder:
       - switch.watchdog
       - input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_5_3
+      - sensor.ecolink_motion_detector_alarm_level
+      - sensor.ecolink_motion_detector_alarm_type
+      - sensor.ecolink_motion_detector_burglar
+      - sensor.ecolink_motion_detector_power_management
+      - sensor.ecolink_motion_detector_sourcenodeid
       
     domains:
       - zwave
       - device_tracker
       - automation
       - script
+      - group
 
     ## Recommended to reduce database activity  
     event_types:
@@ -299,6 +305,7 @@ history:
       - sensor.ecolink_motion_detector_power_management
       - sensor.ecolink_motion_detector_sourcenodeid
       - sensor.sim_1
+#     - input_boolean.fan_reset
 
 # Track the sun
 sun:

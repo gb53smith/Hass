@@ -799,7 +799,7 @@
           cyan
           {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
           green
-          {% if is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
+          {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
           yellow
           {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
           purple
@@ -807,7 +807,6 @@
           red
           {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
           cyan
-          {% endif -%}
           {% else -%}
           white
           {% endif -%}

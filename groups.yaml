@@ -1,31 +1,30 @@
 # Create Groups of Entities
 # Look them up on the front end under Developer Tools <>
 
-  Irrigation Automation:
-    entities:
-    - automation.back_irrigation
-    - automation.front_irrigation
-    - automation.deck_irrigation
-    - input_number.slider_delay
+  # Irrigation Automation:
+    # entities:
+    # - automation.back_irrigation
+    # - automation.front_irrigation
+    # - automation.deck_irrigation
+    # - input_number.slider_delay
 
-  Light Automation:
-    entities:
-    - input_datetime.lr_off_time
+  # Light Automation:
+    # entities:
+    # - input_datetime.lr_off_time
     
-  Heat Automation:
-    entities:
-    - input_datetime.heat_on_time
-    - input_datetime.heat_off_time
-    - input_boolean.fan_reset
-    - counter.fan_on_minutes
+  # Heat Automation:
+    # entities:
+    # - input_datetime.heat_on_time
+    # - input_datetime.heat_off_time
+    # - counter.fan_on_minutes
     
-  Z-Wave Components:
-    entities:
-    - zwave.aeotec_zw090_zstick_gen5_us
-    - zwave.leviton_dzr151lz_binary_scene_switch
-    - zwave.ge_12724_3way_dimmer_switch
-    - zwave.schlage_be469nxcen_touchscreen_deadbolt
-    - zwave.leviton_dz15s_1bz_decora_smart_switch
+  # Z-Wave Components:
+    # entities:
+    # - zwave.aeotec_zw090_zstick_gen5_us
+    # - zwave.leviton_dzr151lz_binary_scene_switch
+    # - zwave.ge_12724_3way_dimmer_switch
+    # - zwave.schlage_be469nxcen_touchscreen_deadbolt
+    # - zwave.leviton_dz15s_1bz_decora_smart_switch
 
   Irrigation Switches:
     entities:
@@ -33,17 +32,17 @@
     - switch.front_irrigation
     - switch.deck_irrigation
 
-  Lights:
-    entities:
-    - switch.leviton_dzr151lz_binary_scene_switch_switch
-    - light.ge_12724_3way_dimmer_switch_level
-    - switch.leviton_dz15s_1bz_decora_smart_switch_switch
+  # Lights:
+    # entities:
+    # - switch.leviton_dzr151lz_binary_scene_switch_switch
+    # - light.ge_12724_3way_dimmer_switch_level
+    # - switch.leviton_dz15s_1bz_decora_smart_switch_switch
 
-  Back Door Lock:
-    entities:
-    - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-    - sensor.back_lock_last_action
-    - sensor.lock_battery
+  # Back Door Lock:
+    # entities:
+    # - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+    # - sensor.back_lock_last_action
+    # - sensor.lock_battery
 
   Switches OFF at Restart:
     entities:
@@ -54,31 +53,31 @@
     - switch.fan
     - switch.watchdog
 
-  Temperature Control:
-    entities:
-    - input_boolean.vacation
-    - climate.house
-    - input_number.slider_home
-    - input_number.slider_away
-    - climate.summer_fan
-    - sensor.heat_state
+  # Temperature Control:
+    # entities:
+    # - input_boolean.vacation
+    # - climate.house
+    # - input_number.slider_home
+    # - input_number.slider_away
+    # - climate.summer_fan
+    # - sensor.heat_state
 
-  Alarms:
-    entities:
-    - input_boolean.watchdog
-    - sensor.flood
+  # Alarms:
+    # entities:
+    # - input_boolean.watchdog
+    # - sensor.flood
 
-  Wine Cellar:
-    entities:
-    - sensor.remote_temperature
-    - sensor.remote_humidity
+  # Wine Cellar:
+    # entities:
+    # - sensor.remote_temperature
+    # - sensor.remote_humidity
     
-  Outdoor Conditions:
-    entities:
-    - sensor.mysensors_bme280_2_2
-    - sensor.mysensors_bme280_2_1
-    - sensor.mysensors_bme280_2_3
-    - sensor.mysensors_bme280_2_4
+  # Outdoor Conditions:
+    # entities:
+    # - sensor.mysensors_bme280_2_2
+    # - sensor.mysensors_bme280_2_1
+    # - sensor.mysensors_bme280_2_3
+    # - sensor.mysensors_bme280_2_4
 
 
 
