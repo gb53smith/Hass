@@ -10,34 +10,28 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: !secret time_zone
+  external_url: !secret base_url
+  internal_url: !secret base_url
   customize: !include customize.yaml
 
 #Show links to resources in log and frontend
 #introduction:
 system_health:
+
 #Uncomment to use ui-lovelace.yaml instead of UI
 # lovelace:
-  # mode: yaml
+# mode: yaml
 
-http:
-  # Comment out next three lines to use NGINX
-  # ssl_certificate: /ssl/fullchain.pem
-  # ssl_key: /ssl/privkey.pem
-  # ssl_profile: intermediate
-  base_url: !secret base_url
-  # ip_ban_enabled: true
-  # login_attempts_threshold: 5
-  
 mysensors:
   gateways:
     - device: mqtt
-      persistence_file: '/config/mysensors1.json'
-      topic_in_prefix: 'mygateway1-out'
-      topic_out_prefix: 'mygateway1-in'
+      persistence_file: "/config/mysensors1.json"
+      topic_in_prefix: "mygateway1-out"
+      topic_out_prefix: "mygateway1-in"
   optimistic: false
   persistence: true
   retain: true
-  version: '2.3'
+  version: "2.3"
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -47,7 +41,8 @@ zwave:
     light.ge_12724_3way_dimmer_switch_level: # Added to keep HA in sync after manual override
       refresh_value: true #refresh the brightness value if the dimmer do "soft off"
       delay: 2 #Amount of seconds before the refresh is done after the actual action.
-      polling_intensity: 1 #Polls the device when each (polling_intensity) polling is performed by polling_interval
+      #Polls the device when each (polling_intensity) polling is performed by polling_interval
+      polling_intensity: 1
 
 # Enables the frontend
 frontend:
@@ -65,24 +60,23 @@ hassio:
 discovery:
   ignore:
     - apple_tv
-    - igd
 
 python_script:
 
 #Need this only to debug python scripts
 # logger:
-  # default: info
-  # logs:
-    # homeassistant.components.python_scripts: debug
-    # homeassistant.components.sensor.time: error
-    
+# default: info
+# logs:
+# homeassistant.components.python_scripts: debug
+# homeassistant.components.sensor.time: error
+
 # #For Mysensors debug only
 # logger:
-  # default: info
-  # logs:
-    # homeassistant.components.mysensors: debug
-    # mysensors: debug
-    
+# default: info
+# logs:
+# homeassistant.components.mysensors: debug
+# mysensors: debug
+
 #Enable IOS App, Home Assistant Companion
 mobile_app:
 
@@ -100,12 +94,11 @@ notify:
     filename: hourly_energy.csv
     timestamp: true
 
-
 # Keep database from growing too large by purging
 # No need to record some entities
 # Must log automations to restore_state of automations on restart
 recorder:
-  purge_interval: 1
+  auto_purge: true
   purge_keep_days: 10
   exclude:
     entities:
@@ -141,8 +134,8 @@ recorder:
       - sensor.battery_state
       - sensor.battery_level
       - sensor.battery_state_2
-      - sensor.battery_level_2 
-      - sensor.geocoded_location    
+      - sensor.battery_level_2
+      - sensor.geocoded_location
       - sensor.geocoded_location_2
       - sensor.connection_type
       - sensor.connection_type_2
@@ -158,7 +151,7 @@ recorder:
       - sensor.ecolink_motion_detector_burglar
       - sensor.ecolink_motion_detector_power_management
       - sensor.ecolink_motion_detector_sourcenodeid
-      
+
     domains:
       - zwave
       - device_tracker
@@ -166,13 +159,13 @@ recorder:
       - script
       - group
 
-    ## Recommended to reduce database activity  
+    ## Recommended to reduce database activity
     event_types:
       - service_removed
       - service_executed
       - platform_discovered
       - homeassistant_start
-      - homeassistant_stop      
+      - homeassistant_stop
       - feedreader
       - service_registered
       - call_service
@@ -201,7 +194,6 @@ logbook:
       - switch.leviton_dz15s_1bz_decora_smart_switch_switch
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.medalert1_check
-
 
 # View the history of only some components
 # Depends on recorder settings.
@@ -233,7 +225,7 @@ history:
       - input_number.power_test
       - input_number.box_gas
       - input_number.last_house_temp
-      - input_number.last_house_humidity     
+      - input_number.last_house_humidity
       - input_number.temperature
       - input_number.pressure
       - input_number.humidity
@@ -276,7 +268,7 @@ history:
       - sensor.battery_level
       - sensor.battery_state_2
       - sensor.battery_level_2
-      - sensor.geocoded_location    
+      - sensor.geocoded_location
       - sensor.geocoded_location_2
       - sensor.connection_type
       - sensor.connection_type_2
@@ -345,7 +337,7 @@ climate:
       seconds: 10
     ac_mode: true
     initial_hvac_mode: "cool"
-    
+
   - platform: mqtt
     name: "Mitsubishi Heatpump"
     # Mode Definitions
@@ -388,7 +380,7 @@ climate:
     fan_mode_state_topic: "heatpump"
     fan_mode_state_template: "{{ value_json.fan }}"
     swing_mode_state_topic: "heatpump"
-    swing_mode_state_template: "{{ value_json.vane }}"    
+    swing_mode_state_template: "{{ value_json.vane }}"
     action_topic: "heatpump"
     action_template: >
       {% if value_json.power == "ON" %}
@@ -403,7 +395,7 @@ climate:
     temperature_command_topic: "heatpump/_set/temperature"
     fan_mode_command_topic: "heatpump/_set/fan"
     swing_mode_command_topic: "heatpump/_set/vane"
-    
+
 # Used in automations to detect when I leave and come home again.  'on' = away
 # Add special condition for Oliver since he sometimes locks using a key code
 # Consolates input_boolean.vacation to override when on vacation.
@@ -415,7 +407,7 @@ binary_sensor:
           {{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")
           or is_state("sensor.back_lock_last_action", "Locked: Oliver")
           or is_state("input_boolean.vacation", "on") }}
-        friendly_name: 'I am away'
+        friendly_name: "I am away"
 
 counter:
   fan_on_minutes:
@@ -430,16 +422,16 @@ input_boolean:
     name: "Watchdog Alarm Override"
     initial: off
     icon: mdi:lock
-    
+
   watchdog_delayed:
     name: "Watchdog Delayed"
     initial: off
 
-  heat0:    
+  heat0:
     name: "Heat State 0"
     initial: off
 
-  heat1:    
+  heat1:
     name: "Heat State 1"
     initial: off
 
@@ -481,7 +473,7 @@ input_number:
     min: 0
     max: 50
     step: 0.1
-    unit_of_measurement: 'kW'
+    unit_of_measurement: "kW"
   slider_ac_home:
     name: AC Home
     #initial: 21
@@ -502,54 +494,54 @@ input_number:
     max: 2000
     step: 10
     mode: box
-#stores the last power level when outside of current window.
+  #stores the last power level when outside of current window.
   last_power:
     min: 0
     max: 100
     step: 0.1
-    unit_of_measurement: 'kW'
+    unit_of_measurement: "kW"
     mode: box
-# Accumulates temperature difference values over an hour.
-# Sum at end of hour is copied to sensor.hour_diff for graphing.
+  # Accumulates temperature difference values over an hour.
+  # Sum at end of hour is copied to sensor.hour_diff for graphing.
   temp_diff_accum:
     min: 0
     max: 1000
     step: 0.1
     mode: box
-# Accumulates hourly temperature difference values.
-# Sum at the end of the day is copied to sensor.daily_temp_diff for graphing.
+  # Accumulates hourly temperature difference values.
+  # Sum at the end of the day is copied to sensor.daily_temp_diff for graphing.
   hourly_temp_diff_accum:
     min: 0
     max: 1000
     step: 0.1
     mode: box
-# Accumulates energy use over an hour.
-# Sum at end of hour is copied to sensor.hourly_energy for graphing.
+  # Accumulates energy use over an hour.
+  # Sum at end of hour is copied to sensor.hourly_energy for graphing.
   energy_accum:
     min: 0
     max: 1000
     step: 0.1
-    mode: box    
-# Accumulates hourly energy values.
-# Sum at the end of the day is copied to sensor.daily_energy for graphing.
+    mode: box
+  # Accumulates hourly energy values.
+  # Sum at the end of the day is copied to sensor.daily_energy for graphing.
   hourly_energy_accum:
     min: 0
     max: 1000
     step: 0.1
     mode: box
-# Save for sensor.house_temperature restore after HA restart
+  # Save for sensor.house_temperature restore after HA restart
   last_house_temp:
     min: 0
     max: 100
     step: 0.1
     mode: box
-# Save last sensor.multisensor2_humidity for HA restart
+  # Save last sensor.multisensor2_humidity for HA restart
   last_house_humidity:
     min: 0
     max: 100
     step: 1
     mode: box
-# Save last sensor.multisensor2_gasavg for HA restart
+  # Save last sensor.multisensor2_gasavg for HA restart
   last_gas:
     min: 0
     max: 5000
@@ -589,14 +581,14 @@ input_number:
     min: -20
     max: 100
     step: 0.1
-    mode: box   
- # Used to generate at test pattern to power
+    mode: box
+  # Used to generate at test pattern to power
   # power_test:
-    # name: Power Test
-    # initial: 0
-    # min: 0
-    # max: 50
-    # step: 1    
+  # name: Power Test
+  # initial: 0
+  # min: 0
+  # max: 50
+  # step: 1
 
 input_datetime:
   lr_off_time:
@@ -618,7 +610,7 @@ input_datetime:
     name: Bed Room Light Random OFF
     has_date: false
     has_time: true
-    
+
   heat_on_time:
     name: Heat ON time
     has_date: false
@@ -629,29 +621,28 @@ input_datetime:
     has_date: false
     has_time: true
 
-# Replaced by Python energy.py script    
+# Replaced by Python energy.py script
 # utility_meter:
-  # furnace_hourly:
-    # source: sensor.sensor_furnace_power_integral
-    # cycle: hourly
-  # furnace_daily:
-    # source: sensor.sensor_furnace_power_integral
-    # cycle: daily
- 
+# furnace_hourly:
+# source: sensor.sensor_furnace_power_integral
+# cycle: hourly
+# furnace_daily:
+# source: sensor.sensor_furnace_power_integral
+# cycle: daily
 
 #This worked with a Google Home Mini to control all switches and light using a voice command
 #Joyce considered this an invasion of privacy so I had to disconnect the service.
 #I changed the HA password after disconnection.
 # google_assistant:
-  # project_id: graham-bb666
-  # client_id: WRWcrvxwzflm4cihLtNGM29XvUfNNuz4Xr2fbdgRMa0vBoUoGAZrnYEKwByuYBQMpaQ7E4OSTJw8pE1e
-  # access_token: JdC6XKyrVDi7tLCTmY1WDvmgs59o5cScdKk7oMu5j1QIED6mHxrDRKY978h26qqsgnOGKjACCQruEhEc
-  # agent_user_id: gb53smith@gmail.com
-  # api_key: AIzaSyAWxbX5diYHEskrc3pHEcNR-DH0UVocRNk
-  # exposed_domains:
-    # - switch
-    # - light
-    
+# project_id: graham-bb666
+# client_id: WRWcrvxwzflm4cihLtNGM29XvUfNNuz4Xr2fbdgRMa0vBoUoGAZrnYEKwByuYBQMpaQ7E4OSTJw8pE1e
+# access_token: JdC6XKyrVDi7tLCTmY1WDvmgs59o5cScdKk7oMu5j1QIED6mHxrDRKY978h26qqsgnOGKjACCQruEhEc
+# agent_user_id: gb53smith@gmail.com
+# api_key: AIzaSyAWxbX5diYHEskrc3pHEcNR-DH0UVocRNk
+# exposed_domains:
+# - switch
+# - light
+
 # MultiSensor2 Support
 # ms2 added to prevent possible conflict with Z-wave light.  It is needed.
 light ms2:
