@@ -621,28 +621,6 @@ input_datetime:
     has_date: false
     has_time: true
 
-# Replaced by Python energy.py script
-# utility_meter:
-# furnace_hourly:
-# source: sensor.sensor_furnace_power_integral
-# cycle: hourly
-# furnace_daily:
-# source: sensor.sensor_furnace_power_integral
-# cycle: daily
-
-#This worked with a Google Home Mini to control all switches and light using a voice command
-#Joyce considered this an invasion of privacy so I had to disconnect the service.
-#I changed the HA password after disconnection.
-# google_assistant:
-# project_id: graham-bb666
-# client_id: WRWcrvxwzflm4cihLtNGM29XvUfNNuz4Xr2fbdgRMa0vBoUoGAZrnYEKwByuYBQMpaQ7E4OSTJw8pE1e
-# access_token: JdC6XKyrVDi7tLCTmY1WDvmgs59o5cScdKk7oMu5j1QIED6mHxrDRKY978h26qqsgnOGKjACCQruEhEc
-# agent_user_id: gb53smith@gmail.com
-# api_key: AIzaSyAWxbX5diYHEskrc3pHEcNR-DH0UVocRNk
-# exposed_domains:
-# - switch
-# - light
-
 # MultiSensor2 Support
 # ms2 added to prevent possible conflict with Z-wave light.  It is needed.
 light ms2:
