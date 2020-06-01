@@ -21,6 +21,7 @@ system_health:
 #Uncomment to use ui-lovelace.yaml instead of UI
 # lovelace:
 # mode: yaml
+#GBS new comment 5/31/2020
 
 mysensors:
   gateways:
