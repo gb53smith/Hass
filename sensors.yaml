@@ -1,350 +1,349 @@
+- platform: template
+  sensors:
+    back_lock_last_action:
+      friendly_name: "Lock Last Action"
+      value_template: >
 
-  - platform: template
-    sensors:
-      back_lock_last_action:
-        friendly_name: 'Lock Last Action'
-        value_template: >
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
+        Unlocked: Graham
+        {% endif %}
 
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
-          Unlocked: Graham
-          {% endif %}
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '2')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
+        Unlocked: Joyce
+        {% endif %}
 
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '2')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
-          Unlocked: Joyce
-          {% endif %}
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '3')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
+        Unlocked: Oliver
+        {% endif %}
 
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '3')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
-          Unlocked: Oliver
-          {% endif %}
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '2')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '22') %}
+        Unlocked: Inside Deadbolt
+        {% endif %}
 
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '2')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '22') %}
-          Unlocked: Inside Deadbolt
-          {% endif %}
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '3')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '5')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '18') %}
+        Locked: Oliver
+        {% endif %}
 
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '3')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '5')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '18') %}
-          Locked: Oliver
-          {% endif %}
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '1')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '21') %}
+        Locked: Inside Deadbolt
+        {% endif %}
 
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '1')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '21') %}
-          Locked: Inside Deadbolt
-          {% endif %}
-
-          {% if
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '0')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '5')
-          and
-          is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '18') %}
-          Locked: Outside Keypad
-          {% endif %}
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '0')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '5')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '18') %}
+        Locked: Outside Keypad
+        {% endif %}
 
 # The "back_lock_last_action" state value "Locked: Outside Keypad" can be used to detect being away from the house.
 
-  - platform: template
-    sensors:
-      lock_battery:
-        friendly_name: 'Lock Battery'
-        value_template: '{{ states.zwave.schlage_be469nxcen_touchscreen_deadbolt.attributes.battery_level|default(-1)|int }}'
-        unit_of_measurement: '%' 
+- platform: template
+  sensors:
+    lock_battery:
+      friendly_name: "Lock Battery"
+      value_template: "{{ states.zwave.schlage_be469nxcen_touchscreen_deadbolt.attributes.battery_level|default(-1)|int }}"
+      unit_of_measurement: "%"
 
-  - platform: template
-    sensors:
-      temp_diff:
-        friendly_name: 'In-Out Temperature Diff'
-        value_template: '{{ ((states.sensor.house_temperature.state | float) - (states.sensor.mysensors_bme280_2_2.state | float)) | round(1) }}'
-        unit_of_measurement: '°C'
+- platform: template
+  sensors:
+    temp_diff:
+      friendly_name: "In-Out Temperature Diff"
+      value_template: "{{ ((states.sensor.house_temperature.state | float) - (states.sensor.mysensors_bme280_2_2.state | float)) | round(1) }}"
+      unit_of_measurement: "°C"
 
-# Scaling factor used to convert 10 to the actual maximum furnace BTU value        
-  # - platform: template
-    # sensors:
-      # furnace_power:
-        # friendly_name: 'Furnace Power'
-        # unit_of_measurement: 'kW'
-        # value_template: '{{ states.input_number.slider_power.state | float * 1.948}}'
+# Scaling factor used to convert 10 to the actual maximum furnace BTU value
+# - platform: template
+# sensors:
+# furnace_power:
+# friendly_name: 'Furnace Power'
+# unit_of_measurement: 'kW'
+# value_template: '{{ states.input_number.slider_power.state | float * 1.948}}'
 
-  # - platform: template
-    # sensors:
-      # power_test:
-        # friendly_name: 'Power Test'
-        # unit_of_measurement: 'kW'
-        # value_template: '{{ states.input_number.power_test.state | float }}'
+# - platform: template
+# sensors:
+# power_test:
+# friendly_name: 'Power Test'
+# unit_of_measurement: 'kW'
+# value_template: '{{ states.input_number.power_test.state | float }}'
 
 # Added for the energy.py script.
 # Units derived from the input power sensor
 
-  - platform: template
-    sensors:
-      hourly_energy:
-        value_template: '{{ states.input_number.hourly_energy.state | float }}'
+- platform: template
+  sensors:
+    hourly_energy:
+      value_template: "{{ states.input_number.hourly_energy.state | float }}"
 
-  - platform: template
-    sensors:
-      daily_energy:
-        value_template: '{{ states.input_number.daily_energy.state | float }}'
+- platform: template
+  sensors:
+    daily_energy:
+      value_template: "{{ states.input_number.daily_energy.state | float }}"
 
-  - platform: template
-    sensors:
-      hour_diff:
-        value_template: '{{ states.input_number.hour_diff.state | float }}'
- 
-  - platform: template
-    sensors:
-      daily_temp_diff:
-        value_template: '{{ states.input_number.daily_temp_diff.state | float }}'
-         
+- platform: template
+  sensors:
+    hour_diff:
+      value_template: "{{ states.input_number.hour_diff.state | float }}"
+
+- platform: template
+  sensors:
+    daily_temp_diff:
+      value_template: "{{ states.input_number.daily_temp_diff.state | float }}"
+
 # This works even after certificate expired
-  - platform: command_line
-    name: Medalert1 Check
-    scan_interval: 600
-    command: 'curl -m 5 -sSf https://medalert1.duckdns.org > /dev/null && echo UP || echo FIX' 
+- platform: command_line
+  name: Medalert1 Check
+  scan_interval: 600
+  command: "curl -m 5 -sSf https://medalert1.duckdns.org > /dev/null && echo UP || echo FIX"
 
-  - platform: mqtt
-    state_topic: '/home/multisensor1'
-    name: 'Temperature'
-    unit_of_measurement: '°C'
-    value_template: '{{ value_json.temperature }}'
+- platform: mqtt
+  state_topic: "/home/multisensor1"
+  name: "Temperature"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.temperature }}"
 
-  - platform: mqtt
-    state_topic: '/home/multisensor1'
-    name: 'Humidity'
-    unit_of_measurement: '%'
-    value_template: '{{ value_json.humidity }}'
+- platform: mqtt
+  state_topic: "/home/multisensor1"
+  name: "Humidity"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.humidity }}"
 
-  - platform: mqtt
-    state_topic: '/home/basement/flood'
-    name: 'Flood'
+- platform: mqtt
+  state_topic: "/home/basement/flood"
+  name: "Flood"
 
-  - platform: mqtt
-    state_topic: '/home/TH_sensor1'
-    name: 'Remote Temperature'
-    unit_of_measurement: '°C'
-    value_template: '{{ value_json.temperature }}'
+- platform: mqtt
+  state_topic: "/home/TH_sensor1"
+  name: "Remote Temperature"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.temperature }}"
 
-  - platform: mqtt
-    state_topic: '/home/TH_sensor1'
-    name: 'Remote Humidity'
-    unit_of_measurement: '%'
-    value_template: '{{ value_json.humidity }}'
+- platform: mqtt
+  state_topic: "/home/TH_sensor1"
+  name: "Remote Humidity"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.humidity }}"
 
-  # - platform: mqtt
-    # state_topic: 'heatpump/status'
-    # name: 'Cooling'
-    # value_template: '{{ value_json.operating}}'
+# - platform: mqtt
+# state_topic: 'heatpump/status'
+# name: 'Cooling'
+# value_template: '{{ value_json.operating}}'
 
-  # # Using sensor template to rename heatpump status from above sensor mqtt   
-  # - platform: template
-    # sensors:
-      # ac_cooling:
-        # friendly_name: 'AC Operation'
-        # value_template: >
-          # {% if is_state('sensor.cooling', 'True') -%}
-          # Cooling
-          # {% else -%}
-          # Idle
-          # {% endif %}   
+# # Using sensor template to rename heatpump status from above sensor mqtt
+# - platform: template
+# sensors:
+# ac_cooling:
+# friendly_name: 'AC Operation'
+# value_template: >
+# {% if is_state('sensor.cooling', 'True') -%}
+# Cooling
+# {% else -%}
+# Idle
+# {% endif %}
 
-  # - platform: systemmonitor
-    # resources:
-      # - type: processor_use
+# - platform: systemmonitor
+# resources:
+# - type: processor_use
 
-  # - platform: command_line
-    # name: CPU Temperature
-    # unit_of_measurement: "°C"
-    # scan_interval: 300
-    # command: "python3 /config/cputemp.py"
+# - platform: command_line
+# name: CPU Temperature
+# unit_of_measurement: "°C"
+# scan_interval: 300
+# command: "python3 /config/cputemp.py"
 
-  - platform: random
-    name: lr_random
-    minimum: 0
-    maximum: 30
-    scan_interval: 3600
+- platform: random
+  name: lr_random
+  minimum: 0
+  maximum: 30
+  scan_interval: 3600
 
-  - platform: random
-    name: br_random
-    minimum: 0
-    maximum: 10
-    scan_interval: 3600
+- platform: random
+  name: br_random
+  minimum: 0
+  maximum: 10
+  scan_interval: 3600
 
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
+- platform: time_date
+  display_options:
+    - "time"
+    - "date"
 
 # Replaced by Python energy.py script
-  # - platform: integration 
-    # source: sensor.furnace_power
-    # unit_time: h
-    # method: left
+# - platform: integration
+# source: sensor.furnace_power
+# unit_time: h
+# method: left
 
 # - platform: template
-    # sensors:
-      # util_meter:
-        # friendly_name: 'Hourly Utility Meter'
-        # unit_of_measurement: 'kWh'
-        # value_template: '{{ states.sensor.furnace_hourly.attributes.last_period | float }}'
+# sensors:
+# util_meter:
+# friendly_name: 'Hourly Utility Meter'
+# unit_of_measurement: 'kWh'
+# value_template: '{{ states.sensor.furnace_hourly.attributes.last_period | float }}'
 
-  - platform: command_line
-    name: Yesterday Rainfall
-    unit_of_measurement: 'mm'
-    scan_interval: 10800
-    command: 'python3 /config/getrain.py'
+- platform: command_line
+  name: Yesterday Rainfall
+  unit_of_measurement: "mm"
+  scan_interval: 10800
+  command: "python3 /config/getrain.py"
 
-# Multisensor2 Support        
-  - platform: mqtt
-    state_topic: '/home/ms2'
-    name: 'MultiSensor2 Temperature'
-    unit_of_measurement: '°C'
-    # Keep last house temperature if topic does not contain a json element
-    # Also doing temperature calibration here
-    value_template: >
-      {%- if value_json.temperature -%}
-        {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
-      {% else %}
-        {{states('input_number.last_house_temp')}}
-      {%- endif %}
+# Multisensor2 Support
+- platform: mqtt
+  state_topic: "/home/ms2"
+  name: "MultiSensor2 Temperature"
+  unit_of_measurement: "°C"
+  # Keep last house temperature if topic does not contain a json element
+  # Also doing temperature calibration here
+  value_template: >
+    {%- if value_json.temperature -%}
+      {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
+    {% else %}
+      {{states('input_number.last_house_temp')}}
+    {%- endif %}
 
-  - platform: mqtt
-    state_topic: '/home/ms2'
-    name: 'MultiSensor2 Humidity'
-    unit_of_measurement: '%'
-    value_template: >
-      {%- if value_json.humidity -%}
-        {{value_json.humidity}}
-      {%- else -%}
-        {{ states('input_number.last_house_humidity')}}
-      {%- endif -%}    
-    
-  - platform: mqtt
-    state_topic: '/home/ms2'
-    name: 'MultiSensor2 Pressure'
-    unit_of_measurement: 'hPa'
-    value_template: >
-      {%- if value_json.pressure -%}
-        {{value_json.pressure}}
-      {%- else -%}
-        {{ states('sensor.multisensor2_pressure')}}
-      {%- endif -%}
+- platform: mqtt
+  state_topic: "/home/ms2"
+  name: "MultiSensor2 Humidity"
+  unit_of_measurement: "%"
+  value_template: >
+    {%- if value_json.humidity -%}
+      {{value_json.humidity}}
+    {%- else -%}
+      {{ states('input_number.last_house_humidity')}}
+    {%- endif -%}
 
-  - platform: mqtt
-    state_topic: '/home/ms2'
-    name: 'MultiSensor2 Gas'
-    unit_of_measurement: 'Kohms'
-    value_template: >
-      {%- if value_json.gas -%}
-        {{value_json.gas}}
-      {%- else -%}
-        {{ states('input_number.last_gas')}}
-      {%- endif -%}
- 
-  - platform: mqtt
-    state_topic: '/home/ms2'
-    name: 'MultiSensor2 GasAVG'
-    unit_of_measurement: 'Kohms'
-    value_template: >
-      {%- if value_json.gasavg -%}
-        {{value_json.gasavg}}
-      {%- else -%}
-        {{ states('sensor.multisensor2_gasavg')}}
-      {%- endif -%}
-    
-  - platform: mqtt
-    state_topic: '/home/ms2'
-    name: 'MultiSensor2 RSSI'
-    unit_of_measurement: 'dBm'
-    value_template: >
-      {%- if value_json.rssi -%}
-        {{value_json.rssi}}
-      {%- else -%}
-        {{ states('sensor.multisensor2_rssi')}}
-      {%- endif -%}
+- platform: mqtt
+  state_topic: "/home/ms2"
+  name: "MultiSensor2 Pressure"
+  unit_of_measurement: "hPa"
+  value_template: >
+    {%- if value_json.pressure -%}
+      {{value_json.pressure}}
+    {%- else -%}
+      {{ states('sensor.multisensor2_pressure')}}
+    {%- endif -%}
 
-  - platform: template
-    sensors:
-      iaq:
-        unit_of_measurement: 'Index'
-        value_template: >
-          {% set humOffset = states('sensor.multisensor2_humidity')|float - 40.0 %}
-          {% set gas = states('sensor.multisensor2_gas')|float %}
-          {% set gasavg = states('input_number.box_gas')|float %}
-          {% if humOffset > 0 %}
-          {% set humScore = (60 - humOffset) * 0.417 %}
-          {% else %}
-          {% set humScore = (40 + humOffset) * 0.625 %}
-          {% endif %}
-          {% if (gasavg - gas) > 0 %}
-          {% set gasScore =  gas / gasavg * 75  %}
-          {% else %}
-          {% set gasScore = 75 %}
-          {% endif %}
-          {% set score = (100 - humScore - gasScore) * 5 %}
-          {% if score >= 301 %}
-          6
-          {% elif score >= 201  and  score <= 300 %}
-          5
-          {% elif score >= 176  and  score <= 200 %}
-          4
-          {% elif score >= 151  and  score <= 175 %}
-          3
-          {% elif score >= 51  and  score <= 150 %}
-          2
-          {% elif score >= 0  and  score <= 50 %}
-          1
-          {% endif %}
+- platform: mqtt
+  state_topic: "/home/ms2"
+  name: "MultiSensor2 Gas"
+  unit_of_measurement: "Kohms"
+  value_template: >
+    {%- if value_json.gas -%}
+      {{value_json.gas}}
+    {%- else -%}
+      {{ states('input_number.last_gas')}}
+    {%- endif -%}
+
+- platform: mqtt
+  state_topic: "/home/ms2"
+  name: "MultiSensor2 GasAVG"
+  unit_of_measurement: "Kohms"
+  value_template: >
+    {%- if value_json.gasavg -%}
+      {{value_json.gasavg}}
+    {%- else -%}
+      {{ states('sensor.multisensor2_gasavg')}}
+    {%- endif -%}
+
+- platform: mqtt
+  state_topic: "/home/ms2"
+  name: "MultiSensor2 RSSI"
+  unit_of_measurement: "dBm"
+  value_template: >
+    {%- if value_json.rssi -%}
+      {{value_json.rssi}}
+    {%- else -%}
+      {{ states('sensor.multisensor2_rssi')}}
+    {%- endif -%}
+
+- platform: template
+  sensors:
+    iaq:
+      unit_of_measurement: "Index"
+      value_template: >
+        {% set humOffset = states('sensor.multisensor2_humidity')|float - 40.0 %}
+        {% set gas = states('sensor.multisensor2_gas')|float %}
+        {% set gasavg = states('input_number.box_gas')|float %}
+        {% if humOffset > 0 %}
+        {% set humScore = (60 - humOffset) * 0.417 %}
+        {% else %}
+        {% set humScore = (40 + humOffset) * 0.625 %}
+        {% endif %}
+        {% if (gasavg - gas) > 0 %}
+        {% set gasScore =  gas / gasavg * 75  %}
+        {% else %}
+        {% set gasScore = 75 %}
+        {% endif %}
+        {% set score = (100 - humScore - gasScore) * 5 %}
+        {% if score >= 301 %}
+        6
+        {% elif score >= 201  and  score <= 300 %}
+        5
+        {% elif score >= 176  and  score <= 200 %}
+        4
+        {% elif score >= 151  and  score <= 175 %}
+        3
+        {% elif score >= 51  and  score <= 150 %}
+        2
+        {% elif score >= 0  and  score <= 50 %}
+        1
+        {% endif %}
 
 # The BME280 reacts too quickly for thermostat and needs smoothing
-  # - platform: filter
-    # name: "Filtered Temperature"
-    # entity_id: sensor.multisensor2_temperature
-    # filters:
-      # - filter: time_simple_moving_average
-        # window_size: '00:05:00'
-        # precision: 1
+# - platform: filter
+# name: "Filtered Temperature"
+# entity_id: sensor.multisensor2_temperature
+# filters:
+# - filter: time_simple_moving_average
+# window_size: '00:05:00'
+# precision: 1
 
-# If watchdog fails switch temperature sensors        
-  - platform: template
-    sensors:
-      house_temperature:
-        friendly_name: 'House Temperature'
-        value_template: >
-          {% if is_state("input_boolean.watchdog", "off") %}
-            {{states.sensor.multisensor2_temperature.state | float}}
-          {% else %}
-            {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float - 2.0}}
-          {% endif %}
-          
-  - platform: template
-    sensors:
-      furnace_power_plot:
-        friendly_name: 'Furnace Power Plot'
-        unit_of_measurement: 'kW'
-        value_template: '{{ states.input_number.furnace_power.state}}'
+# If watchdog fails switch temperature sensors
+- platform: template
+  sensors:
+    house_temperature:
+      friendly_name: "House Temperature"
+      value_template: >
+        {% if is_state("input_boolean.watchdog", "off") %}
+          {{states.sensor.multisensor2_temperature.state | float}}
+        {% else %}
+          {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float - 2.0}}
+        {% endif %}
+
+- platform: template
+  sensors:
+    furnace_power_plot:
+      friendly_name: "Furnace Power Plot"
+      unit_of_measurement: "kW"
+      value_template: "{{ states.input_number.furnace_power.state}}"
