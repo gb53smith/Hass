@@ -3,190 +3,188 @@
 #Set start times in the trigger sections
 #and the ON time in the delay section
 #Note that the start time must be staggered to meet conditions
-  - alias: 'Back Irrigation'
-    # initial_state: False
-    trigger:
-# "-" needed only for multiple triggers/conditions/services
+- alias: "Back Irrigation"
+  # initial_state: False
+  trigger:
+    # "-" needed only for multiple triggers/conditions/services
     - platform: time
-      at: '06:30:00'
+      at: "06:30:00"
     - platform: time
-      at: '19:00:00'
-    condition:
-# These conditions not really needed since the hardware was 
-# modified to only allow one relay ON at a time.
-# If a command is received to turn one relay ON the others
-# are turned OFF.
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: switch.deck_irrigation
-          state: 'off'
-        - condition: state
-          entity_id: switch.front_irrigation
-          state: 'off'
-# Copy this to Front Irrigation when not using cold frame
-# float is needed to convert string state to float for comparison
-# Deck irrigation is mostly under cover so I need watering every day.
-        - condition: template
-          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
-    action:
-      service: script.turn_on
-      entity_id: script.ir_back
+      at: "19:00:00"
+  condition:
+    # These conditions not really needed since the hardware was
+    # modified to only allow one relay ON at a time.
+    # If a command is received to turn one relay ON the others
+    # are turned OFF.
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.deck_irrigation
+        state: "off"
+      - condition: state
+        entity_id: switch.front_irrigation
+        state: "off"
+      # Copy this to Front Irrigation when not using cold frame
+      # float is needed to convert string state to float for comparison
+      # Deck irrigation is mostly under cover so I need watering every day.
+      - condition: template
+        value_template: "{{ states.sensor.yesterday_rainfall.state | float < 5 }}"
+  action:
+    service: script.turn_on
+    entity_id: script.ir_back
 
+- alias: "Front Irrigation"
+  # initial_state: False
+  trigger:
+    - platform: time
+      at: "07:00:00"
+    - platform: time
+      at: "19:30:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.deck_irrigation
+        state: "off"
+      - condition: state
+        entity_id: switch.back_irrigation
+        state: "off"
+      - condition: template
+        value_template: "{{ states.sensor.yesterday_rainfall.state | float < 5 }}"
+  action:
+    service: script.turn_on
+    entity_id: script.ir_front
 
-  - alias: 'Front Irrigation'
-    # initial_state: False
-    trigger:
+- alias: "Deck Irrigation"
+  # initial_state: False
+  trigger:
     - platform: time
-      at: '07:00:00'
+      at: "07:30:00"
     - platform: time
-      at: '19:30:00'
-    condition: 
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: switch.deck_irrigation
-          state: 'off'
-        - condition: state
-          entity_id: switch.back_irrigation
-          state: 'off'
-        - condition: template
-          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
-    action:
-      service: script.turn_on
-      entity_id: script.ir_front  
-        
-  - alias: 'Deck Irrigation'
-    # initial_state: False
-    trigger:
-    - platform: time
-      at: '07:30:00'
-    - platform: time
-      at: '20:00:00'
-    condition: 
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: switch.back_irrigation
-          state: 'off'
-        - condition: state
-          entity_id: switch.front_irrigation
-          state: 'off'
-        - condition: template
-          value_template: '{{ states.sensor.yesterday_rainfall.state | float < 5 }}'
-    action:
-      service: script.turn_on
-      entity_id: script.ir_deck
-        
-  - alias: 'Irrigation Safety'
-# In case some interruption occurs while a zone is ON
-# Not sure this is necessary but does not hurt to include
-# Time are after the last zone cycle
-    initial_state: True
-    trigger:
-    - platform: time
-      at: '08:30:00'
-    - platform: time
-      at: '20:30:00'
-    action:
-      - service: homeassistant.turn_off
-        entity_id: group.irrigation_switches
-        
-# Turn ON on hour before sunset an setup random ON/OFF time for lights when Away    
-  - alias: 'Living Room Light ON'
-    initial_state: True
-    trigger:
-      platform: sun
-      event: sunset
-      offset: "-01:00:00"
-    action:
-      - service: switch.turn_on
-        entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
-      - service: python_script.random_lights
+      at: "20:00:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.back_irrigation
+        state: "off"
+      - condition: state
+        entity_id: switch.front_irrigation
+        state: "off"
+      - condition: template
+        value_template: "{{ states.sensor.yesterday_rainfall.state | float < 5 }}"
+  action:
+    service: script.turn_on
+    entity_id: script.ir_deck
 
-          
-# Turn OFF at input_datetime.lr_off_time ONLY when not on vacation
-  - alias: 'Living Room Light OFF at Home'
-    initial_state: True
-    trigger:
-      platform: template
-      value_template: >
-        {{ (states.input_datetime.lr_off_time.attributes.timestamp | int 
-        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}   
-    condition:
-      condition: state    
-      entity_id: input_boolean.vacation
-      state: 'off'     
-    action:
-      service: switch.turn_off
-      entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch    
-      
-  - alias: 'Living Room Light OFF when Vacation'
-    initial_state: True
-    trigger:
-      platform: template
-      value_template: >
-        {{ (states.input_datetime.lr_off_time_random.attributes.timestamp | int 
-        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
-    condition:
-      condition: state    
-      entity_id: input_boolean.vacation
-      state: 'on'     
-    action:
-      service: switch.turn_off
+- alias: "Irrigation Safety"
+  # In case some interruption occurs while a zone is ON
+  # Not sure this is necessary but does not hurt to include
+  # Time are after the last zone cycle
+  initial_state: True
+  trigger:
+    - platform: time
+      at: "08:30:00"
+    - platform: time
+      at: "20:30:00"
+  action:
+    - service: homeassistant.turn_off
+      entity_id: group.irrigation_switches
+
+# Turn ON on hour before sunset an setup random ON/OFF time for lights when Away
+- alias: "Living Room Light ON"
+  initial_state: True
+  trigger:
+    platform: sun
+    event: sunset
+    offset: "-01:00:00"
+  action:
+    - service: switch.turn_on
       entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
+    - service: python_script.random_lights
 
-  - alias: 'Bedroom Room Light ON when on Vacation'
-    initial_state: True
-    trigger:
-      platform: template
-      value_template: >
-        {{ (states.input_datetime.br_on_time_random.attributes.timestamp | int 
-        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}   
-    condition:
-      condition: state    
-      entity_id: input_boolean.vacation
-      state: 'on'     
-    action:
-      service: switch.turn_on
-      entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
+# Turn OFF at input_datetime.lr_off_time ONLY when not on vacation
+- alias: "Living Room Light OFF at Home"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.lr_off_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    condition: state
+    entity_id: input_boolean.vacation
+    state: "off"
+  action:
+    service: switch.turn_off
+    entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
 
-  - alias: 'Bedroom Room Light OFF when on Vacation'
-    initial_state: True
-    trigger:
-      platform: template
-      value_template: >
-        {{ (states.input_datetime.br_off_time_random.attributes.timestamp | int 
-        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
-    condition:
-      condition: state    
-      entity_id: input_boolean.vacation
-      state: 'on'     
-    action:
-      service: switch.turn_off
-      entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch   
+- alias: "Living Room Light OFF when Vacation"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.lr_off_time_random.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    condition: state
+    entity_id: input_boolean.vacation
+    state: "on"
+  action:
+    service: switch.turn_off
+    entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
 
-  - alias: Notify iOS App Joyce
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.back_lock_last_action
-      to: 'Unlocked: Joyce'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Joyce Unlocked Door"
-        
-  - alias: Notify iOS App Oliver
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.back_lock_last_action
-      to: 'Unlocked: Oliver'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Oliver Unlocked Door"
+- alias: "Bedroom Room Light ON when on Vacation"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.br_on_time_random.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    condition: state
+    entity_id: input_boolean.vacation
+    state: "on"
+  action:
+    service: switch.turn_on
+    entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
+
+- alias: "Bedroom Room Light OFF when on Vacation"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.br_off_time_random.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    condition: state
+    entity_id: input_boolean.vacation
+    state: "on"
+  action:
+    service: switch.turn_off
+    entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
+
+- alias: Notify iOS App Joyce
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.back_lock_last_action
+    to: "Unlocked: Joyce"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Joyce Unlocked Door"
+
+- alias: Notify iOS App Oliver
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.back_lock_last_action
+    to: "Unlocked: Oliver"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Oliver Unlocked Door"
 
 # Temperature Control Notes
 # binary_sensor.away is controlled by sensor.back_lock_last_action
@@ -197,739 +195,734 @@
 # The back door must be unlocked or locked from the inside to turn OFF the binary_sensor.away and return
 # to normal heating schedule.
 # The away temperature can be adjusted to pre-heat the house remotely.
-# binary_sensor.away state is used to control the indicator LED on the thermostat.   
+# binary_sensor.away state is used to control the indicator LED on the thermostat.
 
-  - alias: Set Home Setpoint
-    initial_state: True
-    trigger:
-      platform: template
-      value_template: >
-        {{ (states.input_datetime.heat_on_time.attributes.timestamp | int 
-        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
-    condition: 
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.away
-          state: 'off'
-        - condition: state
-          entity_id: input_boolean.vacation
-          state: 'off'    
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_home')}}"
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.summer_fan
-          temperature: !secret temperature_fan
+- alias: Set Home Setpoint
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.heat_on_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.vacation
+        state: "off"
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: "{{ states('input_number.slider_home')}}"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.summer_fan
+        temperature: !secret temperature_fan
 
 # Change thermostat set point to slider_away temp at datetime.heat_off_time
-  - alias: Set Away or Asleep Setpoint
-    initial_state: True
-    trigger:
-      platform: template
-      value_template: >
-        {{ (states.input_datetime.heat_off_time.attributes.timestamp | int 
-        | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}  
-    action:
-      service: climate.set_temperature
+- alias: Set Away or Asleep Setpoint
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.heat_off_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  action:
+    service: climate.set_temperature
+    data_template:
+      entity_id: climate.house
+      temperature: "{{ states('input_number.slider_away')}}"
+
+# Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point
+# Needs to be tested
+- alias: Furnace Safety
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: switch.furnace
+    to: "on"
+    for:
+      minutes: 7
+  condition:
+    condition: template
+    value_template: >
+      {{ states.climate.house.attributes.current_temperature
+      | float > states.climate.house.attributes.temperature | float }}
+  action:
+    service: switch.turn_off
+    entity_id: switch.furnace
+
+# Turn temperature set point down if away set when door locked from outside keypad
+#Note: A normal template sensor did not trigger so the binary_sensor was used instead.
+- alias: Away
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.away
+    to: "on"
+  action:
+    - service: climate.set_temperature
       data_template:
         entity_id: climate.house
         temperature: "{{ states('input_number.slider_away')}}"
-        
-# Turn furnace OFF if its has been ON 7 minutes and the temperature is above the set point 
-# Needs to be tested       
-  - alias: Furnace Safety
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: switch.furnace
-      to: 'on'
-      for:
-        minutes: 7
-    condition:
-      condition: template
-      value_template: >
-        {{ states.climate.house.attributes.current_temperature
-        | float > states.climate.house.attributes.temperature | float }}
-    action:
-      service: switch.turn_off
-      entity_id: switch.furnace
-      
-# Turn temperature set point down if away set when door locked from outside keypad
-#Note: A normal template sensor did not trigger so the binary_sensor was used instead.
-  - alias: Away
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: binary_sensor.away
-      to: 'on' 
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_away')}}"
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.summer_fan
-          temperature: !secret temperature_fan_away
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.summer_fan
+        temperature: !secret temperature_fan_away
 
 # Return temperature set point when returning
 # between heat ON and OFF times if not on vacation
-  - alias: Home
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: binary_sensor.away
-      to: 'off'
-    condition: 
-      condition: template
-      value_template: >
-        {{ (now().hour * 60 + now().minute) * 60  
-            > states.input_datetime.heat_on_time.attributes.timestamp and 
-            (now().hour * 60 + now().minute) * 60 
-            < states.input_datetime.heat_off_time.attributes.timestamp }}  
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_home')}}"
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.summer_fan
-          temperature: !secret temperature_fan
+- alias: Home
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.away
+    to: "off"
+  condition:
+    condition: template
+    value_template: >
+      {{ (now().hour * 60 + now().minute) * 60  
+          > states.input_datetime.heat_on_time.attributes.timestamp and 
+          (now().hour * 60 + now().minute) * 60 
+          < states.input_datetime.heat_off_time.attributes.timestamp }}
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: "{{ states('input_number.slider_home')}}"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.summer_fan
+        temperature: !secret temperature_fan
 
 # Force temperature_away, immediately, when vacation switched ON
-  # - alias: Vacation ON
-    # initial_state: True
-    # trigger:
-      # platform: state
-      # entity_id: input_boolean.vacation
-      # to: 'on'
-    # action:
-      # - service: climate.set_temperature
-        # data_template:
-          # entity_id: climate.house
-          # temperature: "{{ states('input_number.slider_away')}}"
-      # - service: climate.set_temperature
-        # data_template:
-          # entity_id: climate.summer_fan
-          # temperature: !secret temperature_fan_away
-
+# - alias: Vacation ON
+# initial_state: True
+# trigger:
+# platform: state
+# entity_id: input_boolean.vacation
+# to: 'on'
+# action:
+# - service: climate.set_temperature
+# data_template:
+# entity_id: climate.house
+# temperature: "{{ states('input_number.slider_away')}}"
+# - service: climate.set_temperature
+# data_template:
+# entity_id: climate.summer_fan
+# temperature: !secret temperature_fan_away
 
 # Force temperature_home when vacation switched OFF
 # and time is between heat ON and OFF times.
-  # - alias: Vacation OFF
-    # initial_state: True
-    # trigger:
-      # platform: state
-      # entity_id: input_boolean.vacation
-      # to: 'off'
-    # condition:
-      # - condition: template
-        # value_template: >
-          # {{ (now().hour * 60 + now().minute) * 60  
-            # > states.input_datetime.heat_on_time.attributes.timestamp and 
-            # (now().hour * 60 + now().minute) * 60 
-            # < states.input_datetime.heat_off_time.attributes.timestamp }} 
-    # action:
-      # - service: climate.set_temperature
-        # data_template:
-          # entity_id: climate.house
-          # temperature: "{{ states('input_number.slider_home')}}"
-      # - service: climate.set_temperature
-        # data_template:
-          # entity_id: climate.summer_fan
-          # temperature: !secret temperature_fan
-                
-  - alias: Furnace Ramp ON
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: switch.furnace
-      to: 'on'
-    action:
-      service: script.turn_on
-      entity_id: script.furnace_timer
-      
-  - alias: Furnace OFF
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: switch.furnace
-      to: 'off'
-    action:
-      - service: homeassistant.turn_off
-        entity_id: 
-          - script.furnace_timer
-          - script.timer_heat0
-          - script.timer_heat1
-          - input_boolean.heat1
-          - input_boolean.heat0
-      - service: input_number.set_value
-        data:
-          entity_id: input_number.furnace_power
-          value: 0
-        
+# - alias: Vacation OFF
+# initial_state: True
+# trigger:
+# platform: state
+# entity_id: input_boolean.vacation
+# to: 'off'
+# condition:
+# - condition: template
+# value_template: >
+# {{ (now().hour * 60 + now().minute) * 60
+# > states.input_datetime.heat_on_time.attributes.timestamp and
+# (now().hour * 60 + now().minute) * 60
+# < states.input_datetime.heat_off_time.attributes.timestamp }}
+# action:
+# - service: climate.set_temperature
+# data_template:
+# entity_id: climate.house
+# temperature: "{{ states('input_number.slider_home')}}"
+# - service: climate.set_temperature
+# data_template:
+# entity_id: climate.summer_fan
+# temperature: !secret temperature_fan
+
+- alias: Furnace Ramp ON
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: switch.furnace
+    to: "on"
+  action:
+    service: script.turn_on
+    entity_id: script.furnace_timer
+
+- alias: Furnace OFF
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: switch.furnace
+    to: "off"
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - script.furnace_timer
+        - script.timer_heat0
+        - script.timer_heat1
+        - input_boolean.heat1
+        - input_boolean.heat0
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.furnace_power
+        value: 0
+
 # Send Notification if temperature reaches min_temp or max_temp.
-  - alias: Notify House Out of Range Temperature
-    initial_state: True
-    trigger:
-      - platform: template
-        value_template: '{{ states.sensor.house_temperature.state | float > 25.0 }}'
-      - platform: template
-        value_template: '{{ states.sensor.house_temperature.state | float < 15.0 }}'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "House Temperature Out of Range"
-        
+- alias: Notify House Out of Range Temperature
+  initial_state: True
+  trigger:
+    - platform: template
+      value_template: "{{ states.sensor.house_temperature.state | float > 25.0 }}"
+    - platform: template
+      value_template: "{{ states.sensor.house_temperature.state | float < 15.0 }}"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "House Temperature Out of Range"
+
 # Send Notification if Wine Cellar temperature reaches min_temp or max_temp.
-  - alias: Notify Wine Out of Range Temperature
-    initial_state: True
-    trigger:
-      - platform: template
-        value_template: '{{ states.sensor.remote_temperature.state | float > 15.5 }}'
-      - platform: template
-        value_template: '{{ states.sensor.remote_temperature.state | float < 10.0 }}'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Wine Cellar Temperature Out of Range"
-        
+- alias: Notify Wine Out of Range Temperature
+  initial_state: True
+  trigger:
+    - platform: template
+      value_template: "{{ states.sensor.remote_temperature.state | float > 15.5 }}"
+    - platform: template
+      value_template: "{{ states.sensor.remote_temperature.state | float < 10.0 }}"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Wine Cellar Temperature Out of Range"
+
 # Send Notification if Outdoor battery voltage is below 3.2 volts and needs to be charged
-  - alias: Notify Battery Needs Changing
-    initial_state: True
-    trigger:
-      - platform: template
-        value_template: '{{ states.sensor.mysensors_bme280_2_4.state | float < 3.2 }}'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Outdoor battery needs to be charged."
+- alias: Notify Battery Needs Changing
+  initial_state: True
+  trigger:
+    - platform: template
+      value_template: "{{ states.sensor.mysensors_bme280_2_4.state | float < 3.2 }}"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Outdoor battery needs to be charged."
 
-  - alias: Basement Flood Alarm
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.flood
-      to: 'ON'
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Basement Flood Detected!"
+- alias: Basement Flood Alarm
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.flood
+    to: "ON"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Basement Flood Detected!"
 
-# Changed time to time_pattern for HA86.1        
-  - alias: Watchdog
-    initial_state: True
-    trigger:
-      platform: time_pattern
-      minutes: '/10'
-    action:
-      - service: homeassistant.turn_on
-        entity_id: 
-          - script.watchdog_timer
- 
+# Changed time to time_pattern for HA86.1
+- alias: Watchdog
+  initial_state: True
+  trigger:
+    platform: time_pattern
+    minutes: "/10"
+  action:
+    - service: homeassistant.turn_on
+      entity_id:
+        - script.watchdog_timer
+
 # Send a notice to iPhone if watchdog state does not turn ON
-  - alias: Watchdog Alarm
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_boolean.watchdog_delayed
-# Disable watchdog alarm if getting too many alarms
-    condition:
-      condition: template
-      value_template: >
-        {%- if is_state("input_boolean.watchdog", "off") and 
-        ((is_state("switch.watchdog", "off") and 
-        is_state("input_boolean.watchdog_delayed", "on")) or 
-        (is_state("switch.watchdog", "on") and 
-        is_state("input_boolean.watchdog_delayed", "off"))) -%}
-        true
-        {%-else -%}
-        false
-        {%- endif %}
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Multisensor Failed!"
-        
+- alias: Watchdog Alarm
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.watchdog_delayed
+  # Disable watchdog alarm if getting too many alarms
+  condition:
+    condition: template
+    value_template: >
+      {%- if is_state("input_boolean.watchdog", "off") and 
+      ((is_state("switch.watchdog", "off") and 
+      is_state("input_boolean.watchdog_delayed", "on")) or 
+      (is_state("switch.watchdog", "on") and 
+      is_state("input_boolean.watchdog_delayed", "off"))) -%}
+      true
+      {%-else -%}
+      false
+      {%- endif %}
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Multisensor Failed!"
 
-  
-  # Turn all switches OFF on reboot and send notification 10 minutes later
-  # Restore heat if not on vacation and  time is between heat ON and heat OFF times.
-  # Restore summer fan depending on vacation status.  Note !secrets does not work in template.
-  - alias: HA Restarted
-    initial_state: True
-    trigger:
-      platform: homeassistant
-      event: start
-    action:
-      - service: homeassistant.turn_off
-        data:
-          entity_id: group.switches_off_at_restart
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: >
-            {% if is_state('input_boolean.vacation', 'off') and 
-              (now().hour * 60 + now().minute) * 60  
-              > states.input_datetime.heat_on_time.attributes.timestamp and 
-              (now().hour * 60 + now().minute) * 60 
-              < states.input_datetime.heat_off_time.attributes.timestamp %}
-              {{ states('input_number.slider_home')}}
-            {% else %}
-              {{ states('input_number.slider_away')}}
-            {% endif %}
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.summer_fan
-          temperature: >
-            {% if is_state('input_boolean.vacation', 'off') %}
-              25
-            {% else %}
-              30
-            {% endif %}
-      - service: input_number.set_value
-        data:
-          entity_id: input_number.furnace_power
-          value: 0
-      - service: python_script.random_lights
-      - service: automation.trigger
-        entity_id: automation.furnace_state
-      - delay:
-          minutes: 10
-      - service: notify.mobile_app_iphone
-        data:
-          message: "HA Restarted"
+# Turn all switches OFF on reboot and send notification 10 minutes later
+# Restore heat if not on vacation and  time is between heat ON and heat OFF times.
+# Restore summer fan depending on vacation status.  Note !secrets does not work in template.
+- alias: HA Restarted
+  initial_state: True
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id: group.switches_off_at_restart
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: >
+          {% if is_state('input_boolean.vacation', 'off') and 
+            (now().hour * 60 + now().minute) * 60  
+            > states.input_datetime.heat_on_time.attributes.timestamp and 
+            (now().hour * 60 + now().minute) * 60 
+            < states.input_datetime.heat_off_time.attributes.timestamp %}
+            {{ states('input_number.slider_home')}}
+          {% else %}
+            {{ states('input_number.slider_away')}}
+          {% endif %}
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.summer_fan
+        temperature: >
+          {% if is_state('input_boolean.vacation', 'off') %}
+            25
+          {% else %}
+            30
+          {% endif %}
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.furnace_power
+        value: 0
+    - service: python_script.random_lights
+    - service: automation.trigger
+      entity_id: automation.furnace_state
+    - delay:
+        minutes: 10
+    - service: notify.mobile_app_iphone
+      data:
+        message: "HA Restarted"
 
 # When home slider changes, change heating set point only when home
-# and the time is between heat ON and heat OFF times.          
-  - alias: Home Slider Changed
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_number.slider_home
-    condition: 
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.away
-          state: 'off'
-        - condition: state
-          entity_id: input_boolean.vacation
-          state: 'off'
-        - condition: template
-          value_template: >
-            {{ (now().hour * 60 + now().minute) * 60  
-              > states.input_datetime.heat_on_time.attributes.timestamp and 
-              (now().hour * 60 + now().minute) * 60 
-              < states.input_datetime.heat_off_time.attributes.timestamp }}  
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_home')}}"
+# and the time is between heat ON and heat OFF times.
+- alias: Home Slider Changed
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: input_number.slider_home
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.vacation
+        state: "off"
+      - condition: template
+        value_template: >
+          {{ (now().hour * 60 + now().minute) * 60  
+            > states.input_datetime.heat_on_time.attributes.timestamp and 
+            (now().hour * 60 + now().minute) * 60 
+            < states.input_datetime.heat_off_time.attributes.timestamp }}
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: "{{ states('input_number.slider_home')}}"
 
 # When home slider changes, change heating set point only when away
-# or the time is between heat OFF and heat ON times. 
-  - alias: Away Slider Changed
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: input_number.slider_away
-    condition: 
-      condition: or
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.away
-          state: 'on'
-        - condition: state
-          entity_id: input_boolean.vacation
-          state: 'on'
-        - condition: template
-          value_template: >
-            {{ (now().hour * 60 + now().minute) * 60  
-              > states.input_datetime.heat_off_time.attributes.timestamp or 
-              (now().hour * 60 + now().minute) * 60 
-              < states.input_datetime.heat_on_time.attributes.timestamp }}           
-    action:
-      - service: climate.set_temperature
-        data_template:
-          entity_id: climate.house
-          temperature: "{{ states('input_number.slider_away')}}"
+# or the time is between heat OFF and heat ON times.
+- alias: Away Slider Changed
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: input_number.slider_away
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.vacation
+        state: "on"
+      - condition: template
+        value_template: >
+          {{ (now().hour * 60 + now().minute) * 60  
+            > states.input_datetime.heat_off_time.attributes.timestamp or 
+            (now().hour * 60 + now().minute) * 60 
+            < states.input_datetime.heat_on_time.attributes.timestamp }}
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.house
+        temperature: "{{ states('input_number.slider_away')}}"
 
 # Monitor Mom's Medical Alert System and notify if system has lost connection
-# to the internet.          
-  - alias: Medalert1 Alarm
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.medalert1_check
-      to: 'FIX'
-      for:
-        minutes: 21
-    action:
-      service: notify.mobile_app_iphone
-      data:
-        message: "Medalert1 System Down!"
+# to the internet.
+- alias: Medalert1 Alarm
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.medalert1_check
+    to: "FIX"
+    for:
+      minutes: 21
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Medalert1 System Down!"
 
-# Count how many minutes the furnace fan in ON to determine 
-# when the air filter needs replacing.        
-  - alias: Increment fan on counter
-    initial_state: True
-    trigger:
-      platform: time_pattern
-      minutes: '/1'   
-    condition: 
-      condition: or
-      conditions:
-        - condition: state
-          entity_id: switch.fan
-          state: 'on'
-        - condition: state
-          entity_id: switch.furnace
-          state: 'on'
-    action:
-      - service: counter.increment
-        entity_id: counter.fan_on_minutes
-        
-  - alias: Hourly Temperature Difference
-    initial_state: True
-    trigger:
-      - platform: time_pattern
-        minutes: '/5'      
-    action:
-      service: python_script.temp_diff
-      data:
-        temp_diff: temp_diff
-        temp_diff_accum: temp_diff_accum
-        hour_diff: hour_diff
+# Count how many minutes the furnace fan in ON to determine
+# when the air filter needs replacing.
+- alias: Increment fan on counter
+  initial_state: True
+  trigger:
+    platform: time_pattern
+    minutes: "/1"
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: switch.fan
+        state: "on"
+      - condition: state
+        entity_id: switch.furnace
+        state: "on"
+  action:
+    - service: counter.increment
+      entity_id: counter.fan_on_minutes
 
-        
-  - alias: Hourly Energy
-    initial_state: True
-    trigger:
-      - platform: state
-        entity_id: input_number.furnace_power
-      - platform: time_pattern
-        hours: '/1'      
-    action:
-      service: python_script.energy
-      data:
-        power: furnace_power
-        last_power: last_power
-        energy_accum: energy_accum
-        hourly_energy: hourly_energy
- 
+- alias: Hourly Temperature Difference
+  initial_state: True
+  trigger:
+    - platform: time_pattern
+      minutes: "/5"
+  action:
+    service: python_script.temp_diff
+    data:
+      temp_diff: temp_diff
+      temp_diff_accum: temp_diff_accum
+      hour_diff: hour_diff
+
+- alias: Hourly Energy
+  initial_state: True
+  trigger:
+    - platform: state
+      entity_id: input_number.furnace_power
+    - platform: time_pattern
+      hours: "/1"
+  action:
+    service: python_script.energy
+    data:
+      power: furnace_power
+      last_power: last_power
+      energy_accum: energy_accum
+      hourly_energy: hourly_energy
+
 # Following automation is used to test energy.py script
 # The Total Energy in one hour should be (10 + 30 + 5) * 10 /60 =  7.5 kWh
-  # - alias: Power Pattern within window
-    # initial_state: False
-    # trigger:
-      # - platform: time_pattern
-        # minutes: 0      
-    # action:
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '0'
-      # - delay:
-          # minutes: 20
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '10'
-      # - delay:
-          # minutes: 10
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '30'
-      # - delay:
-          # minutes: 10
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '5'
-      # - delay:
-          # minutes: 10
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '0'
+# - alias: Power Pattern within window
+# initial_state: False
+# trigger:
+# - platform: time_pattern
+# minutes: 0
+# action:
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '0'
+# - delay:
+# minutes: 20
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '10'
+# - delay:
+# minutes: 10
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '30'
+# - delay:
+# minutes: 10
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '5'
+# - delay:
+# minutes: 10
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '0'
 
-  # - alias: Power Pattern crossing window
-    # initial_state: False
-    # trigger:
-      # - platform: time_pattern
-        # minutes: '/2'      
-    # action:
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '0'
-      # - delay:
-          # seconds: 50
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '10'
-      # - delay:
-          # seconds: 60
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '0'
+# - alias: Power Pattern crossing window
+# initial_state: False
+# trigger:
+# - platform: time_pattern
+# minutes: '/2'
+# action:
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '0'
+# - delay:
+# seconds: 50
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '10'
+# - delay:
+# seconds: 60
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '0'
 
-  # - alias: Power Pattern On Boundary
-    # initial_state: False
-    # trigger:
-      # - platform: time_pattern
-        # minutes: '/3'      
-    # action:
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '0'
-      # - delay:
-          # seconds: 60
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '10'
-      # - delay:
-          # seconds: 60
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.power_test
-          # value: '0'
+# - alias: Power Pattern On Boundary
+# initial_state: False
+# trigger:
+# - platform: time_pattern
+# minutes: '/3'
+# action:
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '0'
+# - delay:
+# seconds: 60
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '10'
+# - delay:
+# seconds: 60
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.power_test
+# value: '0'
 
-  - alias: energy_values_to_file
-    initial_state: false
-    trigger:
-      platform: state
-      entity_id: sensor.hourly_energy
-    action:
-      - service: notify.energy_notify
-        data_template: 
-          message: ',{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}'
+- alias: energy_values_to_file
+  initial_state: false
+  trigger:
+    platform: state
+    entity_id: sensor.hourly_energy
+  action:
+    - service: notify.energy_notify
+      data_template:
+        message: ",{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}"
 
-  - alias: Daily Energy Total
-    initial_state: True
-    trigger:
-      - platform: time_pattern
-        minutes: '/30'      
-    action:
-      service: python_script.hour2day
-      data:
-        hourly: hourly_energy
-        hourly_accum: hourly_energy_accum
-        daily: daily_energy
+- alias: Daily Energy Total
+  initial_state: True
+  trigger:
+    - platform: time_pattern
+      minutes: "/30"
+  action:
+    service: python_script.hour2day
+    data:
+      hourly: hourly_energy
+      hourly_accum: hourly_energy_accum
+      daily: daily_energy
 
-  - alias: Daily Temp Diff Average
-    initial_state: True
-    trigger:
-      - platform: time_pattern
-        minutes: '/30'      
-    action:
-      service: python_script.hour2day
-      data:
-        hourly: hour_diff
-        hourly_accum: hourly_temp_diff_accum
-        daily: daily_temp_diff
-        mode: average
+- alias: Daily Temp Diff Average
+  initial_state: True
+  trigger:
+    - platform: time_pattern
+      minutes: "/30"
+  action:
+    service: python_script.hour2day
+    data:
+      hourly: hour_diff
+      hourly_accum: hourly_temp_diff_accum
+      daily: daily_temp_diff
+      mode: average
 
-  - alias: HVAC
-    # initial_state: True
-    trigger:
-      - platform: time_pattern
-        minutes: '/5'      
-    action:
-      service: python_script.hvac
+- alias: HVAC
+  # initial_state: True
+  trigger:
+    - platform: time_pattern
+      minutes: "/5"
+  action:
+    service: python_script.hvac
 
 # This is required because MQTT HVAC uses a separate topic for each command
 # while the Mitsubishi Heatpump uses one set topic for all settings in a json message
 # ie heatpump/_set/temperature 23  --> heatpump/set {"temperature":"23.5"}
-  - alias: 'Redirect all MQTT HVAC set commands to the heatpumps'
-    trigger:
-      - platform: mqtt
-        topic: heatpump/_set/+
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic:  '{{ "heatpump/set" }}'
-          payload: >
-            {% if trigger.topic.split("/")[-1] == "mode" %}
-              {% if trigger.payload|upper == "OFF" %}
-                {"power":"OFF"}
-              {% elif trigger.payload == "fan_only" %}
-                {"power":"ON","mode":"FAN"}
-              {% else %}
-                {{ "{\"power\":\"ON\",\"mode\":"|safe + trigger.payload|upper|tojson + "}" }}
-              {% endif %}
-            {% else %}
-              {{ "{" + trigger.topic.split("/")[-1]|tojson + ":" + trigger.payload|tojson + "}" }}
-            {% endif %}
-
-# Sends colour info to RGB LED in MultiSensor2          
-  - alias: Furnace State
-    initial_state: True
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.away
-      - platform: state
-        entity_id: input_boolean.heat0
-      - platform: state
-        entity_id: input_boolean.heat1
-      - platform: state
-        entity_id: climate.mitsubishi_heatpump
-    action:
-      service: light.turn_on
+- alias: "Redirect all MQTT HVAC set commands to the heatpumps"
+  trigger:
+    - platform: mqtt
+      topic: heatpump/_set/+
+  action:
+    - service: mqtt.publish
       data_template:
-        # Turn off whichever entity triggered the automation.
-        entity_id: light.mqtt_json_light 
-        brightness: 100        
-        color_name: >
-          {% if is_state("binary_sensor.away", "on") %}
-          blue
-          {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
-          cyan
-          {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
-          green
-          {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
-          yellow
-          {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
-          purple
-          {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
-          red
-          {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
-          cyan
-          {% else -%}
-          white
-          {% endif -%}
-          
-  - alias: Burglar Alarm
-    initial_state: True
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.ecolink_motion_detector_sensor
-        to: 'on'
-    condition:
-      - condition: state  
-        entity_id: binary_sensor.away
-        state: 'on' 
-    action:
-      - service: mqtt.publish
-        data: 
-          topic: /home/sound
-          payload: "{\"sound\":\"claxon\",\"playcount\":5}"
-      - service: notify.burglar_alarm_sms
-        data:
-          message: 'Burglar Alarm Triggered!'
-          target:
-            - !secret local_phone
-            - !secret travel_phone
+        topic: '{{ "heatpump/set" }}'
+        payload: >
+          {% if trigger.topic.split("/")[-1] == "mode" %}
+            {% if trigger.payload|upper == "OFF" %}
+              {"power":"OFF"}
+            {% elif trigger.payload == "fan_only" %}
+              {"power":"ON","mode":"FAN"}
+            {% else %}
+              {{ "{\"power\":\"ON\",\"mode\":"|safe + trigger.payload|upper|tojson + "}" }}
+            {% endif %}
+          {% else %}
+            {{ "{" + trigger.topic.split("/")[-1]|tojson + ":" + trigger.payload|tojson + "}" }}
+          {% endif %}
 
-  - alias: Last House Temperature
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.multisensor2_temperature
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.last_house_temp
-          value: "{{ states('sensor.multisensor2_temperature')}}"
+# Sends colour info to RGB LED in MultiSensor2
+- alias: Furnace State
+  initial_state: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.away
+    - platform: state
+      entity_id: input_boolean.heat0
+    - platform: state
+      entity_id: input_boolean.heat1
+    - platform: state
+      entity_id: climate.mitsubishi_heatpump
+  action:
+    service: light.turn_on
+    data_template:
+      # Turn off whichever entity triggered the automation.
+      entity_id: light.mqtt_json_light
+      brightness: 100
+      color_name: >
+        {% if is_state("binary_sensor.away", "on") %}
+        blue
+        {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
+        cyan
+        {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
+        green
+        {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
+        yellow
+        {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
+        purple
+        {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
+        red
+        {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
+        cyan
+        {% else -%}
+        white
+        {% endif -%}
 
-  - alias: Last House Humidity
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.multisensor2_humidity
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.last_house_humidity
-          value: "{{ states('sensor.multisensor2_humidity')}}"
-       
-  - alias: Last Gas
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.multisensor2_gas
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.last_gas
-          value: "{{ states('sensor.multisensor2_gas')}}"
+- alias: Burglar Alarm
+  initial_state: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.ecolink_motion_detector_sensor
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.away
+      state: "on"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: /home/sound
+        payload: '{"sound":"claxon","playcount":5}'
+    - service: notify.burglar_alarm_sms
+      data:
+        message: "Burglar Alarm Triggered!"
+        target:
+          - !secret local_phone
+          - !secret travel_phone
 
-#Added for spline plotting of Outdoor temperature, pressure and humidity        
-          
-  - alias: Temperature
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.mysensors_bme280_2_2
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.temperature
-          value: "{{ states('sensor.mysensors_bme280_2_2')}}"
-          
-  - alias: Pressure
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.mysensors_bme280_2_1
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.pressure
-          value: "{{ states('sensor.mysensors_bme280_2_1')}}"
+- alias: Last House Temperature
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.multisensor2_temperature
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.last_house_temp
+        value: "{{ states('sensor.multisensor2_temperature')}}"
 
-  - alias: Humidity
-    initial_state: True
-    trigger:
-      platform: state
-      entity_id: sensor.mysensors_bme280_2_3
-    action:
-      - service: input_number.set_value
-        data_template:
-          entity_id: input_number.humidity
-          value: "{{ states('sensor.mysensors_bme280_2_3')}}" 
+- alias: Last House Humidity
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.multisensor2_humidity
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.last_house_humidity
+        value: "{{ states('sensor.multisensor2_humidity')}}"
 
-  # - alias: Hour Diff
-    # initial_state: True
-    # trigger:
-      # platform: state
-      # entity_id: sensor.hour_diff
-    # action:
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.hour_diff
-          # value: "{{ states('sensor.hour_diff')}}"    
+- alias: Last Gas
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.multisensor2_gas
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.last_gas
+        value: "{{ states('sensor.multisensor2_gas')}}"
 
-  # - alias: Daily Temp Diff
-    # initial_state: True
-    # trigger:
-      # platform: state
-      # entity_id: sensor.daily_temp_diff
-    # action:
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.daily_temp_diff
-          # value: "{{ states('sensor.daily_temp_diff')}}"    
+#Added for spline plotting of Outdoor temperature, pressure and humidity
 
-  # - alias: Daily Energy
-    # initial_state: True
-    # trigger:
-      # platform: state
-      # entity_id: sensor.daily_energy
-    # action:
-      # - service: input_number.set_value
-        # data_template:
-          # entity_id: input_number.daily_energy
-          # value: "{{ states('sensor.daily_energy')}}"              
+- alias: Temperature
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.mysensors_bme280_2_2
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.temperature
+        value: "{{ states('sensor.mysensors_bme280_2_2')}}"
+
+- alias: Pressure
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.mysensors_bme280_2_1
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.pressure
+        value: "{{ states('sensor.mysensors_bme280_2_1')}}"
+
+- alias: Humidity
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: sensor.mysensors_bme280_2_3
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.humidity
+        value: "{{ states('sensor.mysensors_bme280_2_3')}}"
+# - alias: Hour Diff
+# initial_state: True
+# trigger:
+# platform: state
+# entity_id: sensor.hour_diff
+# action:
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.hour_diff
+# value: "{{ states('sensor.hour_diff')}}"
+
+# - alias: Daily Temp Diff
+# initial_state: True
+# trigger:
+# platform: state
+# entity_id: sensor.daily_temp_diff
+# action:
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.daily_temp_diff
+# value: "{{ states('sensor.daily_temp_diff')}}"
+
+# - alias: Daily Energy
+# initial_state: True
+# trigger:
+# platform: state
+# entity_id: sensor.daily_energy
+# action:
+# - service: input_number.set_value
+# data_template:
+# entity_id: input_number.daily_energy
+# value: "{{ states('sensor.daily_energy')}}"
