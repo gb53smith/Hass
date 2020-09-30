@@ -121,25 +121,15 @@ recorder:
       - input_number.last_house_temp
       - input_number.last_house_humidity
       - input_number.last_gas
+      ## calibration settings
+      - input_number.soil_dry_1
+      - input_number.soil_wet_1
+      - input_number.soil_dry_2
+      - input_number.soil_wet_2
       ## No need to see history after debug
       - sensor.temp_diff
       - counter.fan_on_minutes
       - binary_sensor.updater
-      - sensor.last_update_trigger
-      - sensor.last_update_trigger_2
-      - sensor.bssid
-      - sensor.ssid
-      - sensor.bssid_2
-      - sensor.ssid_2
-      - sensor.connection_type
-      - sensor.battery_state
-      - sensor.battery_level
-      - sensor.battery_state_2
-      - sensor.battery_level_2
-      - sensor.geocoded_location
-      - sensor.geocoded_location_2
-      - sensor.connection_type
-      - sensor.connection_type_2
       ## These are copied to input numbers for linear spline smoothing
       - sensor.mysensors_bme280_2_1
       - sensor.mysensors_bme280_2_2
@@ -152,6 +142,23 @@ recorder:
       - sensor.ecolink_motion_detector_burglar
       - sensor.ecolink_motion_detector_power_management
       - sensor.ecolink_motion_detector_sourcenodeid
+      # iPhone entities not used
+      - sensor.iphone_battery_level
+      - sensor.iphone_battery_state
+      - sensor.iphone_bssid
+      - sensor.iphone_connection_type
+      - sensor.iphone_last_update_trigger
+      - sensor.iphone_sim_1
+      - sensor.iphone_ssid
+      - sensor.iphone_storage
+      # iPad entities not used
+      - sensor.joyce_ipad2_battery_level
+      - sensor.joyce_ipad2_battery_state
+      - sensor.joyce_ipad2_bssid
+      - sensor.joyce_ipad2_connection_type
+      - sensor.joyce_ipad2_last_update_trigger
+      - sensor.joyce_ipad2_ssid
+      - sensor.joyce_ipad2_storage
 
     domains:
       - zwave
@@ -258,21 +265,6 @@ history:
       - input_number.hourly_temp_diff_accum
       - input_number.last_house_temp
       - binary_sensor.updater
-      - sensor.last_update_trigger
-      - sensor.last_update_trigger_2
-      - sensor.ssid
-      - sensor.bssid
-      - sensor.bssid_2
-      - sensor.ssid_2
-      - sensor.connection_type
-      - sensor.battery_state
-      - sensor.battery_level
-      - sensor.battery_state_2
-      - sensor.battery_level_2
-      - sensor.geocoded_location
-      - sensor.geocoded_location_2
-      - sensor.connection_type
-      - sensor.connection_type_2
       - sensor.date
       - light.mqtt_json_light
       - sensor.air_quality_health_index
@@ -297,8 +289,7 @@ history:
       - sensor.ecolink_motion_detector_burglar
       - sensor.ecolink_motion_detector_power_management
       - sensor.ecolink_motion_detector_sourcenodeid
-      - sensor.sim_1
-#     - input_boolean.fan_reset
+
 
 # Track the sun
 sun:
@@ -582,7 +573,28 @@ input_number:
     min: -20
     max: 100
     step: 0.1
+    mode: box 
+  soil_dry_1:
+    min: 1000
+    max: 4000
+    step: 1
     mode: box
+  soil_wet_1:
+    min: 1000
+    max: 4000
+    step: 1
+    mode: box
+  soil_dry_2:
+    min: 1000
+    max: 4000
+    step: 1
+    mode: box
+  soil_wet_2:
+    min: 1000
+    max: 4000
+    step: 1
+    mode: box    
+  
   # Used to generate at test pattern to power
   # power_test:
   # name: Power Test

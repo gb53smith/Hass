@@ -375,7 +375,7 @@
   initial_state: True
   trigger:
     - platform: template
-      value_template: "{{ states.sensor.house_temperature.state | float > 25.0 }}"
+      value_template: "{{ states.sensor.house_temperature.state | float > 26.0 }}"
     - platform: template
       value_template: "{{ states.sensor.house_temperature.state | float < 15.0 }}"
   action:
@@ -701,15 +701,15 @@
 # entity_id: input_number.power_test
 # value: '0'
 
-- alias: energy_values_to_file
-  initial_state: false
-  trigger:
-    platform: state
-    entity_id: sensor.hourly_energy
-  action:
-    - service: notify.energy_notify
-      data_template:
-        message: ",{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}"
+# - alias: energy_values_to_file
+  # initial_state: false
+  # trigger:
+    # platform: state
+    # entity_id: sensor.hourly_energy
+  # action:
+    # - service: notify.energy_notify
+      # data_template:
+        # message: ",{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}"
 
 - alias: Daily Energy Total
   initial_state: True

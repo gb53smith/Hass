@@ -59,14 +59,17 @@ climate.mitsubishi_heatpump:
 sensor.iaq:
   friendly_name: Air Quality Index
   unit_of_measurement: Index
-sensor.soil_moisture_sensor_4_1:
+sensor.soil_moisture_sensor_8_1:
   friendly_name: Indoor Moisture
   icon: mdi:water-percent
   unit_of_measurement: "%"
-sensor.soil_moisture_sensor_4_2:
+sensor.soil_moisture_sensor_8_2:
   friendly_name: Indoor Voltage
   icon: mdi:battery
   unit_of_measurement: V
+sensor.soil_moisture_sensor_8_3:
+  friendly_name: Up Days
+  unit_of_measurement: int
 sensor.multisensor2_humidity:
   friendly_name: Indoor Humidity
   icon: mdi:water-percent
@@ -79,28 +82,18 @@ sensor.house_temperature:
   friendly_name: House Temperature
   icon: mdi:thermometer
   unit_of_measurement: °C
-sensor.soil_moisture_sensor_5_1:
-  friendly_name: Test Count
-  unit_of_measurement: int
-sensor.soil_moisture_sensor_5_2:
-  friendly_name: Test Voltage
-  icon: mdi:battery
-  unit_of_measurement: V
-sensor.soil_moisture_sensor_5_3:
-  friendly_name: RFM69 RSSI
-  unit_of_measurement: dBm
-sensor.soil_moisture_sensor_7_1:
+sensor.soil_moisture_sensor_4_1:
   friendly_name: Outdoor Moisture
   icon: mdi:water-percent
   unit_of_measurement: "%"
-sensor.soil_moisture_sensor_7_2:
+sensor.soil_moisture_sensor_4_2:
   friendly_name: Outdoor Moisture Voltage
   icon: mdi:battery
   unit_of_measurement: V
-sensor.soil_moisture_sensor_7_3:
+sensor.soil_moisture_sensor_4_3:
   friendly_name: Up Days
   unit_of_measurement: int
-sensor.soil_moisture_sensor_7_4:
+sensor.soil_moisture_sensor_4_4:
   friendly_name: Debug RFM69 RSSI
   unit_of_measurement: dBm
 input_number.last_house_temp:
@@ -132,3 +125,13 @@ input_number.daily_temp_diff:
   friendly_name: Hourly Temp Diff
   icon: mdi:thermometer
   unit_of_measurement: °C
+sensor.soil_moisture_1:
+  friendly_name: Indoor Moisture
+  icon: mdi:water-percent
+  unit_of_measurement: "%"
+sensor.soil_moisture_2:
+  friendly_name: Outdoor Moisture
+  icon: mdi:water-percent
+  unit_of_measurement: "%" 
+  
+  

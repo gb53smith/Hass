@@ -347,3 +347,29 @@
       friendly_name: "Furnace Power Plot"
       unit_of_measurement: "kW"
       value_template: "{{ states.input_number.furnace_power.state}}"
+
+## Indoor soil moisture calibration    
+- platform: template
+  sensors:
+    soil_moisture_1:
+      value_template: >
+        {% set raw = states.sensor.soil_moisture_sensor_8_1.state | float%}
+        {% set dry = states.input_number.soil_dry_1.state | float %}
+        {% set wet = states.input_number.soil_wet_1.state | float %}
+        {% set range = dry - wet %}
+        {% set abovewet = raw - wet %}
+        {% set abovewetfraction = abovewet / range %}
+        {{(( 1 - abovewetfraction ) * 100) | int }}
+
+## Outdoor soil moisture calibration    
+- platform: template
+  sensors:
+    soil_moisture_2:
+      value_template: >
+        {% set raw = states.sensor.soil_moisture_sensor_4_1.state | float%}
+        {% set dry = states.input_number.soil_dry_2.state | float %}
+        {% set wet = states.input_number.soil_wet_2.state | float %}
+        {% set range = dry - wet %}
+        {% set abovewet = raw - wet %}
+        {% set abovewetfraction = abovewet / range %}
+        {{(( 1 - abovewetfraction ) * 100) | int }}
