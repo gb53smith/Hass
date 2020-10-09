@@ -769,6 +769,7 @@
           {% endif %}
 
 # Sends colour info to RGB LED in MultiSensor2
+# cool/off added to prevent triggers from other attributes
 - alias: Furnace State
   initial_state: True
   trigger:
@@ -780,6 +781,14 @@
       entity_id: input_boolean.heat1
     - platform: state
       entity_id: climate.mitsubishi_heatpump
+      from: "off"
+      to: "cool"
+    - platform: state
+      entity_id: climate.mitsubishi_heatpump
+      from: "cool"
+      to: "off"   
+      
+      
   action:
     service: light.turn_on
     data_template:
