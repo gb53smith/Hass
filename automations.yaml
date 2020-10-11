@@ -770,15 +770,14 @@
 
 # Sends colour info to RGB LED in MultiSensor2
 # cool/off added to prevent triggers from other attributes
+# Replaced heat0 and heat1 with input_number.furnace_power
+# to prevent multiple trigger when furnace goes off from high
+# heat0 and heat1 states are no longer used.
 - alias: Furnace State
   initial_state: True
   trigger:
     - platform: state
       entity_id: binary_sensor.away
-    - platform: state
-      entity_id: input_boolean.heat0
-    - platform: state
-      entity_id: input_boolean.heat1
     - platform: state
       entity_id: climate.mitsubishi_heatpump
       from: "off"
@@ -787,12 +786,14 @@
       entity_id: climate.mitsubishi_heatpump
       from: "cool"
       to: "off"   
-      
+    - platform: state
+      entity_id: input_number.furnace_power  
       
   action:
     service: light.turn_on
     data_template:
-      # Turn off whichever entity triggered the automation.
+      # Set colour depending on entity states.
+      # White should not occur so therefore is an error message
       entity_id: light.mqtt_json_light
       brightness: 100
       color_name: >
@@ -800,19 +801,18 @@
         blue
         {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
         cyan
-        {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "off")%}
-        green
-        {% elif is_state("input_boolean.heat1", "off")  and  is_state("input_boolean.heat0", "on")%}
-        yellow
-        {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "off")%}
-        purple
-        {% elif is_state("input_boolean.heat1", "on")  and  is_state("input_boolean.heat0", "on")%}
+        {% elif states("input_number.furnace_power") | int > 14 %}
         red
-        {% elif is_state("climate.mitsubishi_heatpump", "cool")%}
-        cyan
-        {% else -%}
+        {% elif states("input_number.furnace_power") | int > 12  %}
+        purple
+        {% elif states("input_number.furnace_power") | int > 6  %}
+        yellow
+        {% elif states("input_number.furnace_power") | int == 0  %}
+        green
+        {% else %}
         white
-        {% endif -%}
+        {% endif %}
+
 
 - alias: Burglar Alarm
   initial_state: True
@@ -903,35 +903,4 @@
       data_template:
         entity_id: input_number.humidity
         value: "{{ states('sensor.mysensors_bme280_2_3')}}"
-# - alias: Hour Diff
-# initial_state: True
-# trigger:
-# platform: state
-# entity_id: sensor.hour_diff
-# action:
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.hour_diff
-# value: "{{ states('sensor.hour_diff')}}"
 
-# - alias: Daily Temp Diff
-# initial_state: True
-# trigger:
-# platform: state
-# entity_id: sensor.daily_temp_diff
-# action:
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.daily_temp_diff
-# value: "{{ states('sensor.daily_temp_diff')}}"
-
-# - alias: Daily Energy
-# initial_state: True
-# trigger:
-# platform: state
-# entity_id: sensor.daily_energy
-# action:
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.daily_energy
-# value: "{{ states('sensor.daily_energy')}}"
