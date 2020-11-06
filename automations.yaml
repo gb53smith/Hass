@@ -603,21 +603,24 @@
       temp_diff_accum: temp_diff_accum
       hour_diff: hour_diff
 
-- alias: Hourly Energy
+- alias: Energy Integration
   initial_state: True
   trigger:
     - platform: state
       entity_id: input_number.furnace_power
+  action:
+    service: script.turn_on
+    entity_id: script.energy
+    
+- alias: Hourly Energy
+  initial_state: True
+  trigger:
     - platform: time_pattern
       hours: "/1"
   action:
-    service: python_script.energy
-    data:
-      power: furnace_power
-      last_power: last_power
-      energy_accum: energy_accum
-      hourly_energy: hourly_energy
-
+    service: script.turn_on
+    entity_id: script.energy_hour
+   
 # Following automation is used to test energy.py script
 # The Total Energy in one hour should be (10 + 30 + 5) * 10 /60 =  7.5 kWh
 # - alias: Power Pattern within window
@@ -655,51 +658,6 @@
 # entity_id: input_number.power_test
 # value: '0'
 
-# - alias: Power Pattern crossing window
-# initial_state: False
-# trigger:
-# - platform: time_pattern
-# minutes: '/2'
-# action:
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.power_test
-# value: '0'
-# - delay:
-# seconds: 50
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.power_test
-# value: '10'
-# - delay:
-# seconds: 60
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.power_test
-# value: '0'
-
-# - alias: Power Pattern On Boundary
-# initial_state: False
-# trigger:
-# - platform: time_pattern
-# minutes: '/3'
-# action:
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.power_test
-# value: '0'
-# - delay:
-# seconds: 60
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.power_test
-# value: '10'
-# - delay:
-# seconds: 60
-# - service: input_number.set_value
-# data_template:
-# entity_id: input_number.power_test
-# value: '0'
 
 # - alias: energy_values_to_file
   # initial_state: false

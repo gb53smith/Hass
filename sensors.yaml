@@ -67,6 +67,35 @@
         Locked: Outside Keypad
         {% endif %}
 
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '0')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '5')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '9') %}
+        Locked: Outside Keypad
+        {% endif %}
+
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '0')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '9') %}
+        Unlocked: Outside Keypad
+        {% endif %}        
+        
+# Battery 74% 2020-10-26 above 2
+
+#alarm type 21 - manual Lock
+#alarm type 22 - manual Unlock
+#alarm type 9 - deadbolt jammed
+#alarm type 18 - Keypad lock
+#alarm type 19 - Keypad unlock
+#alarm level - reflects code used to unlock
+#access control 5 - locked using code
+#access control 6 - unlocked using code
+
 # The "back_lock_last_action" state value "Locked: Outside Keypad" can be used to detect being away from the house.
 
 - platform: template

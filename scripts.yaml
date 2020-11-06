@@ -97,3 +97,25 @@ watchdog_timer:
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.watchdog_delayed
+        
+energy:
+  alias: Energy Integrator
+  sequence: 
+    - service: python_script.energy
+      data:
+        power: furnace_power
+        last_power: last_power
+        energy_accum: energy_accum
+
+energy_hour:
+  alias: Hourly Energy
+  sequence:
+  #delay start if furnace power is changing of hour boundary.
+    - wait_template: "{{ is_state('script.energy', 'off') }}"
+    - service: python_script.energy_hour
+      data:
+        power: furnace_power
+        last_power: last_power
+        energy_accum: energy_accum
+        hourly_energy: hourly_energy     
+        

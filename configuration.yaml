@@ -66,10 +66,10 @@ python_script:
 
 #Need this only to debug python scripts
 # logger:
-# default: info
-# logs:
-# homeassistant.components.python_scripts: debug
-# homeassistant.components.sensor.time: error
+  # default: info
+  # logs:
+    # homeassistant.components.python_scripts: debug
+    # homeassistant.components.sensor.time: error
 
 # #For Mysensors debug only
 # logger:
@@ -113,9 +113,9 @@ recorder:
       - sensor.lr_random
       - sensor.br_random
       ## Several accumulators for which only the last value is required.
-      - input_number.energy_accum
+      #- input_number.energy_accum
       - input_number.hourly_energy_accum
-      - input_number.last_power
+      #- input_number.last_power
       - input_number.temp_diff_accum
       - input_number.hourly_temp_diff_accum
       - input_number.last_house_temp
@@ -202,6 +202,10 @@ logbook:
       - switch.leviton_dz15s_1bz_decora_smart_switch_switch
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.medalert1_check
+      # Test only
+      # - input_number.power_test
+      # - input_number.energy_accum
+      # - input_number.hourly_energy
 
 # View the history of only some components
 # Depends on recorder settings.
@@ -230,7 +234,6 @@ history:
       - sensor.furnace_power_plot
       - input_number.slider_ac_home
       - input_number.slider_ac_away
-      - input_number.power_test
       - input_number.box_gas
       - input_number.last_house_temp
       - input_number.last_house_humidity
@@ -594,14 +597,14 @@ input_number:
     max: 4000
     step: 1
     mode: box    
-  
-  # Used to generate at test pattern to power
+  # # Used to generate at test pattern to power
   # power_test:
-  # name: Power Test
-  # initial: 0
-  # min: 0
-  # max: 50
-  # step: 1
+    # name: Power Test
+    # initial: 0
+    # min: 0
+    # max: 150
+    # step: 1
+    # unit_of_measurement: "kW"
 
 input_datetime:
   lr_off_time:
