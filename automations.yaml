@@ -861,4 +861,24 @@
       data_template:
         entity_id: input_number.humidity
         value: "{{ states('sensor.mysensors_bme280_2_3')}}"
+        
+- alias: Increment Brita Days counter
+  initial_state: True
+  trigger:
+    - platform: time
+      at: "01:00:00"
+  action:
+    - service: counter.increment
+      entity_id: counter.brita_days
+      
+# Send Notification if Brita Filter used for more than 90 days
+- alias: Notify Brita Filter
+  initial_state: True
+  trigger:
+    - platform: template
+      value_template: "{{ states.counter.brita_days.state | float > 90.0 }}"
+  action:
+    service: notify.mobile_app_iphone
+    data:
+      message: "Brita Filter Used for 90 Days"
 

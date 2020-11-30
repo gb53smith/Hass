@@ -30,6 +30,15 @@
         is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
         Unlocked: Oliver
         {% endif %}
+        
+        {% if
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '4')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control', '6')
+        and
+        is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type', '19') %}
+        Unlocked: Stuart
+        {% endif %}
 
         {% if
         is_state('sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level', '1')
