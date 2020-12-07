@@ -273,6 +273,10 @@
       data_template:
         entity_id: climate.summer_fan
         temperature: !secret temperature_fan_away
+    - service: climate.set_hvac_mode
+      data_template:
+        entity_id: climate.mitsubishi_heatpump
+        hvac_mode: "off"       
 
 # Return temperature set point when returning
 # between heat ON and OFF times if not on vacation
@@ -298,6 +302,31 @@
       data_template:
         entity_id: climate.summer_fan
         temperature: !secret temperature_fan
+
+# Start up heating with heat pump but only if not cooling       
+- alias: Home Heat Pump
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.away
+    to: "off"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: automation.hvac
+        state: "off"
+      - condition: template
+        value_template: >
+          {{ (now().hour * 60 + now().minute) * 60  
+              > states.input_datetime.heatpump_on_time.attributes.timestamp and 
+              (now().hour * 60 + now().minute) * 60 
+              < states.input_datetime.heat_off_time.attributes.timestamp }}
+  action:
+    - service: climate.set_hvac_mode
+      data_template:
+        entity_id: climate.mitsubishi_heatpump
+        hvac_mode: "heat"
 
 # Force temperature_away, immediately, when vacation switched ON
 # - alias: Vacation ON
@@ -881,4 +910,51 @@
     service: notify.mobile_app_iphone
     data:
       message: "Brita Filter Used for 90 Days"
+      
+# Turn heat pump ON at set time if not away and not on vacation and only if
+# outside temperature above freezing.
+- alias: "Heat Pump ON"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.heatpump_on_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.vacation
+        state: "off"
+      - condition: state
+        entity_id: automation.hvac
+        state: "off"
+      - condition: template
+        value_template: >
+          {{ states.input_number.temperature | int > 0 }} 
+  action:
+    - service: climate.set_hvac_mode
+      data_template:
+        entity_id: climate.mitsubishi_heatpump
+        hvac_mode: "heat"
 
+
+- alias: "Heat Pump OFF"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.heat_off_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  condition:
+    - condition: state
+      entity_id: automation.hvac
+      state: "off"
+  action:
+    - service: climate.set_hvac_mode
+      data_template:
+        entity_id: climate.mitsubishi_heatpump
+        hvac_mode: "off"

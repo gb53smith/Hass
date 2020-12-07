@@ -247,6 +247,7 @@ history:
       - input_datetime.br_on_time_random
       - input_datetime.br_off_time_random
       - input_datetime.heat_on_time
+      - input_datetime.heatpump_on_time
       - input_datetime.heat_off_time
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.cooling
@@ -632,6 +633,11 @@ input_datetime:
 
   heat_on_time:
     name: Heat ON time
+    has_date: false
+    has_time: true
+    
+  heatpump_on_time:
+    name: Heatpump ON time
     has_date: false
     has_time: true
 
