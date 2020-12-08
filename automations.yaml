@@ -934,7 +934,7 @@
         state: "off"
       - condition: template
         value_template: >
-          {{ states.input_number.temperature | int > 0 }} 
+          {{ states.input_number.temperature.state | int > 0 }} 
   action:
     - service: climate.set_hvac_mode
       data_template:
