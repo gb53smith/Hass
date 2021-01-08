@@ -303,7 +303,8 @@
         entity_id: climate.summer_fan
         temperature: !secret temperature_fan
 
-# Start up heating with heat pump but only if not cooling       
+# Start up heating with heat pump but only if not cooling
+# and outside temperature greater than 0 degrees C.       
 - alias: Home Heat Pump
   initial_state: True
   trigger:
@@ -322,53 +323,14 @@
               > states.input_datetime.heatpump_on_time.attributes.timestamp and 
               (now().hour * 60 + now().minute) * 60 
               < states.input_datetime.heat_off_time.attributes.timestamp }}
+      - condition: template
+        value_template: >
+          {{ states.input_number.temperature.state | int > 0 }} 
   action:
     - service: climate.set_hvac_mode
       data_template:
         entity_id: climate.mitsubishi_heatpump
         hvac_mode: "heat"
-
-# Force temperature_away, immediately, when vacation switched ON
-# - alias: Vacation ON
-# initial_state: True
-# trigger:
-# platform: state
-# entity_id: input_boolean.vacation
-# to: 'on'
-# action:
-# - service: climate.set_temperature
-# data_template:
-# entity_id: climate.house
-# temperature: "{{ states('input_number.slider_away')}}"
-# - service: climate.set_temperature
-# data_template:
-# entity_id: climate.summer_fan
-# temperature: !secret temperature_fan_away
-
-# Force temperature_home when vacation switched OFF
-# and time is between heat ON and OFF times.
-# - alias: Vacation OFF
-# initial_state: True
-# trigger:
-# platform: state
-# entity_id: input_boolean.vacation
-# to: 'off'
-# condition:
-# - condition: template
-# value_template: >
-# {{ (now().hour * 60 + now().minute) * 60
-# > states.input_datetime.heat_on_time.attributes.timestamp and
-# (now().hour * 60 + now().minute) * 60
-# < states.input_datetime.heat_off_time.attributes.timestamp }}
-# action:
-# - service: climate.set_temperature
-# data_template:
-# entity_id: climate.house
-# temperature: "{{ states('input_number.slider_home')}}"
-# - service: climate.set_temperature
-# data_template:
-# entity_id: climate.summer_fan
-# temperature: !secret temperature_fan
 
 - alias: Furnace Ramp ON
   initial_state: True
