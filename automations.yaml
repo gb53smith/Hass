@@ -349,6 +349,10 @@
     entity_id: switch.furnace
     to: "off"
   action:
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.furnace_power
+        value: 0
     - service: homeassistant.turn_off
       entity_id:
         - script.furnace_timer
@@ -356,10 +360,16 @@
         - script.timer_heat1
         - input_boolean.heat1
         - input_boolean.heat0
+    #After a delay for the energy script to finish,
+    #clear last_power.  It can get stuck if there is a power spike
+    #that returns to zero.  energy.py does not see the power to returning
+    #0 and keeps the spiked value instead.
+    - delay: "00:00:02"
     - service: input_number.set_value
       data:
-        entity_id: input_number.furnace_power
+        entity_id: input_number.last_power
         value: 0
+
 
 # Send Notification if temperature reaches min_temp or max_temp.
 - alias: Notify House Out of Range Temperature
