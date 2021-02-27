@@ -930,3 +930,26 @@
       data_template:
         entity_id: climate.mitsubishi_heatpump
         hvac_mode: "off"
+
+# Plant light automation       
+- alias: "Plant Light ON"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.plant_light_on_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  action:
+    service: switch.turn_on
+    entity_id: switch.plant1
+    
+- alias: "Plant Light OFF"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ (states.input_datetime.plant_light_off_time.attributes.timestamp | int 
+      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+  action:
+    service: switch.turn_off
+    entity_id: switch.plant1

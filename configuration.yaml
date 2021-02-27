@@ -646,6 +646,16 @@ input_datetime:
     has_date: false
     has_time: true
 
+  plant_light_on_time:
+    name: Plant Light ON time
+    has_date: false
+    has_time: true
+
+  plant_light_off_time:
+    name: Plant Light OFF time
+    has_date: false
+    has_time: true
+
 # MultiSensor2 Support
 # ms2 added to prevent possible conflict with Z-wave light.  It is needed.
 light ms2:
