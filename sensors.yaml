@@ -209,7 +209,8 @@
   state_topic: "/home/plants/TH_sensor"
   name: "Plants Soil"
   unit_of_measurement: "°C"
-  value_template: "{{ value_json.soil }}"
+  # Return to uncorrected value by adding 1.0
+  value_template: "{{ value_json.soil  + 1.0}}"
 
 # - platform: mqtt
 # state_topic: 'heatpump/status'

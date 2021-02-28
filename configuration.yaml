@@ -334,6 +334,33 @@ climate:
       seconds: 10
     ac_mode: true
     initial_hvac_mode: "cool"
+    
+  - platform: generic_thermostat
+    name: Soil Heater
+    heater: switch.plant2
+    target_sensor: sensor.plants_soil
+    min_temp: 10
+    max_temp: 25
+    target_temp: 22
+    precision: 0.1
+    cold_tolerance: 0.3
+    hot_tolerance: 0.1
+    initial_hvac_mode: "heat"
+    
+  # Turns fan ON to reduce humidity
+  - platform: generic_thermostat
+    name: Plant Fan
+    heater: switch.plant3
+    target_sensor: sensor.plants_humidity
+    #These targets are humidity values - not temperature
+    min_temp: 40
+    max_temp: 100
+    target_temp: 80
+    precision: 1
+    cold_tolerance: 2
+    hot_tolerance: 2
+    ac_mode: true
+    initial_hvac_mode: "cool"
 
   - platform: mqtt
     name: "Mitsubishi Heatpump"
