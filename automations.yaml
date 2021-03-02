@@ -953,3 +953,38 @@
   action:
     service: switch.turn_off
     entity_id: switch.plant1
+    
+# Plant Ventilation Automation
+# Turn ON fan if humidity or temperature exceeds set limits
+# and send alarm
+- alias: "Plant Fan ON"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ states.sensor.plants_humidity.state | float > 
+      states.input_number.max_humidity.state | float or
+      states.sensor.plants_temperature.state | float > 
+      states.input_number.max_temp.state | float}}
+  action:
+    - service: switch.turn_on
+      entity_id: switch.plant3
+    - service: notify.mobile_app_iphone
+      data:
+        message: "Plant Fan ON"
+
+# Turn OFF fan if humidity and temperature lower than set limits
+# One unit of hysteresis added
+- alias: "Plant Fan OFF"
+  initial_state: True
+  trigger:
+    platform: template
+    value_template: >
+      {{ states.sensor.plants_humidity.state | float < 
+      states.input_number.max_humidity.state | float - 1.0 and
+      states.sensor.plants_temperature.state | float < 
+      states.input_number.max_temp.state | float - 1.0}}
+  action:
+    - service: switch.turn_off
+      entity_id: switch.plant3
+
