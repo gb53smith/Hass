@@ -346,7 +346,7 @@ climate:
     target_sensor: sensor.plants_soil
     min_temp: 10
     max_temp: 28
-    precision: 1.0
+    precision: 0.1
     cold_tolerance: 0.3
     hot_tolerance: 0.1
     initial_hvac_mode: "heat"  

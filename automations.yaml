@@ -28,7 +28,7 @@
       # float is needed to convert string state to float for comparison
       # Deck irrigation is mostly under cover so I need watering every day.
       - condition: template
-        value_template: "{{ states.sensor.yesterday_rainfall.state | float < 5 }}"
+        value_template: "{{ states('sensor.yesterday_rainfall') | float < 5 }}"
   action:
     service: script.turn_on
     entity_id: script.ir_back
@@ -50,7 +50,7 @@
         entity_id: switch.back_irrigation
         state: "off"
       - condition: template
-        value_template: "{{ states.sensor.yesterday_rainfall.state | float < 5 }}"
+        value_template: "{{ states('sensor.yesterday_rainfall') | float < 5 }}"
   action:
     service: script.turn_on
     entity_id: script.ir_front
@@ -72,7 +72,7 @@
         entity_id: switch.front_irrigation
         state: "off"
       - condition: template
-        value_template: "{{ states.sensor.yesterday_rainfall.state | float < 5 }}"
+        value_template: "{{ states('sensor.yesterday_rainfall') | float < 5 }}"
   action:
     service: script.turn_on
     entity_id: script.ir_deck
@@ -109,8 +109,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.lr_off_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.lr_off_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     condition: state
     entity_id: input_boolean.vacation
@@ -124,8 +124,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.lr_off_time_random.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.lr_off_time_random', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     condition: state
     entity_id: input_boolean.vacation
@@ -139,8 +139,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.br_on_time_random.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.br_on_time_random', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     condition: state
     entity_id: input_boolean.vacation
@@ -154,8 +154,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.br_off_time_random.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.br_off_time_random', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     condition: state
     entity_id: input_boolean.vacation
@@ -202,8 +202,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.heat_on_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.heat_on_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     condition: and
     conditions:
@@ -229,8 +229,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.heat_off_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.heat_off_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   action:
     service: climate.set_temperature
     data_template:
@@ -250,8 +250,8 @@
   condition:
     condition: template
     value_template: >
-      {{ states.climate.house.attributes.current_temperature
-      | float > states.climate.house.attributes.temperature | float }}
+      {{ state_attr('climate.house', 'current_temperature')
+      | float > state_attr('climate.house', 'temperature') | float }}
   action:
     service: switch.turn_off
     entity_id: switch.furnace
@@ -290,9 +290,9 @@
     condition: template
     value_template: >
       {{ (now().hour * 60 + now().minute) * 60  
-          > states.input_datetime.heat_on_time.attributes.timestamp and 
+          > state_attr('input_datetime.heat_on_time', 'timestamp') and 
           (now().hour * 60 + now().minute) * 60 
-          < states.input_datetime.heat_off_time.attributes.timestamp }}
+          < state_attr('input_datetime.heat_off_time', 'timestamp') }}
   action:
     - service: climate.set_temperature
       data_template:
@@ -320,12 +320,12 @@
       - condition: template
         value_template: >
           {{ (now().hour * 60 + now().minute) * 60  
-              > states.input_datetime.heatpump_on_time.attributes.timestamp and 
+              > state_attr('input_datetime.heatpump_on_time', 'timestamp') and 
               (now().hour * 60 + now().minute) * 60 
-              < states.input_datetime.heat_off_time.attributes.timestamp }}
+              < state_attr('input_datetime.heat_off_time', 'timestamp') }}
       - condition: template
         value_template: >
-          {{ states.input_number.temperature.state | int > 0 }} 
+          {{ states('input_number.temperature') | int > 0 }} 
   action:
     - service: climate.set_hvac_mode
       data_template:
@@ -376,9 +376,9 @@
   initial_state: True
   trigger:
     - platform: template
-      value_template: "{{ states.sensor.house_temperature.state | float > 26.0 }}"
+      value_template: "{{ states('sensor.house_temperature') | float > 26.0 }}"
     - platform: template
-      value_template: "{{ states.sensor.house_temperature.state | float < 15.0 }}"
+      value_template: "{{ states('sensor.house_temperature') | float < 15.0 }}"
   action:
     service: notify.mobile_app_iphone
     data:
@@ -389,9 +389,9 @@
   initial_state: True
   trigger:
     - platform: template
-      value_template: "{{ states.sensor.remote_temperature.state | float > 15.5 }}"
+      value_template: "{{ states('sensor.remote_temperature') | float > 15.5 }}"
     - platform: template
-      value_template: "{{ states.sensor.remote_temperature.state | float < 10.0 }}"
+      value_template: "{{ states('sensor.remote_temperature') | float < 10.0 }}"
   action:
     service: notify.mobile_app_iphone
     data:
@@ -402,7 +402,7 @@
   initial_state: True
   trigger:
     - platform: template
-      value_template: "{{ states.sensor.mysensors_bme280_2_4.state | float < 3.2 }}"
+      value_template: "{{ states('sensor.mysensors_bme280_2_4') | float < 3.2 }}"
   action:
     service: notify.mobile_app_iphone
     data:
@@ -472,9 +472,9 @@
         temperature: >
           {% if is_state('input_boolean.vacation', 'off') and 
             (now().hour * 60 + now().minute) * 60  
-            > states.input_datetime.heat_on_time.attributes.timestamp and 
+            > state_attr('input_datetime.heat_on_time', 'timestamp') and 
             (now().hour * 60 + now().minute) * 60 
-            < states.input_datetime.heat_off_time.attributes.timestamp %}
+            < state_attr('input_datetime.heat_off_time', 'timestamp') %}
             {{ states('input_number.slider_home')}}
           {% else %}
             {{ states('input_number.slider_away')}}
@@ -520,9 +520,9 @@
       - condition: template
         value_template: >
           {{ (now().hour * 60 + now().minute) * 60  
-            > states.input_datetime.heat_on_time.attributes.timestamp and 
+            > state_attr('input_datetime.heat_on_time', 'timestamp') and 
             (now().hour * 60 + now().minute) * 60 
-            < states.input_datetime.heat_off_time.attributes.timestamp }}
+            < state_attr('input_datetime.heat_off_time', 'timestamp') }}
   action:
     - service: climate.set_temperature
       data_template:
@@ -548,9 +548,9 @@
       - condition: template
         value_template: >
           {{ (now().hour * 60 + now().minute) * 60  
-            > states.input_datetime.heat_off_time.attributes.timestamp or 
+            > state_attr('input_datetime.heat_off_time', 'timestamp') or 
             (now().hour * 60 + now().minute) * 60 
-            < states.input_datetime.heat_on_time.attributes.timestamp }}
+            < state_attr('input_datetime.heat_on_time', 'timestamp') }}
   action:
     - service: climate.set_temperature
       data_template:
@@ -668,7 +668,7 @@
   # action:
     # - service: notify.energy_notify
       # data_template:
-        # message: ",{{ (states.sensor.hourly_energy.state | float) | round(2)}},{{ states.sensor.hour_diff.state }}"
+        # message: ",{{ (states('sensor.hourly_energy') | float) | round(2)}},{{ states('sensor.hour_diff') }}"
 
 - alias: Daily Energy Total
   initial_state: True
@@ -751,7 +751,7 @@
   action:
     service: light.turn_on
     data_template:
-      # Set colour depending on entity states.
+      # Set colour depending on entity states('
       # White should not occur so therefore is an error message
       entity_id: light.mqtt_json_light
       brightness: 100
@@ -877,7 +877,7 @@
   initial_state: True
   trigger:
     - platform: template
-      value_template: "{{ states.counter.brita_days.state | float > 90.0 }}"
+      value_template: "{{ states('counter.brita_days') | float > 90.0 }}"
   action:
     service: notify.mobile_app_iphone
     data:
@@ -890,8 +890,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.heatpump_on_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.heatpump_on_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     condition: and
     conditions:
@@ -906,7 +906,7 @@
         state: "off"
       - condition: template
         value_template: >
-          {{ states.input_number.temperature.state | int > 0 }} 
+          {{ states('input_number.temperature') | int > 0 }} 
   action:
     - service: climate.set_hvac_mode
       data_template:
@@ -919,8 +919,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.heat_off_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.heat_off_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   condition:
     - condition: state
       entity_id: automation.hvac
@@ -937,8 +937,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.plant_light_on_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.plant_light_on_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   action:
     service: switch.turn_on
     entity_id: switch.plant1
@@ -948,8 +948,8 @@
   trigger:
     platform: template
     value_template: >
-      {{ (states.input_datetime.plant_light_off_time.attributes.timestamp | int 
-      | timestamp_custom("%H:%M", False)) == states.sensor.time.state}}
+      {{ (state_attr('input_datetime.plant_light_off_time', 'timestamp') | int 
+      | timestamp_custom("%H:%M", False)) == states('sensor.time')}}
   action:
     service: switch.turn_off
     entity_id: switch.plant1
@@ -962,10 +962,10 @@
   trigger:
     platform: template
     value_template: >
-      {{ states.sensor.plants_humidity.state | float > 
-      states.input_number.max_humidity.state | float or
-      states.sensor.plants_temperature.state | float > 
-      states.input_number.max_temp.state | float}}
+      {{ states('sensor.plants_humidity') | float > 
+      states('input_number.max_humidity') | float or
+      states('sensor.plants_temperature') | float > 
+      states('input_number.max_temp') | float}}
   action:
     - service: switch.turn_on
       entity_id: switch.plant3
@@ -980,10 +980,10 @@
   trigger:
     platform: template
     value_template: >
-      {{ states.sensor.plants_humidity.state | float < 
-      states.input_number.max_humidity.state | float - 1.0 and
-      states.sensor.plants_temperature.state | float < 
-      states.input_number.max_temp.state | float - 1.0}}
+      {{ states('sensor.plants_humidity') | float < 
+      states('input_number.max_humidity') | float - 1.0 and
+      states('sensor.plants_temperature') | float < 
+      states('input_number.max_temp') | float - 1.0}}
   action:
     - service: switch.turn_off
       entity_id: switch.plant3
