@@ -23,16 +23,18 @@ system_health:
 # mode: yaml
 #GBS new comment 5/31/2020
 
-mysensors:
-  gateways:
-    - device: mqtt
-      persistence_file: "/config/mysensors1.json"
-      topic_in_prefix: "mygateway1-out"
-      topic_out_prefix: "mygateway1-in"
-  optimistic: false
-  persistence: true
-  retain: true
-  version: "2.3"
+## Removed for HA2021.3.1
+## Now configured using a UI Integration.
+# mysensors:
+  # gateways:
+    # - device: mqtt
+      # persistence_file: "/config/mysensors1.json"
+      # topic_in_prefix: "mygateway1-out"
+      # topic_out_prefix: "mygateway1-in"
+  # optimistic: false
+  # persistence: true
+  # retain: true
+  # version: "2.3"
 
 zwave:
   usb_path: /dev/ttyACM0
