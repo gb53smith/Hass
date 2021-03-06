@@ -36,16 +36,18 @@ system_health:
   # retain: true
   # version: "2.3"
 
-zwave:
-  usb_path: /dev/ttyACM0
-  network_key: !secret zwave_key
-  polling_interval: 30000
-  device_config:
-    light.ge_12724_3way_dimmer_switch_level: # Added to keep HA in sync after manual override
-      refresh_value: true #refresh the brightness value if the dimmer do "soft off"
-      delay: 2 #Amount of seconds before the refresh is done after the actual action.
-      #Polls the device when each (polling_intensity) polling is performed by polling_interval
-      polling_intensity: 1
+# zwave:
+  # usb_path: /dev/ttyACM0
+  # network_key: !secret zwave_key
+  # polling_interval: 30000
+  # device_config:
+    # light.ge_12724_3way_dimmer_switch_level: # Added to keep HA in sync after manual override
+      # refresh_value: true #refresh the brightness value if the dimmer do "soft off"
+      # delay: 2 #Amount of seconds before the refresh is done after the actual action.
+      # #Polls the device when each (polling_intensity) polling is performed by polling_interval
+      # polling_intensity: 1
+
+input_text:
 
 # Enables the frontend
 frontend:

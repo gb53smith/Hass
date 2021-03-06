@@ -74,10 +74,6 @@ sensor.multisensor2_humidity:
   friendly_name: Indoor Humidity
   icon: mdi:water-percent
   unit_of_measurement: "%"
-sensor.lock_battery:
-  friendly_name: Lock Battery
-  icon: mdi:battery
-  unit_of_measurement: "%"
 sensor.house_temperature:
   friendly_name: House Temperature
   icon: mdi:thermometer
