@@ -224,11 +224,11 @@
       state: 'off'
   action:
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: '{{ states(''input_number.slider_home'')}}'
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.summer_fan
       temperature: 25
   initial_state: true
@@ -244,7 +244,7 @@
       '
   action:
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: '{{ states(''input_number.slider_away'')}}'
   initial_state: true
@@ -282,15 +282,15 @@
     to: 'on'
   action:
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: '{{ states(''input_number.slider_away'')}}'
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.summer_fan
       temperature: 30
   - service: climate.set_hvac_mode
-    data_template:
+    data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: 'off'
   initial_state: true
@@ -311,11 +311,11 @@
       \ 'timestamp') }}\n"
   action:
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: '{{ states(''input_number.slider_home'')}}'
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.summer_fan
       temperature: 25
   initial_state: true
@@ -342,7 +342,7 @@
       value_template: "{{ states('input_number.temperature') | int > 0 }} \n"
   action:
   - service: climate.set_hvac_mode
-    data_template:
+    data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: heat
   initial_state: true
@@ -473,8 +473,11 @@
 
     Restore heat if not on vacation and  time is between heat ON and heat OFF times.
 
-    Restore summer fan depending on vacation status.  Note !secrets does not work
-    in template.'
+    Restore summer fan depending on vacation status.
+
+    Turn plant light ON if automation ON and time is in range.
+
+    Note !secrets does not work in template.'
   trigger:
   - platform: homeassistant
     event: start
@@ -483,7 +486,7 @@
     data:
       entity_id: group.switches_off_at_restart
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: "{% if is_state('input_boolean.vacation', 'off') and \n  (now().hour\
         \ * 60 + now().minute) * 60  \n  > state_attr('input_datetime.heat_on_time',\
@@ -491,7 +494,7 @@
         \ 'timestamp') %}\n  {{ states('input_number.slider_home')}}\n{% else %}\n\
         \  {{ states('input_number.slider_away')}}\n{% endif %}\n"
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.summer_fan
       temperature: "{% if is_state('input_boolean.vacation', 'off') %}\n  25\n{% else\
         \ %}\n  30\n{% endif %}\n"
@@ -531,7 +534,7 @@
         \ 'timestamp') }}\n"
   action:
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: '{{ states(''input_number.slider_home'')}}'
   initial_state: true
@@ -558,7 +561,7 @@
         \ 'timestamp') }}\n"
   action:
   - service: climate.set_temperature
-    data_template:
+    data:
       entity_id: climate.house
       temperature: '{{ states(''input_number.slider_away'')}}'
   initial_state: true
@@ -672,7 +675,7 @@
     topic: heatpump/_set/+
   action:
   - service: mqtt.publish
-    data_template:
+    data:
       topic: '{{ "heatpump/set" }}'
       payload: "{% if trigger.topic.split(\"/\")[-1] == \"mode\" %}\n  {% if trigger.payload|upper\
         \ == \"OFF\" %}\n    {\"power\":\"OFF\"}\n  {% elif trigger.payload == \"\
@@ -707,9 +710,7 @@
     entity_id: input_number.furnace_power
   action:
   - service: light.turn_on
-    data_template:
-      entity_id: light.mqtt_json_light
-      brightness: 100
+    data:
       color_name: '{% if is_state("binary_sensor.away", "on") %} blue {% elif is_state("climate.mitsubishi_heatpump",
         "cool")%} cyan {% elif states("input_number.furnace_power") | int > 14 %}
         red {% elif states("input_number.furnace_power") | int > 12  %} purple {%
@@ -717,6 +718,9 @@
         | int == 0  %} green {% else %} white {% endif %}
 
         '
+      brightness: 100
+    target:
+      entity_id: light.mqtt_json_light
   initial_state: true
   mode: single
 - alias: Burglar Alarm
@@ -748,7 +752,7 @@
     entity_id: sensor.multisensor2_temperature
   action:
   - service: input_number.set_value
-    data_template:
+    data:
       entity_id: input_number.last_house_temp
       value: '{{ states(''sensor.multisensor2_temperature'')}}'
   id: 68eef09ca6714c85a4d466bd27fde205
@@ -759,7 +763,7 @@
     entity_id: sensor.multisensor2_humidity
   action:
   - service: input_number.set_value
-    data_template:
+    data:
       entity_id: input_number.last_house_humidity
       value: '{{ states(''sensor.multisensor2_humidity'')}}'
   id: 72e51baeb4cc419faa7ab04f1ce0d08b
@@ -770,7 +774,7 @@
     entity_id: sensor.multisensor2_gas
   action:
   - service: input_number.set_value
-    data_template:
+    data:
       entity_id: input_number.last_gas
       value: '{{ states(''sensor.multisensor2_gas'')}}'
   id: 2072791e237b42a9a68bf82a35d9388f
@@ -782,7 +786,7 @@
     entity_id: sensor.mysensors_bme280_2_2
   action:
   - service: input_number.set_value
-    data_template:
+    data:
       entity_id: input_number.temperature
       value: '{{ states(''sensor.mysensors_bme280_2_2'')}}'
   initial_state: true
@@ -794,7 +798,7 @@
     entity_id: sensor.mysensors_bme280_2_1
   action:
   - service: input_number.set_value
-    data_template:
+    data:
       entity_id: input_number.pressure
       value: '{{ states(''sensor.mysensors_bme280_2_1'')}}'
   id: 0d114d79016b47cdaa55c4ac31d7c4a4
@@ -805,7 +809,7 @@
     entity_id: sensor.mysensors_bme280_2_3
   action:
   - service: input_number.set_value
-    data_template:
+    data:
       entity_id: input_number.humidity
       value: '{{ states(''sensor.mysensors_bme280_2_3'')}}'
   id: f9e37fbc33434ac498adb5d5d9194ef1
@@ -856,7 +860,7 @@
       value_template: "{{ states('input_number.temperature') | int > 0 }} \n"
   action:
   - service: climate.set_hvac_mode
-    data_template:
+    data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: heat
   initial_state: true
@@ -875,22 +879,23 @@
     state: 'off'
   action:
   - service: climate.set_hvac_mode
-    data_template:
+    data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: 'off'
   id: c79cb33028e14e8a9bce8032a5e2bbd8
-- alias: Plant Light ON
-  initial_state: true
+- id: 43be9a2cef8a415ab0f94ea25af9d408
+  alias: Plant Light ON
   trigger:
-    platform: template
+  - platform: template
     value_template: '{{ (state_attr(''input_datetime.plant_light_on_time'', ''timestamp'')
       | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
 
       '
+  condition: []
   action:
-    service: switch.turn_on
+  - service: switch.turn_on
     entity_id: switch.plant1
-  id: 43be9a2cef8a415ab0f94ea25af9d408
+  mode: single
 - alias: Plant Light OFF
   initial_state: true
   trigger:
@@ -921,7 +926,6 @@
   - service: notify.mobile_app_iphone
     data:
       message: Plant Fan ON
-  initial_state: true
   mode: single
 - id: 058780e6e40d4e8c8ed1d4d32bec6417
   alias: Plant Fan OFF
