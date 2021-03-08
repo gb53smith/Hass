@@ -494,10 +494,9 @@
         \ 'timestamp') %}\n  {{ states('input_number.slider_home')}}\n{% else %}\n\
         \  {{ states('input_number.slider_away')}}\n{% endif %}\n"
   - service: climate.set_temperature
-    data:
+    data: {}
+    target:
       entity_id: climate.summer_fan
-      temperature: "{% if is_state('input_boolean.vacation', 'off') %}\n  25\n{% else\
-        \ %}\n  30\n{% endif %}\n"
   - service: input_number.set_value
     data:
       entity_id: input_number.furnace_power
@@ -1020,4 +1019,78 @@
         }}'
     target:
       entity_id: input_text.lock_last_action
+  mode: single
+- id: '1615159546954'
+  alias: Plant Automation Master ON
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.plant_automation
+    to: 'on'
+  condition: []
+  action:
+  - service: homeassistant.turn_on
+    target:
+      entity_id:
+      - automation.plant_light_on
+      - automation.plant_fan_on
+      - climate.soil_heater
+      - automation.plant_fan_off
+      - automation.plant_light_off
+  mode: single
+- id: '1615160881960'
+  alias: Plant Automation Master OFF
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.plant_automation
+    to: 'off'
+  condition: []
+  action:
+  - service: homeassistant.turn_off
+    target:
+      entity_id:
+      - automation.plant_light_on
+      - automation.plant_fan_on
+      - climate.soil_heater
+      - automation.plant_fan_off
+      - automation.plant_light_off
+      - switch.plant1
+      - switch.plant3
+  mode: single
+- id: '1615162449274'
+  alias: Plant Light Restart
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition:
+  - condition: state
+    entity_id: input_boolean.plant_automation
+    state: 'on'
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{  (now().hour * 60 + now().minute) * 60  > state_attr(''input_datetime.plant_light_on_time'',  ''timestamp'')
+        and  (now().hour * 60 + now().minute) * 60  < state_attr(''input_datetime.plant_light_off_time'',''timestamp'')
+        }}'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.plant1
+  mode: single
+- id: '1615165150474'
+  alias: Plant Heater Restart
+  description: Turn off climate control for soil heater if plant automation is off
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition:
+  - condition: state
+    entity_id: input_boolean.plant_automation
+    state: 'off'
+  action:
+  - service: climate.turn_off
+    target:
+      entity_id: climate.soil_heater
   mode: single

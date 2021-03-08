@@ -440,7 +440,7 @@ input_boolean:
   watchdog:
     name: "Watchdog Alarm Override"
     initial: off
-    icon: mdi:lock
+    icon: mdi:toggle-switch-outline
 
   watchdog_delayed:
     name: "Watchdog Delayed"
@@ -453,6 +453,10 @@ input_boolean:
   heat1:
     name: "Heat State 1"
     initial: off
+    
+  plant_automation:
+    name: "Plant Automation"
+    icon: mdi:toggle-switch-outline
 
 input_number:
   slider_home:
