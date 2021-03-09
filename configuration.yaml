@@ -47,6 +47,7 @@ system_health:
       # #Polls the device when each (polling_intensity) polling is performed by polling_interval
       # polling_intensity: 1
 
+# See Helpers in UI
 input_text:
 
 # Enables the frontend
@@ -325,7 +326,6 @@ climate:
     target_sensor: sensor.house_temperature
     min_temp: 15
     max_temp: 25
-    target_temp: !secret temperature_home
     precision: 0.1
     cold_tolerance: 0.3
     # Reduce overshoot on the hot side with MultiSensor2
@@ -342,7 +342,6 @@ climate:
     target_sensor: sensor.house_temperature
     min_temp: 22
     max_temp: 35
-    target_temp: !secret temperature_fan
     precision: 0.1
     cold_tolerance: 0.3
     hot_tolerance: 0.3
@@ -645,7 +644,18 @@ input_number:
     max: 35
     step: 1
     mode: box   
-    
+  temperature_fan:
+    name: Temperature Fan
+    min: 20
+    max: 35
+    step: 1
+    mode: box
+  temperature_fan_away:
+    name: Temperature Fan Away
+    min: 20
+    max: 35
+    step: 1
+    mode: box    
   # # Used to generate at test pattern to power
   # power_test:
     # name: Power Test

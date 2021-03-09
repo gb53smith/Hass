@@ -208,7 +208,7 @@
   - service: climate.set_temperature
     data:
       entity_id: climate.summer_fan
-      temperature: 25
+      temperature: '{{ states(''input_number.temperature_fan'')}}'
   initial_state: true
   mode: single
 - id: b2a9dbd5f844423592514eff70d6e9f3
@@ -266,7 +266,7 @@
   - service: climate.set_temperature
     data:
       entity_id: climate.summer_fan
-      temperature: 30
+      temperature: '{{ states(''input_number.temperature_fan_away'')}}'
   - service: climate.set_hvac_mode
     data:
       entity_id: climate.mitsubishi_heatpump
@@ -295,7 +295,7 @@
   - service: climate.set_temperature
     data:
       entity_id: climate.summer_fan
-      temperature: 25
+      temperature: '{{ states(''input_number.temperature_fan'')}}'
   initial_state: true
   mode: single
 - id: ef4be65d27ae44f59a5fd150becab065
@@ -705,8 +705,8 @@
       entity_id: light.mqtt_json_light
   initial_state: true
   mode: single
-- alias: Burglar Alarm
-  initial_state: true
+- id: f7b38968d7ad45cdaee935f942d8a8ad
+  alias: Burglar Alarm
   trigger:
   - platform: state
     entity_id: binary_sensor.ecolink_motion_detector_sensor
@@ -724,9 +724,10 @@
     data:
       message: Burglar Alarm Triggered!
       target:
-      - '+16043293751'
-      - '+447700057320'
-  id: f7b38968d7ad45cdaee935f942d8a8ad
+      - '{{ states(''input_text.local_phone'')}}'
+      - '{{ states(''input_text.travel_phone'')}}'
+  initial_state: true
+  mode: single
 - alias: Last House Temperature
   initial_state: true
   trigger:
