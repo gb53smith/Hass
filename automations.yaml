@@ -164,33 +164,11 @@
     service: switch.turn_off
     entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
   id: f4ccf77d963c4b729311199cb14bd864
-- alias: Notify iOS App Joyce
-  initial_state: true
-  trigger:
-    platform: state
-    entity_id: sensor.back_lock_last_action
-    to: 'Unlocked: Joyce'
-  action:
-    service: notify.mobile_app_iphone
-    data:
-      message: Joyce Unlocked Door
-  id: 6e5985b6059a49acaa72a6033d4ad507
-- alias: Notify iOS App Oliver
-  initial_state: true
-  trigger:
-    platform: state
-    entity_id: sensor.back_lock_last_action
-    to: 'Unlocked: Oliver'
-  action:
-    service: notify.mobile_app_iphone
-    data:
-      message: Oliver Unlocked Door
-  id: 200aa27a6f8441c7baae32a9294ac806
 - id: 48259ef77a1f4882955e69383e0820e8
   alias: Set Home Setpoint
   description: 'Temperature Control Notes
 
-    binary_sensor.away is controlled by sensor.back_lock_last_action and by input_boolean.vacation.
+    binary_sensor.away is controlled by input_text.lock_last_action and by input_boolean.vacation.
 
     Set by locking back door either by Me or Oliver or input_boolean.vacation = "on"
     .
@@ -494,9 +472,10 @@
         \ 'timestamp') %}\n  {{ states('input_number.slider_home')}}\n{% else %}\n\
         \  {{ states('input_number.slider_away')}}\n{% endif %}\n"
   - service: climate.set_temperature
-    data: {}
-    target:
+    data:
       entity_id: climate.summer_fan
+      temperature: "{% if is_state('input_boolean.vacation', 'off') %}\n  25\n{% else\
+        \ %}\n  30\n{% endif %}\n"
   - service: input_number.set_value
     data:
       entity_id: input_number.furnace_power
@@ -656,13 +635,17 @@
       daily: daily_temp_diff
       mode: average
   id: 5d8af1a7b8e6454c9ac100de9af3b08d
-- alias: HVAC
+- id: 462a791f448d479f9439e0243958ba74
+  alias: HVAC
+  description: Triggers a Python Script every 5 minutes to decide if heat pump should
+    be cooling.  If ON the Heat Pump ON/OFF automations must be turned OFF as they
+    control the heat pump while in heating mode.
   trigger:
   - platform: time_pattern
     minutes: /5
   action:
-    service: python_script.hvac
-  id: 462a791f448d479f9439e0243958ba74
+  - service: python_script.hvac
+  mode: single
 - id: 75f3710546f84017a8ad9af8833c330c
   alias: Redirect all MQTT HVAC set commands to the heatpumps
   description: "This is required because MQTT HVAC uses a separate topic for each\
@@ -836,7 +819,8 @@
 - id: 9f937b6bbda24ab4b4d20f99a715b06a
   alias: Heat Pump ON
   description: Turn heat pump ON at set time if not away and not on vacation and only
-    if outside temperature above freezing.
+    if outside temperature above freezing.  Used only when HVAC automation is turned
+    OFF.
   trigger:
   - platform: template
     value_template: '{{ (state_attr(''input_datetime.heatpump_on_time'', ''timestamp'')
@@ -864,10 +848,12 @@
       hvac_mode: heat
   initial_state: true
   mode: single
-- alias: Heat Pump OFF
-  initial_state: true
+- id: c79cb33028e14e8a9bce8032a5e2bbd8
+  alias: Heat Pump OFF
+  description: Turns heat pump off when used for heating.  HVAC automation must be
+    turned OFF.
   trigger:
-    platform: template
+  - platform: template
     value_template: '{{ (state_attr(''input_datetime.heat_off_time'', ''timestamp'')
       | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
 
@@ -881,7 +867,8 @@
     data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: 'off'
-  id: c79cb33028e14e8a9bce8032a5e2bbd8
+  initial_state: true
+  mode: single
 - id: 43be9a2cef8a415ab0f94ea25af9d408
   alias: Plant Light ON
   trigger:

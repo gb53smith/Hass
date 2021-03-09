@@ -85,7 +85,7 @@ python_script:
 #Enable IOS App, Home Assistant Companion
 mobile_app:
 
-# Send SMS if burgular alarm triggered
+# Send SMS if burglar alarm triggered
 twilio:
   account_sid: !secret account_sid
   auth_token: !secret auth_token
@@ -133,6 +133,8 @@ recorder:
       ## plant fan limits
       - input_number.max_humidity
       - input_number.max_temp
+      - input_datetime.plant_light_off_time
+      - input_datetime.plant_light_on_time
       ## No need to see history after debug
       - sensor.temp_diff
       - counter.fan_on_minutes
@@ -145,11 +147,6 @@ recorder:
       - switch.watchdog
       - input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_5_3
-      - sensor.ecolink_motion_detector_alarm_level
-      - sensor.ecolink_motion_detector_alarm_type
-      - sensor.ecolink_motion_detector_burglar
-      - sensor.ecolink_motion_detector_power_management
-      - sensor.ecolink_motion_detector_sourcenodeid
       # iPhone entities not used
       - sensor.iphone_battery_level
       - sensor.iphone_battery_state
@@ -167,6 +164,8 @@ recorder:
       - sensor.joyce_ipad2_last_update_trigger
       - sensor.joyce_ipad2_ssid
       - sensor.joyce_ipad2_storage
+      #- sensor.z_wave_motion_sensor_battery_level
+      - input_boolean.plant_automation
 
     domains:
       - zwave
@@ -201,7 +200,6 @@ logbook:
       - light.ge_12724_3way_dimmer_switch_level
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - sensor.heat_state
-      - sensor.back_lock_last_action
       - sensor.flood
       - binary_sensor.away
       - switch.back_irrigation
@@ -218,91 +216,100 @@ logbook:
 # View the history of only some components
 # Depends on recorder settings.
 history:
-  exclude:
-    domains:
-      - automation
-      - script
-      - group
-      - zwave
-      - device_tracker
+  use_include_order: true
+  include:
     entities:
-      - binary_sensor.away
-      - counter.fan_on_minute
-      - device_tracker.joyce_ipad2
-      - device_tracker.iphone
-      - history_graph.rain_fall
-      - input_boolean.vacation
-      - input_boolean.watchdog
-      - input_number.slider_home
-      - input_number.slider_away
-      - input_number.slider_delay_f
-      - input_number.slider_delay_b
-      - input_number.slider_delay_d
-      - input_number.furnace_power
-      - sensor.furnace_power_plot
-      - input_number.slider_ac_home
-      - input_number.slider_ac_away
-      - input_number.box_gas
-      - input_number.last_house_temp
-      - input_number.last_house_humidity
-      - input_number.temperature
-      - input_number.pressure
-      - input_number.humidity
-      - input_number.max_humidity
-      - input_number.max_temp
-      - input_number.last_gas
-      - input_datetime.lr_off_time
-      - input_datetime.lr_off_time_random
-      - input_datetime.br_on_time_random
-      - input_datetime.br_off_time_random
-      - input_datetime.heat_on_time
-      - input_datetime.heatpump_on_time
-      - input_datetime.heat_off_time
-      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-      - sensor.cooling
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_access_control
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_level
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_alarm_type
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_burglar
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_power_management
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_sourcenodeid
-      - sensor.schlage_be469nxcen_touchscreen_deadbolt_system
-      - sensor.lock_battery
-      - sensor.yesterday_rainfall
-      - sensor.precipitation
-      - sensor.medalert1_check
-      - input_number.temp_diff_accum
-      - sensor.hour_diff
-      - input_number.last_power
-      - input_number.energy_accum
-      - input_number.hourly_energy_accum
-      - input_number.hourly_temp_diff_accum
-      - input_number.last_house_temp
-      - binary_sensor.updater
       - sensor.date
-      - light.mqtt_json_light
-      - sensor.air_quality_health_index
-      - sensor.icon_code
-      - sensor.iqa
-      - switch.watchdog
-      - input_boolean.watchdog_delayed
-      - sensor.soil_moisture_sensor_4_1
-      - sensor.soil_moisture_sensor_4_2
-      - sensor.soil_moisture_sensor_4_3
-      - sensor.soil_moisture_sensor_4_4
-      - sensor.soil_moisture_sensor_5_1
-      - sensor.soil_moisture_sensor_5_2
-      - sensor.soil_moisture_sensor_5_3
-      - sensor.soil_moisture_sensor_6_1
-      - sensor.soil_moisture_sensor_6_2
-      - sensor.soil_moisture_sensor_6_3
-      - sensor.soil_moisture_sensor_6_4
-      - sensor.ecolink_motion_detector_alarm_level
-      - sensor.ecolink_motion_detector_alarm_type
-      - sensor.ecolink_motion_detector_battery_level
-      - sensor.ecolink_motion_detector_burglar
-      - sensor.ecolink_motion_detector_power_management
-      - sensor.ecolink_motion_detector_sourcenodeid
+      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      - binary_sensor.away
+      - binary_sensor.ecolink_motion_detector_sensor
+      - switch.leviton_dz15s_1bz_decora_smart_switch_switch
+      - switch.back_irrigation
+      - switch.deck_irrigation
+      - switch.front_irrigation
+      - switch.furnace
+      - switch.fan
+      - sensor.flood
+      - sensor.medalert1_check
+      - sensor.house_temperature
+      - input_number.temperature
+      
+  # Bug somewhere in exclude statements so switched to include with order control   
+  # exclude:
+    # domains:
+      # - automation
+      # - script
+      # - group
+      # #- zwave
+      # #- device_tracker
+    # entities:
+      # - binary_sensor.away
+      # - counter.fan_on_minute
+      # - device_tracker.joyce_ipad2
+      # - device_tracker.iphone
+      # - history_graph.rain_fall
+      # - input_boolean.vacation
+      # - input_boolean.watchdog
+      # - input_number.slider_home
+      # - input_number.slider_away
+      # - input_number.slider_delay_f
+      # - input_number.slider_delay_b
+      # - input_number.slider_delay_d
+      # - input_number.furnace_power
+      # - sensor.furnace_power_plot
+      # - input_number.slider_ac_home
+      # - input_number.slider_ac_away
+      # - input_number.box_gas
+      # - input_number.last_house_temp
+      # - input_number.last_house_humidity
+      # - input_number.temperature
+      # - input_number.pressure
+      # - input_number.humidity
+      # - input_number.max_humidity
+      # - input_number.max_temp
+      # - input_number.last_gas
+      # - input_datetime.lr_off_time
+      # - input_datetime.lr_off_time_random
+      # - input_datetime.br_on_time_random
+      # - input_datetime.br_off_time_random
+      # - input_datetime.heat_on_time
+      # - input_datetime.heatpump_on_time
+      # - input_datetime.heat_off_time
+      # - input_datetime.plant_light_off_time
+      # - input_datetime.plant_light_on_time
+      # - input_boolean.plant_automation
+      # - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      # - sensor.cooling
+      # - sensor.yesterday_rainfall
+      # - sensor.precipitation
+      # - sensor.medalert1_check
+      # - input_number.temp_diff_accum
+      # - sensor.hour_diff
+      # - input_number.last_power
+      # - input_number.energy_accum
+      # - input_number.hourly_energy_accum
+      # - input_number.hourly_temp_diff_accum
+      # - input_number.last_house_temp
+      # - binary_sensor.updater
+      # - sensor.date
+      # - light.mqtt_json_light
+      # - sensor.air_quality_health_index
+      # - sensor.icon_code
+      # - sensor.iqa
+      # - switch.watchdog
+      # - input_boolean.watchdog_delayed
+      # - sensor.soil_moisture_sensor_4_1
+      # - sensor.soil_moisture_sensor_4_2
+      # - sensor.soil_moisture_sensor_4_3
+      # - sensor.soil_moisture_sensor_4_4
+      # - sensor.soil_moisture_sensor_5_1
+      # - sensor.soil_moisture_sensor_5_2
+      # - sensor.soil_moisture_sensor_5_3
+      # - sensor.soil_moisture_sensor_6_1
+      # - sensor.soil_moisture_sensor_6_2
+      # - sensor.soil_moisture_sensor_6_3
+      # - sensor.soil_moisture_sensor_6_4
+      # - sensor.z_wave_motion_sensor_battery_level
 
 
 # Track the sun
@@ -421,8 +428,8 @@ binary_sensor:
     sensors:
       away:
         value_template: >
-          {{ is_state("sensor.back_lock_last_action", "Locked: Outside Keypad")
-          or is_state("sensor.back_lock_last_action", "Locked: Oliver")
+          {{ is_state("input_text.lock_last_action", "Locked by Keypad")
+          or is_state("input_text.lock_last_action", "Locked by Oliver")
           or is_state("input_boolean.vacation", "on") }}
         friendly_name: "I am away"
 
@@ -703,7 +710,7 @@ light ms2:
 
 # Include other files to better organize code
 group: !include groups.yaml
-automation pre45: !include automations.yaml
+automation: !include automations.yaml
 sensor: !include sensors.yaml
 switch: !include switches.yaml
 script: !include scripts.yaml
