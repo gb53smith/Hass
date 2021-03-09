@@ -1,18 +1,9 @@
 #For Homeassistant
 secrets.yaml
-options.txt
-zwave_device_config.yaml
-known_devices.yaml
 mysensors1.json
-*.csv
-*.pid
 *.xml
-*.csr
-*.crt
-*.key
+*.txt
 .*
-config
-OZW_Log.txt
 home-assistant.log
 home-assistant_v2.db
 *.db-journal
@@ -20,9 +11,7 @@ lib
 deps
 tts
 pyozw.sqlite
-ios.conf
 www
-ozw_config
 custom_components/mitsubishi_mqtt/__pycache__
 
 

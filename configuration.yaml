@@ -360,6 +360,9 @@ climate:
     precision: 0.1
     cold_tolerance: 0.3
     hot_tolerance: 0.1
+    # Prevent heater stuck ON
+    keep_alive:
+      minutes: 5
     initial_hvac_mode: "heat"  
 
   - platform: mqtt
