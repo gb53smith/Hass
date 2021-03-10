@@ -1071,7 +1071,9 @@
     state: 'on'
   - condition: template
     value_template: '{{(now().hour * 60 + now().minute) * 60  < state_attr(''input_datetime.plant_light_on_time'',''timestamp'')
-      and (now().hour * 60 + now().minute) * 60  > state_attr(''input_datetime.plant_light_off_time'',''timestamp'')  }}'
+      or (now().hour * 60 + now().minute) * 60  > state_attr(''input_datetime.plant_light_off_time'',''timestamp'')  }}'
   action:
   - service: switch.turn_off
+    target:
+      entity_id: switch.plant1
   mode: single

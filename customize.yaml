@@ -129,9 +129,3 @@ sensor.soil_moisture_2:
   friendly_name: Outdoor Moisture
   icon: mdi:water-percent
   unit_of_measurement: '%'
-switch.plant1:
-  friendly_name: Light
-switch.plant2:
-  friendly_name: Heater
-switch.plant3:
-  friendly_name: Fan
