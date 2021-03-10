@@ -870,36 +870,13 @@
       hvac_mode: 'off'
   initial_state: true
   mode: single
-- id: 43be9a2cef8a415ab0f94ea25af9d408
-  alias: Plant Light ON
-  trigger:
-  - platform: template
-    value_template: '{{ (state_attr(''input_datetime.plant_light_on_time'', ''timestamp'')
-      | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
-
-      '
-  condition: []
-  action:
-  - service: switch.turn_on
-    entity_id: switch.plant1
-  mode: single
-- alias: Plant Light OFF
-  initial_state: true
-  trigger:
-    platform: template
-    value_template: '{{ (state_attr(''input_datetime.plant_light_off_time'', ''timestamp'')
-      | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
-
-      '
-  action:
-    service: switch.turn_off
-    entity_id: switch.plant1
-  id: e8ee88efd7c7481bbebefe9a6423785e
 - id: fcd14c971ff54bbe8bcc1d479b6c2305
   alias: Plant Fan ON
   description: 'Plant Ventilation Automation
 
-    Turn ON fan if humidity or temperature exceeds set limits and send alarm.'
+    Turn ON fan if humidity or temperature exceeds set limits and send alarm.
+
+    Plant Master Automation control must also be ON.  (input_boolean.plant_automation)'
   trigger:
   - platform: template
     value_template: '{{ states(''sensor.plants_humidity'') | float >  states(''input_number.max_humidity'')
@@ -907,6 +884,10 @@
       | float}}
 
       '
+  condition:
+  - condition: state
+    entity_id: input_boolean.plant_automation
+    state: 'on'
   action:
   - service: switch.turn_on
     entity_id: switch.plant3
@@ -1046,27 +1027,6 @@
       - switch.plant1
       - switch.plant3
   mode: single
-- id: '1615162449274'
-  alias: Plant Light Restart
-  description: ''
-  trigger:
-  - platform: homeassistant
-    event: start
-  condition:
-  - condition: state
-    entity_id: input_boolean.plant_automation
-    state: 'on'
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{  (now().hour * 60 + now().minute) * 60  > state_attr(''input_datetime.plant_light_on_time'',  ''timestamp'')
-        and  (now().hour * 60 + now().minute) * 60  < state_attr(''input_datetime.plant_light_off_time'',''timestamp'')
-        }}'
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.plant1
-  mode: single
 - id: '1615165150474'
   alias: Plant Heater Restart
   description: Turn off climate control for soil heater if plant automation is off
@@ -1081,4 +1041,37 @@
   - service: climate.turn_off
     target:
       entity_id: climate.soil_heater
+  mode: single
+- id: '1615335699222'
+  alias: Plant Light ON
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: state
+    entity_id: input_boolean.plant_automation
+    state: 'on'
+  - condition: template
+    value_template: '{{(now().hour * 60 + now().minute) * 60  > state_attr(''input_datetime.plant_light_on_time'',''timestamp'')
+      and (now().hour * 60 + now().minute) * 60  < state_attr(''input_datetime.plant_light_off_time'',''timestamp'')  }}'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.plant1
+  mode: single
+- id: '1615336696078'
+  alias: Plant Light OFF
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: state
+    entity_id: input_boolean.plant_automation
+    state: 'on'
+  - condition: template
+    value_template: '{{(now().hour * 60 + now().minute) * 60  < state_attr(''input_datetime.plant_light_on_time'',''timestamp'')
+      and (now().hour * 60 + now().minute) * 60  > state_attr(''input_datetime.plant_light_off_time'',''timestamp'')  }}'
+  action:
+  - service: switch.turn_off
   mode: single

@@ -19,7 +19,7 @@ sensor.mysensors_bme280_2_2:
 sensor.mysensors_bme280_2_3:
   friendly_name: Outdoor Humidity
   icon: mdi:water-percent
-  unit_of_measurement: "%"
+  unit_of_measurement: '%'
 sensor.mysensors_bme280_2_4:
   friendly_name: Outdoor Voltage
   icon: mdi:battery
@@ -62,7 +62,7 @@ sensor.iaq:
 sensor.soil_moisture_sensor_8_1:
   friendly_name: Indoor Moisture
   icon: mdi:water-percent
-  unit_of_measurement: "%"
+  unit_of_measurement: '%'
 sensor.soil_moisture_sensor_8_2:
   friendly_name: Indoor Voltage
   icon: mdi:battery
@@ -73,7 +73,7 @@ sensor.soil_moisture_sensor_8_3:
 sensor.multisensor2_humidity:
   friendly_name: Indoor Humidity
   icon: mdi:water-percent
-  unit_of_measurement: "%"
+  unit_of_measurement: '%'
 sensor.house_temperature:
   friendly_name: House Temperature
   icon: mdi:thermometer
@@ -81,7 +81,7 @@ sensor.house_temperature:
 sensor.soil_moisture_sensor_4_1:
   friendly_name: Outdoor Moisture
   icon: mdi:water-percent
-  unit_of_measurement: "%"
+  unit_of_measurement: '%'
 sensor.soil_moisture_sensor_4_2:
   friendly_name: Outdoor Moisture Voltage
   icon: mdi:battery
@@ -106,7 +106,7 @@ input_number.temperature:
 input_number.humidity:
   friendly_name: Outdoor Humidity
   icon: mdi:water-percent
-  unit_of_measurement: "%"
+  unit_of_measurement: '%'
 input_number.hour_diff:
   friendly_name: Hourly Temp Diff
   icon: mdi:thermometer
@@ -124,10 +124,14 @@ input_number.daily_temp_diff:
 sensor.soil_moisture_1:
   friendly_name: Indoor Moisture
   icon: mdi:water-percent
-  unit_of_measurement: "%"
+  unit_of_measurement: '%'
 sensor.soil_moisture_2:
   friendly_name: Outdoor Moisture
   icon: mdi:water-percent
-  unit_of_measurement: "%" 
-  
-  
+  unit_of_measurement: '%'
+switch.plant1:
+  friendly_name: Light
+switch.plant2:
+  friendly_name: Heater
+switch.plant3:
+  friendly_name: Fan
