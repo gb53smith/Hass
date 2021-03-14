@@ -1077,3 +1077,15 @@
     target:
       entity_id: switch.plant1
   mode: single
+- id: '1615511989760'
+  alias: GE Dimmer Polling
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /30
+  condition: []
+  action:
+  - service: zwave_js.refresh_value
+    data:
+      entity_id: light.ge_12724_3way_dimmer_switch_level
+  mode: single

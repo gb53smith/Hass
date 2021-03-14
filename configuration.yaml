@@ -475,6 +475,7 @@ input_number:
     max: 25
     step: 0.5
     icon: mdi:target
+    mode: box
   slider_away:
     name: Away
     #initial: 18
@@ -482,24 +483,28 @@ input_number:
     max: 20
     step: 0.5
     icon: mdi:target
+    mode: box
   slider_delay_f:
     name: Front Duration
     min: 5
     max: 29
     step: 1.0
     icon: mdi:target
+    mode: box
   slider_delay_b:
     name: Back Duration
     min: 5
     max: 29
     step: 1.0
     icon: mdi:target
+    mode: box
   slider_delay_d:
     name: Deck Duration
     min: 5
     max: 29
     step: 1.0
     icon: mdi:target
+    mode: box
   furnace_power:
     name: Furnace Power
     min: 0
@@ -513,6 +518,7 @@ input_number:
     max: 25
     step: 0.5
     icon: mdi:target
+    mode: box
   slider_ac_away:
     name: AC Away
     #initial: 18
@@ -520,6 +526,7 @@ input_number:
     max: 30
     step: 0.5
     icon: mdi:target
+    mode: box
   box_gas:
     name: Base Gas Resistance
     min: 100
