@@ -917,11 +917,11 @@
   description: My comment
   trigger:
   - platform: event
-    event_type: zwave_js_event
+    event_type: zwave_js_notification
     context: {}
     event_data:
       device_id: ca0ce3f263ada0b01763c19fe3a0e2a6
-      label: Manual unlock operation
+      event_label: Manual unlock operation
   condition: []
   action:
   - service: input_text.set_value
@@ -935,10 +935,10 @@
   description: ''
   trigger:
   - platform: event
-    event_type: zwave_js_event
+    event_type: zwave_js_notification
     event_data:
       device_id: ca0ce3f263ada0b01763c19fe3a0e2a6
-      label: Manual lock operation
+      event_label: Manual lock operation
   condition: []
   action:
   - service: input_text.set_value
@@ -952,10 +952,10 @@
   description: Unlocked by a user
   trigger:
   - platform: event
-    event_type: zwave_js_event
+    event_type: zwave_js_notification
     event_data:
       device_id: ca0ce3f263ada0b01763c19fe3a0e2a6
-      label: Keypad unlock operation
+      event_label: Keypad unlock operation
   condition: []
   action:
   - service: input_text.set_value
@@ -974,10 +974,10 @@
   description: Locked by a user
   trigger:
   - platform: event
-    event_type: zwave_js_event
+    event_type: zwave_js_notification
     event_data:
       device_id: ca0ce3f263ada0b01763c19fe3a0e2a6
-      label: Keypad lock operation
+      event_label: Keypad lock operation
   condition: []
   action:
   - service: input_text.set_value
