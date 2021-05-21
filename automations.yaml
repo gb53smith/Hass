@@ -493,18 +493,9 @@
   - platform: state
     entity_id: input_number.slider_home
   condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.away
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.vacation
-      state: 'off'
-    - condition: template
-      value_template: "{{ (now().hour * 60 + now().minute) * 60  \n  > state_attr('input_datetime.heat_on_time',\
-        \ 'timestamp') and \n  (now().hour * 60 + now().minute) * 60 \n  < state_attr('input_datetime.heat_off_time',\
-        \ 'timestamp') }}\n"
+  - condition: state
+    entity_id: binary_sensor.away
+    state: 'off'
   action:
   - service: climate.set_temperature
     data:
@@ -514,24 +505,14 @@
   mode: single
 - id: 381ae755dedb473d96ca3df26bd0e751
   alias: Away Slider Changed
-  description: When home slider changes, change heating set point only when away or
-    the time is between heat OFF and heat ON times.
+  description: When home slider changes, change heating set point.
   trigger:
   - platform: state
     entity_id: input_number.slider_away
   condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.away
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.vacation
-      state: 'on'
-    - condition: template
-      value_template: "{{ (now().hour * 60 + now().minute) * 60  \n  > state_attr('input_datetime.heat_off_time',\
-        \ 'timestamp') or \n  (now().hour * 60 + now().minute) * 60 \n  < state_attr('input_datetime.heat_on_time',\
-        \ 'timestamp') }}\n"
+  - condition: state
+    entity_id: binary_sensor.away
+    state: 'on'
   action:
   - service: climate.set_temperature
     data:
@@ -1084,3 +1065,37 @@
     data:
       entity_id: light.ge_12724_3way_dimmer_switch_level
   mode: single
+- id: '1621568021535'
+  alias: AC Away Slider Changed
+  description: When AC Away slider changes, change cooling set point.
+  trigger:
+  - platform: state
+    entity_id: input_number.slider_ac_away
+  condition:
+  - condition: state
+    entity_id: binary_sensor.away
+    state: 'on'
+  action:
+  - service: climate.set_temperature
+    data:
+      entity_id: climate.mitsubishi_heatpump
+      temperature: '{{ states(''input_number.slider_ac_away'')}}'
+  mode: single
+  initial_state: true
+- id: '1621568141969'
+  alias: AC Home Slider Changed
+  description: When AC Home slider changes, change cooling set point if home.
+  trigger:
+  - platform: state
+    entity_id: input_number.slider_ac_home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.away
+    state: 'off'
+  action:
+  - service: climate.set_temperature
+    data:
+      entity_id: climate.mitsubishi_heatpump
+      temperature: '{{ states(''input_number.slider_ac_home'')}}'
+  mode: single
+  initial_state: true
