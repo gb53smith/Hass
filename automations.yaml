@@ -192,14 +192,9 @@
 
       '
   condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: binary_sensor.away
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.vacation
-      state: 'off'
+  - condition: state
+    entity_id: binary_sensor.away
+    state: 'off'
   action:
   - service: climate.set_temperature
     data:
@@ -300,8 +295,8 @@
   mode: single
 - id: ef4be65d27ae44f59a5fd150becab065
   alias: Home Heat Pump
-  description: 'Start up heating with heat pump but only if not cooling and outside
-    temperature greater than 0 degrees C.  '
+  description: Start up heating with heat pump but only if not cooling and outside
+    temperature greater than 0 degrees C.  Triggered by returning home.
   trigger:
   - platform: state
     entity_id: binary_sensor.away
@@ -323,7 +318,7 @@
     data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: heat
-  initial_state: true
+  initial_state: false
   mode: single
 - alias: Furnace Ramp ON
   initial_state: true
@@ -847,7 +842,7 @@
     data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: heat
-  initial_state: true
+  initial_state: false
   mode: single
 - id: c79cb33028e14e8a9bce8032a5e2bbd8
   alias: Heat Pump OFF
@@ -868,7 +863,7 @@
     data:
       entity_id: climate.mitsubishi_heatpump
       hvac_mode: 'off'
-  initial_state: true
+  initial_state: false
   mode: single
 - id: fcd14c971ff54bbe8bcc1d479b6c2305
   alias: Plant Fan ON

@@ -409,10 +409,16 @@ climate:
     swing_mode_state_template: "{{ value_json.vane }}"
     action_topic: "heatpump"
     action_template: >
-      {% if value_json.power == "ON" %}
+      {% if value_json.power == "OFF" %}
+        off
+      {% elif value_json.mode == "HEAT" %}
+        heating
+      {% elif value_json.mode == "COOL" %}
         cooling
+      {% elif value_json.mode == "DRY" %}
+        drying
       {% else %}
-        idle
+        {{ value_json.mode|lower }}
       {% endif %}
     # MQTT Command Topics
     # Additional automation is required to process HQTT HVAC topics into a single set topic
@@ -647,9 +653,9 @@ input_number:
     step: 1
     mode: box
   max_temp:
-    min: 20
+    min: 0
     max: 35
-    step: 1
+    step: 0.5
     mode: box   
   temperature_fan:
     name: Temperature Fan
