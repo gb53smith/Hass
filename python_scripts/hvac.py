@@ -1,6 +1,6 @@
 
 '''
-Date:  May 19, 2021
+Date:  May 23, 2021
 
 Versions used: HA2021.4.3, HassOS and Raspberry PI 3 B
 
@@ -101,7 +101,7 @@ if away == 'off':
     # Start cooling if 2 degrees above set point
     if float(current_temperature) >= float(ac_home) + 1.5:
         #logger.warning("Got to heatpumpxcool1")
-        if operation_mode != 'cool': # Prevent repeat if already cooling
+        if operation_mode != 'cooling': # Prevent repeat if already cooling
             #logger.warning("Got to heatpumpxcool2")
             #Update temperature set point to match ac_home slider value before cooling is started
             if float(heatpump_setpoint) != float(ac_home):
@@ -126,9 +126,9 @@ if away == 'off':
     # Don't allow heating when furnace set point is at the away temperature overnight
     elif float(current_temperature) <= float(home_temperature) + 1.0 and \
         float(current_temperature) >= float(home_temperature) - 1.0 and float(outside_temperature) >= 1.0 \
-        and furnace_setpoint == home_temperature :
+        and float(furnace_setpoint) == float(home_temperature) :
         #logger.warning("Got to heatpumpxheat1")
-        if operation_mode != 'heat': # Prevent repeat if already heating
+        if operation_mode != 'heating': # Prevent repeat if already heating
             #logger.warning("Got to heatpumpxheat2")
             #Update temperature set point to match home slider value before heating is started
             if float(heatpump_setpoint) != float(home_temperature):
@@ -142,7 +142,7 @@ if away == 'off':
     # Enable furnace heating
     else :
         #logger.warning("Got to heatpumpxfurnace1")
-        if operation_mode == 'heat':
+        if operation_mode == 'heating':
             #logger.warning("Got to heatpumpxfurnace1")
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
@@ -154,7 +154,7 @@ if away == 'off':
 # Prevent cooking the house plants when away in the summer time.
 if away == 'on':
     #logger.warning("Got to heatpumpxaway")
-    if float(current_temperature) >= float(ac_away) + 2.0 and operation_mode != 'cool':
+    if float(current_temperature) >= float(ac_away) + 2.0 and operation_mode != 'cooling':
         # Update temperature set point to match ac_home slider value before cooling is started
         if float(heatpump_setpoint) != float(ac_away):
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_away}
