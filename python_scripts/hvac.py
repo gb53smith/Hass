@@ -53,7 +53,7 @@ Heat pump heat from 20.0 to 22.0, Furnace is OFF (Furnace is ON for all other te
 Heat pump OFF from 22.5 to 23.0
 Heat pump cool starts at 25.5 and is turned off at 23.0
 
-
+Furnace set point is not affected.
 
 '''
 
@@ -74,7 +74,7 @@ current_temperature = hvac_attr['current_temperature']
 heatpump_setpoint = hvac_attr['temperature']
 operation_mode = hvac_attr['hvac_action']
 furnace_setpoint = furnace_attr['temperature']
-furnace_mode = furnace_attr['hvac_action']
+#furnace_mode = furnace_attr['hvac_action']
 #logger.warning("operation_mode = {}".format(operation_mode))
 #logger.warning("hvac_attr ct = {}".format(current_temperature))
 #logger.warning("hvac_attr t = {}".format(temperature))
@@ -83,7 +83,7 @@ away = hass.states.get('binary_sensor.away').state
 #logger.warning("away = {}".format(away))
 
 # Heating temperature set points
-away_temperature = hass.states.get('input_number.slider_away').state
+#away_temperature = hass.states.get('input_number.slider_away').state
 home_temperature = hass.states.get('input_number.slider_home').state
 # Cooling Temperature set points
 ac_away = hass.states.get('input_number.slider_ac_away').state
@@ -123,8 +123,10 @@ if away == 'off':
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
     # Start heating +/- 1.0 around home set point.  Turn furnace heating off to prevent conflict
     # Don't allow heat pump heating when too cold outside for efficiency reasons
+    # Don't allow heating when furnace set point is at the away temperature overnight
     elif float(current_temperature) <= float(home_temperature) + 1.0 and \
-        float(current_temperature) >= float(home_temperature) - 1.0 and float(outside_temperature) >= 1.0:
+        float(current_temperature) >= float(home_temperature) - 1.0 and float(outside_temperature) >= 1.0 \
+        and furnace_setpoint == home_temperature :
         #logger.warning("Got to heatpumpxheat1")
         if operation_mode != 'heat': # Prevent repeat if already heating
             #logger.warning("Got to heatpumpxheat2")
@@ -146,8 +148,6 @@ if away == 'off':
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
         service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
-        service_data = {'entity_id': 'climate.house', 'temperature': home_temperature}
-        hass.services.call('climate', 'set_temperature', service_data, False)
 
 # When away use only the furnace to maintain the low away temperature.
 # Use the heat pump to cool only if the higher ac away set point is exceeded.

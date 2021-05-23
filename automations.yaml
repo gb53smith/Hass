@@ -662,18 +662,22 @@
     to: cool
   - platform: state
     entity_id: climate.mitsubishi_heatpump
-    from: cool
     to: 'off'
   - platform: state
     entity_id: input_number.furnace_power
+  - platform: state
+    entity_id: climate.mitsubishi_heatpump
+    from: 'off'
+    to: heat
   action:
   - service: light.turn_on
     data:
       color_name: '{% if is_state("binary_sensor.away", "on") %} blue {% elif is_state("climate.mitsubishi_heatpump",
-        "cool")%} cyan {% elif states("input_number.furnace_power") | int > 14 %}
-        red {% elif states("input_number.furnace_power") | int > 12  %} purple {%
-        elif states("input_number.furnace_power") | int > 6  %} yellow {% elif states("input_number.furnace_power")
-        | int == 0  %} green {% else %} white {% endif %}
+        "cool")%} cyan {% elif is_state("climate.mitsubishi_heatpump", "heat")%} orange
+        {% elif states("input_number.furnace_power") | int > 14 %} red {% elif states("input_number.furnace_power")
+        | int > 12  %} purple {% elif states("input_number.furnace_power") | int >
+        6  %} yellow {% elif states("input_number.furnace_power") | int == 0  %} green
+        {% else %} white {% endif %}
 
         '
       brightness: 100
