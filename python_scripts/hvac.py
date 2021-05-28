@@ -112,7 +112,7 @@ if away == 'off':
     # Turn off heat pump in zone between heating and cooling
     # OK to turn furnace back ON 
     elif float(current_temperature) <= float(ac_home) - 1.0 and \
-        float(current_temperature) > float(home_temperature) + 1.0:
+        float(current_temperature) > float(home_temperature) + 0.5:
         #logger.warning("Got to heatpumpxoff1")
         if operation_mode != 'off': # Prevent repeat if already cooling
             #logger.warning("Got to heatpumpxoff2")
@@ -124,7 +124,7 @@ if away == 'off':
     # Start heating +/- 1.0 around home set point.  Turn furnace heating off to prevent conflict
     # Don't allow heat pump heating when too cold outside for efficiency reasons
     # Don't allow heating when furnace set point is at the away temperature overnight
-    elif float(current_temperature) <= float(home_temperature) + 1.0 and \
+    elif float(current_temperature) <= float(home_temperature) + 0.5 and \
         float(current_temperature) >= float(home_temperature) - 1.0 and float(outside_temperature) >= 1.0 \
         and float(furnace_setpoint) == float(home_temperature) :
         #logger.warning("Got to heatpumpxheat1")

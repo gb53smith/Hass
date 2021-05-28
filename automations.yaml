@@ -320,16 +320,21 @@
       hvac_mode: heat
   initial_state: false
   mode: single
-- alias: Furnace Ramp ON
-  initial_state: true
+- id: 544aeec69a024d7c8a12e15c8ff4eaae
+  alias: Furnace Ramp ON
+  description: Added 30 second filter for when furnace is turned ON and OFF at  the
+    heat ON time.  Set point change triggers furnace switch ON while hvac.py turns
+    it back OFF again if heat pump is turned ON to heat as well.
   trigger:
-    platform: state
+  - platform: state
     entity_id: switch.furnace
     to: 'on'
+    for: 0:00:30
   action:
-    service: script.turn_on
+  - service: script.turn_on
     entity_id: script.furnace_timer
-  id: 544aeec69a024d7c8a12e15c8ff4eaae
+  initial_state: true
+  mode: single
 - id: 36a35b2cef8c42d8a407500247e8e08a
   alias: Furnace OFF
   description: 'After a delay for the energy script to finish, clear last_power.  It
@@ -368,24 +373,37 @@
     value_template: '{{ states(''sensor.house_temperature'') | float > 26.0 }}'
   - platform: template
     value_template: '{{ states(''sensor.house_temperature'') | float < 15.0 }}'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.multisensor2_temperature
+      state: unavailable
   action:
   - service: notify.mobile_app_iphone
     data:
       message: House Temperature Out of Range
   initial_state: true
   mode: single
-- alias: Notify Wine Out of Range Temperature
-  initial_state: true
+- id: df3e71a6d3fb4f0bbe53f6768b781d2e
+  alias: Notify Wine Out of Range Temperature
   trigger:
   - platform: template
     value_template: '{{ states(''sensor.remote_temperature'') | float > 15.5 }}'
   - platform: template
     value_template: '{{ states(''sensor.remote_temperature'') | float < 10.0 }}'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.remote_temperature
+      state: unavailable
   action:
-    service: notify.mobile_app_iphone
+  - service: notify.mobile_app_iphone
     data:
       message: Wine Cellar Temperature Out of Range
-  id: df3e71a6d3fb4f0bbe53f6768b781d2e
+  initial_state: true
+  mode: single
 - id: 5207535655214a13afc854fcd6c14572
   alias: Notify Battery Needs Changing
   description: ' Send Notification if Outdoor battery voltage is below 3.2 volts and
@@ -708,39 +726,60 @@
       - '{{ states(''input_text.travel_phone'')}}'
   initial_state: true
   mode: single
-- alias: Last House Temperature
-  initial_state: true
+- id: 68eef09ca6714c85a4d466bd27fde205
+  alias: Last House Temperature
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.multisensor2_temperature
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.multisensor2_temperature
+      state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_house_temp
       value: '{{ states(''sensor.multisensor2_temperature'')}}'
-  id: 68eef09ca6714c85a4d466bd27fde205
-- alias: Last House Humidity
   initial_state: true
+  mode: single
+- id: 72e51baeb4cc419faa7ab04f1ce0d08b
+  alias: Last House Humidity
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.multisensor2_humidity
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.multisensor2_humidity
+      state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_house_humidity
       value: '{{ states(''sensor.multisensor2_humidity'')}}'
-  id: 72e51baeb4cc419faa7ab04f1ce0d08b
-- alias: Last Gas
   initial_state: true
+  mode: single
+- id: 2072791e237b42a9a68bf82a35d9388f
+  alias: Last Gas
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.multisensor2_gas
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.multisensor2_gas
+      state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_gas
       value: '{{ states(''sensor.multisensor2_gas'')}}'
-  id: 2072791e237b42a9a68bf82a35d9388f
+  initial_state: true
+  mode: single
 - id: 6fb750f5304440ac98ba8673460f6f60
   alias: Temperature
   description: Added for spline plotting of Outdoor temperature, pressure and humidity.
