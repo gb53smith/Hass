@@ -60,18 +60,18 @@ Furnace set point is not affected.
 #logger.warning("Got to heatpump")
 
 hvac = hass.states.get('climate.mitsubishi_heatpump')
-hvac_state = hvac.state
+#hvac_state = hvac.state
 hvac_attr = hvac.attributes
 
 furnace = hass.states.get('climate.house')
-furnace_state = furnace.state
+#furnace_state = furnace.state
 furnace_attr = furnace.attributes
 #logger.warning("hvac_state = {}".format(hvac_state))
 
 current_temperature = hvac_attr['current_temperature']
 # Using max_tmp for testing only
 #current_temperature = hass.states.get('input_number.max_temp').state
-heatpump_setpoint = hvac_attr['temperature']
+#heatpump_setpoint = hvac_attr['temperature']
 operation_mode = hvac_attr['hvac_action']
 furnace_setpoint = furnace_attr['temperature']
 #furnace_mode = furnace_attr['hvac_action']
@@ -104,10 +104,10 @@ if away == 'off':
         if operation_mode != 'cooling': # Prevent repeat if already cooling
             #logger.warning("Got to heatpumpxcool2")
             #Update temperature set point to match ac_home slider value before cooling is started
-            if float(heatpump_setpoint) != float(ac_home):
-                service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_home}
-                hass.services.call('climate', 'set_temperature', service_data, False)
-            service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
+            # if float(heatpump_setpoint) != float(ac_home):
+                # service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_home}
+                # hass.services.call('climate', 'set_temperature', service_data, False)
+            service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_home, 'hvac_mode': 'cool'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
     # Turn off heat pump in zone between heating and cooling
     # OK to turn furnace back ON 
@@ -128,13 +128,13 @@ if away == 'off':
         float(current_temperature) >= float(home_temperature) - 1.0 and float(outside_temperature) >= 1.0 \
         and float(furnace_setpoint) == float(home_temperature) :
         #logger.warning("Got to heatpumpxheat1")
-        if operation_mode != 'heating': # Prevent repeat if already heating
+        if operation_mode != 'heating': # Prevent repeat if already heating.  Set mode and temperature in one MQTT json message.
             #logger.warning("Got to heatpumpxheat2")
             #Update temperature set point to match home slider value before heating is started
-            if float(heatpump_setpoint) != float(home_temperature):
-                service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature}
-                hass.services.call('climate', 'set_temperature', service_data, False)
-            service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'heat'}
+            # if float(heatpump_setpoint) != float(home_temperature):
+                # service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature}
+                # hass.services.call('climate', 'set_temperature', service_data, False)
+            service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature, 'hvac_mode': 'heat'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
             # Disable furnace heating
             service_data = {'entity_id': 'climate.house', 'hvac_mode': 'off'}
@@ -155,11 +155,8 @@ if away == 'off':
 if away == 'on':
     #logger.warning("Got to heatpumpxaway")
     if float(current_temperature) >= float(ac_away) + 2.0 and operation_mode != 'cooling':
-        # Update temperature set point to match ac_home slider value before cooling is started
-        if float(heatpump_setpoint) != float(ac_away):
-            service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_away}
-            hass.services.call('climate', 'set_temperature', service_data, False)
-        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
+        # Update temperature set point to match ac_home slider value when cooling is started
+        service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_away, 'hvac_mode': 'cool'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
     if float(current_temperature) <= float(ac_away) - 1.0 and operation_mode != 'off':
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}

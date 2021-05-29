@@ -592,6 +592,7 @@ input_number:
     max: 5000
     step: 1
     mode: box
+  # Used for outdoor temperature to smooth plotting
   temperature:
     min: -20
     max: 50
