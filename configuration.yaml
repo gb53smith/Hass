@@ -17,6 +17,7 @@ homeassistant:
 #Show links to resources in log and frontend
 #introduction:
 system_health:
+esphome:
 
 #Uncomment to use ui-lovelace.yaml instead of UI
 # lovelace:

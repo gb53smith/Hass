@@ -339,9 +339,15 @@
   description: Send Notification if temperature reaches min_temp or max_temp.
   trigger:
   - platform: template
-    value_template: '{{ states(''sensor.house_temperature'') | float > 26.0 }}'
-  - platform: template
-    value_template: '{{ states(''sensor.house_temperature'') | float < 15.0 }}'
+    value_template: '{% if is_state(''binary_sensor.away'', ''on'') %}
+
+      {{ states(''sensor.house_temperature'') | float > 30.0 }}
+
+      {% else %}
+
+      {{ states(''sensor.house_temperature'') | float > 26.0 }}
+
+      {% endif %}'
   condition:
   - condition: not
     conditions:
@@ -628,7 +634,7 @@
         \ {{ \"{\\\"power\\\":\\\"ON\\\",\\\"mode\\\":\"|safe + trigger.payload|upper|tojson\
         \ + \"}\" }}\n  {% endif %}\n{% else %}\n  {{ \"{\" + trigger.topic.split(\"\
         /\")[-1]|tojson + \":\" + trigger.payload|tojson + \"}\" }}\n{% endif %}\n"
-  mode: single
+  mode: queued
 - id: e42cd82395df4e798be4ad063006e0e4
   alias: Furnace State
   description: 'Sends colour info to RGB LED in MultiSensor2

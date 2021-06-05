@@ -1,0 +1,25 @@
+esphome:
+  name: ${node_name}
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: "GreenMountain"
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Plants Fallback Hotspot"
+    password: !secret fallback_password
+
+captive_portal:
+ 
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret ota_password
+
+ota:
+  password: !secret ota_password

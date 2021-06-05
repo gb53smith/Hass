@@ -1,0 +1,6 @@
+substitutions:
+  node_name: plants
+  device_verbose_name: "Basement Plants"
+  
+packages:
+  nodemcu: !include common/nodemcu.yaml

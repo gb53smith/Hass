@@ -107,7 +107,8 @@ if away == 'off':
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_home}
             hass.services.call('climate', 'set_temperature', service_data, False)
             # Wait 2 seconds to prevent MQTT message clash
-            time.sleep(2)
+            # Using queued mode in automation to prevent clash
+            #time.sleep(2)
             # Set cooling
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
@@ -135,7 +136,7 @@ if away == 'off':
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature}
             hass.services.call('climate', 'set_temperature', service_data, False)
             # Wait 2 seconds to prevent MQTT message clash
-            time.sleep(2)
+            #time.sleep(2)
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'heat'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
             # Disable furnace heating
@@ -160,7 +161,7 @@ if away == 'on':
         # Update temperature set point to match ac_home slider value when cooling is started
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_away}
         hass.services.call('climate', 'set_temperature', service_data, False)
-        time.sleep(2)
+        #time.sleep(2)
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
     if float(current_temperature) <= float(ac_away) - 1.0 and operation_mode != 'off':

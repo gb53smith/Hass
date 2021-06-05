@@ -15,5 +15,8 @@ tts
 pyozw.sqlite
 www
 custom_components/mitsubishi_mqtt/__pycache__
+esphome/.esphome
+**/src/
+**/platformio.ini
 
 
