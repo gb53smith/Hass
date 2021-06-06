@@ -277,8 +277,8 @@ climate:
     
   - platform: generic_thermostat
     name: Soil Heater
-    heater: switch.plant2
-    target_sensor: sensor.plants_soil
+    heater: switch.plant_heater
+    target_sensor: sensor.plants_soil_temperature
     min_temp: 10
     max_temp: 28
     precision: 0.1

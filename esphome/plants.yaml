@@ -39,6 +39,10 @@ sensor:
     filters:
       - delta: 0.2
       
-    
+#[11:10:29][W][dht:185]: Checksum invalid: 87!=215
+#[11:10:29][W][dht:060]: Invalid readings! Please check your wiring (pull-up resistor, pin number).
+# to double value if below 12.  Temperature occasionally drops in half?
+#filters:
+#       - lambda: !lambda if ( x < 12.0 ) { return x * 2.0; } else { return x; }
 
   
