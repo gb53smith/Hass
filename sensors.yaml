@@ -195,23 +195,23 @@
   unit_of_measurement: "%"
   value_template: "{{ value_json.humidity }}"
   
-- platform: mqtt
-  state_topic: "/home/plants/TH_sensor"
-  name: "Plants Temperature"
-  unit_of_measurement: "°C"
-  value_template: "{{ value_json.temperature }}"
+# - platform: mqtt
+  # state_topic: "/home/plants/TH_sensor"
+  # name: "Plants Temperature"
+  # unit_of_measurement: "°C"
+  # value_template: "{{ value_json.temperature }}"
 
-- platform: mqtt
-  state_topic: "/home/plants/TH_sensor"
-  name: "Plants Humidity"
-  unit_of_measurement: "%"
-  value_template: "{{ value_json.humidity }}"
+# - platform: mqtt
+  # state_topic: "/home/plants/TH_sensor"
+  # name: "Plants Humidity"
+  # unit_of_measurement: "%"
+  # value_template: "{{ value_json.humidity }}"
 
-- platform: mqtt
-  state_topic: "/home/plants/TH_sensor"
-  name: "Plants Soil"
-  unit_of_measurement: "°C"
-  value_template: "{{ value_json.soil }}"
+# - platform: mqtt
+  # state_topic: "/home/plants/TH_sensor"
+  # name: "Plants Soil"
+  # unit_of_measurement: "°C"
+  # value_template: "{{ value_json.soil }}"
 
 # - platform: mqtt
 # state_topic: 'heatpump/status'

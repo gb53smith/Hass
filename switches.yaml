@@ -42,21 +42,21 @@
   value_template: "{{ value_json.s }}"
   retain: False
   
-# For Plants Support
-- platform: mqtt
-  name: "Plant1"
-  state_topic: "/home/plants/plant1/confirm"
-  command_topic: "/home/plants/plant1"
-  retain: False
+# # For Plants Support
+# - platform: mqtt
+  # name: "Plant1"
+  # state_topic: "/home/plants/plant1/confirm"
+  # command_topic: "/home/plants/plant1"
+  # retain: False
 
-- platform: mqtt
-  name: "Plant2"
-  state_topic: "/home/plants/plant2/confirm"
-  command_topic: "/home/plants/plant2"
-  retain: False
+# - platform: mqtt
+  # name: "Plant2"
+  # state_topic: "/home/plants/plant2/confirm"
+  # command_topic: "/home/plants/plant2"
+  # retain: False
 
-- platform: mqtt
-  name: "Plant3"
-  state_topic: "/home/plants/plant3/confirm"
-  command_topic: "/home/plants/plant3"
-  retain: False
+# - platform: mqtt
+  # name: "Plant3"
+  # state_topic: "/home/plants/plant3/confirm"
+  # command_topic: "/home/plants/plant3"
+  # retain: False

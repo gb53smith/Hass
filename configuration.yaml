@@ -18,6 +18,9 @@ homeassistant:
 #introduction:
 system_health:
 esphome:
+api:
+  password: !secret ota_password
+zeroconf:
 
 #Uncomment to use ui-lovelace.yaml instead of UI
 # lovelace:
@@ -134,7 +137,6 @@ recorder:
       - input_number.soil_wet_2
       ## plant fan limits
       - input_number.max_humidity
-      - input_number.max_temp
       - input_datetime.plant_light_off_time
       - input_datetime.plant_light_on_time
       ## No need to see history after debug
@@ -235,84 +237,6 @@ history:
       - sensor.medalert1_check
       - sensor.house_temperature
       - input_number.temperature
-      
-  # Bug somewhere in exclude statements so switched to include with order control   
-  # exclude:
-    # domains:
-      # - automation
-      # - script
-      # - group
-      # #- zwave
-      # #- device_tracker
-    # entities:
-      # - binary_sensor.away
-      # - counter.fan_on_minute
-      # - device_tracker.joyce_ipad2
-      # - device_tracker.iphone
-      # - history_graph.rain_fall
-      # - input_boolean.vacation
-      # - input_boolean.watchdog
-      # - input_number.slider_home
-      # - input_number.slider_away
-      # - input_number.slider_delay_f
-      # - input_number.slider_delay_b
-      # - input_number.slider_delay_d
-      # - input_number.furnace_power
-      # - sensor.furnace_power_plot
-      # - input_number.slider_ac_home
-      # - input_number.slider_ac_away
-      # - input_number.box_gas
-      # - input_number.last_house_temp
-      # - input_number.last_house_humidity
-      # - input_number.temperature
-      # - input_number.pressure
-      # - input_number.humidity
-      # - input_number.max_humidity
-      # - input_number.max_temp
-      # - input_number.last_gas
-      # - input_datetime.lr_off_time
-      # - input_datetime.lr_off_time_random
-      # - input_datetime.br_on_time_random
-      # - input_datetime.br_off_time_random
-      # - input_datetime.heat_on_time
-      # - input_datetime.heatpump_on_time
-      # - input_datetime.heat_off_time
-      # - input_datetime.plant_light_off_time
-      # - input_datetime.plant_light_on_time
-      # - input_boolean.plant_automation
-      # - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-      # - sensor.cooling
-      # - sensor.yesterday_rainfall
-      # - sensor.precipitation
-      # - sensor.medalert1_check
-      # - input_number.temp_diff_accum
-      # - sensor.hour_diff
-      # - input_number.last_power
-      # - input_number.energy_accum
-      # - input_number.hourly_energy_accum
-      # - input_number.hourly_temp_diff_accum
-      # - input_number.last_house_temp
-      # - binary_sensor.updater
-      # - sensor.date
-      # - light.mqtt_json_light
-      # - sensor.air_quality_health_index
-      # - sensor.icon_code
-      # - sensor.iqa
-      # - switch.watchdog
-      # - input_boolean.watchdog_delayed
-      # - sensor.soil_moisture_sensor_4_1
-      # - sensor.soil_moisture_sensor_4_2
-      # - sensor.soil_moisture_sensor_4_3
-      # - sensor.soil_moisture_sensor_4_4
-      # - sensor.soil_moisture_sensor_5_1
-      # - sensor.soil_moisture_sensor_5_2
-      # - sensor.soil_moisture_sensor_5_3
-      # - sensor.soil_moisture_sensor_6_1
-      # - sensor.soil_moisture_sensor_6_2
-      # - sensor.soil_moisture_sensor_6_3
-      # - sensor.soil_moisture_sensor_6_4
-      # - sensor.z_wave_motion_sensor_battery_level
-
 
 # Track the sun
 sun:
@@ -653,12 +577,7 @@ input_number:
     min: 50
     max: 100
     step: 1
-    mode: box
-  max_temp:
-    min: 0
-    max: 35
-    step: 0.5
-    mode: box   
+    mode: box  
   temperature_fan:
     name: Temperature Fan
     min: 20

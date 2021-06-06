@@ -812,16 +812,13 @@
   initial_state: true
   mode: single
 - id: fcd14c971ff54bbe8bcc1d479b6c2305
-  alias: Plant Fan ON
-  description: 'Plant Ventilation Automation
-
-    Turn ON fan if humidity or temperature exceeds set limits and send alarm.
+  alias: Plant Dehumidifier ON
+  description: 'Turn ON Dehumidifier if humidity exceeds set limits and send alarm.
 
     Plant Master Automation control must also be ON.  (input_boolean.plant_automation)'
   trigger:
   - platform: template
     value_template: '{{ states(''sensor.plants_humidity'') | float >  states(''input_number.max_humidity'')
-      | float or states(''sensor.plants_temperature'') | float >  states(''input_number.max_temp'')
       | float}}
 
       '
@@ -831,26 +828,29 @@
     state: 'on'
   action:
   - service: switch.turn_on
-    entity_id: switch.plant3
+    data: {}
+    target:
+      entity_id: switch.plant_dehumidifier
   - service: notify.mobile_app_iphone
     data:
-      message: Plant Fan ON
+      message: Plant Dehumidifier  ON
   mode: single
 - id: 058780e6e40d4e8c8ed1d4d32bec6417
-  alias: Plant Fan OFF
-  description: 'Turn OFF fan if humidity and temperature lower than set limits.
+  alias: Plant Dehumidifier OFF
+  description: 'Turn OFF Dehumidifier if humidity lower than set limit.
 
     One unit of hysteresis added.'
   trigger:
   - platform: template
     value_template: '{{ states(''sensor.plants_humidity'') | float <  states(''input_number.max_humidity'')
-      | float - 1.0 and states(''sensor.plants_temperature'') | float <  states(''input_number.max_temp'')
-      | float - 1.0}}
+      | float - 1.0 }}
 
       '
   action:
   - service: switch.turn_off
-    entity_id: switch.plant3
+    data: {}
+    target:
+      entity_id: switch.plant_dehumidifier
   initial_state: true
   mode: single
 - id: '1614992678575'
@@ -965,8 +965,9 @@
       - climate.soil_heater
       - automation.plant_fan_off
       - automation.plant_light_off
-      - switch.plant1
-      - switch.plant3
+      - switch.plant_dehumidifier
+      - switch.plant_heater
+      - switch.plant_light
   mode: single
 - id: '1615165150474'
   alias: Plant Heater Restart
@@ -998,7 +999,9 @@
       and (now().hour * 60 + now().minute) * 60  < state_attr(''input_datetime.plant_light_off_time'',''timestamp'')  }}'
   action:
   - service: switch.turn_on
-    entity_id: switch.plant1
+    data: {}
+    target:
+      entity_id: switch.plant_light
   mode: single
 - id: '1615336696078'
   alias: Plant Light OFF
@@ -1016,7 +1019,7 @@
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.plant1
+      entity_id: switch.plant_light
   mode: single
 - id: '1615511989760'
   alias: GE Dimmer Polling

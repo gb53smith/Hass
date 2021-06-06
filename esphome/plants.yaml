@@ -4,3 +4,41 @@ substitutions:
   
 packages:
   nodemcu: !include common/nodemcu.yaml
+  
+switch:
+  - platform: gpio
+    pin: 14
+    name: "Plant Light"
+  - platform: gpio
+    pin: 12
+    name: "Plant Heater"
+  - platform: gpio
+    pin: 13
+    name: "Plant Dehumidifier"
+
+dallas:
+  - pin: GPIO10
+    update_interval: 10s
+
+sensor:
+  - platform: dht
+    pin: 2
+    temperature:
+      name: "Plants Temperature"
+      filters:
+      - delta: 0.2
+    humidity:
+      name: "Plants Humidity"
+      filters:
+      - delta: 1
+    update_interval: 10s
+    model: dht22
+  - platform: dallas
+    address: 0x1F3C01B556A19A28
+    name: "Plants Soil Temperature"
+    filters:
+      - delta: 0.2
+      
+    
+
+  
