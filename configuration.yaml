@@ -18,8 +18,8 @@ homeassistant:
 #introduction:
 system_health:
 esphome:
-api:
-  password: !secret ota_password
+# api:
+  # password: !secret ota_password
 zeroconf:
 
 #Uncomment to use ui-lovelace.yaml instead of UI

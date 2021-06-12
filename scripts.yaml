@@ -1,121 +1,110 @@
-# Triggered in automation by switch.furnace -> ON
 furnace_timer:
-  alias: "Resetable Delay to Heat0"
+  alias: Resetable Delay to Heat0
   sequence:
-    - service: homeassistant.turn_off
-      data:
-        entity_id:
-          - script.timer_heat0
-          - script.timer_heat1
-          - input_boolean.heat1
-    - service: homeassistant.turn_on
-      data:
-        entity_id:
-          - input_boolean.heat0
-          - script.timer_heat0
-    - service: input_number.set_value
-      data:
-        entity_id: input_number.furnace_power
-        value: 7.8
-
+  - service: homeassistant.turn_off
+    data:
+      entity_id:
+      - script.timer_heat0
+      - script.timer_heat1
+      - input_boolean.heat1
+  - service: homeassistant.turn_on
+    data:
+      entity_id:
+      - input_boolean.heat0
+      - script.timer_heat0
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.furnace_power
+      value: 7.8
 timer_heat0:
-  alias: "Heat0 Timer"
+  alias: Heat0 Timer
   sequence:
-    - delay:
-        minutes: 7
-        # Purge and ignition delay
-        seconds: 80
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.heat0
-    - service: homeassistant.turn_on
-      data:
-        entity_id:
-          - input_boolean.heat1
-          - script.timer_heat1
-    - service: input_number.set_value
-      data:
-        entity_id: input_number.furnace_power
-        value: 13.6
-
+  - delay:
+      minutes: 7
+      seconds: 80
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.heat0
+  - service: homeassistant.turn_on
+    data:
+      entity_id:
+      - input_boolean.heat1
+      - script.timer_heat1
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.furnace_power
+      value: 13.6
 timer_heat1:
-  alias: "Heat1 Timer"
+  alias: Heat1 Timer
   sequence:
-    - delay:
-        minutes: 10
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.heat0
-    - service: input_number.set_value
-      data:
-        entity_id: input_number.furnace_power
-        value: 19.5
-
+  - delay:
+      minutes: 10
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.heat0
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.furnace_power
+      value: 19.5
 ir_back:
-  alias: "Irrigate Back"
+  alias: Irrigate Back
   sequence:
-    - service: switch.turn_on
-      entity_id: switch.back_irrigation
-    - delay: "00:{{ states('input_number.slider_delay_b') | int }}:00"
-    - service: switch.turn_off
-      entity_id: switch.back_irrigation
-
+  - service: switch.turn_on
+    entity_id: switch.back_irrigation
+  - delay: 00:{{ states('input_number.slider_delay_b') | int }}:00
+  - service: switch.turn_off
+    entity_id: switch.back_irrigation
 ir_front:
-  alias: "Irrigate Front"
+  alias: Irrigate Front
   sequence:
-    - service: switch.turn_on
-      entity_id: switch.front_irrigation
-    - delay: "00:{{ states('input_number.slider_delay_f') | int }}:00"
-    - service: switch.turn_off
-      entity_id: switch.front_irrigation
-
+  - service: switch.turn_on
+    entity_id: switch.front_irrigation
+  - delay: 00:{{ states('input_number.slider_delay_f') | int }}:00
+  - service: switch.turn_off
+    entity_id: switch.front_irrigation
+  mode: single
 ir_deck:
-  alias: "Irrigate Deck"
+  alias: Irrigate Deck
   sequence:
-    - service: switch.turn_on
-      entity_id: switch.deck_irrigation
-    - delay: "00:{{ states('input_number.slider_delay_d') | int }}:00"
-    - service: switch.turn_off
-      entity_id: switch.deck_irrigation
-
+  - service: switch.turn_on
+    entity_id: switch.deck_irrigation
+  - delay: 00:{{ states('input_number.slider_delay_d') | int }}:00
+  - service: switch.turn_off
+    entity_id: switch.deck_irrigation
 watchdog_timer:
-  alias: "Watchdog Toggle"
+  alias: Watchdog Toggle
   sequence:
-    - service: switch.turn_on
-      entity_id: switch.watchdog
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.watchdog_delayed
-    - delay: 0:02:30
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.watchdog_delayed
-    - delay: 0:02:30
-    - service: switch.turn_off
-      entity_id: switch.watchdog
-    - delay: 0:02:30
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.watchdog_delayed
-        
+  - service: switch.turn_on
+    entity_id: switch.watchdog
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.watchdog_delayed
+  - delay: 0:02:30
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.watchdog_delayed
+  - delay: 0:02:30
+  - service: switch.turn_off
+    entity_id: switch.watchdog
+  - delay: 0:02:30
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.watchdog_delayed
 energy:
   alias: Energy Integrator
-  sequence: 
-    - service: python_script.energy
-      data:
-        power: furnace_power
-        last_power: last_power
-        energy_accum: energy_accum
-
+  sequence:
+  - service: python_script.energy
+    data:
+      power: furnace_power
+      last_power: last_power
+      energy_accum: energy_accum
 energy_hour:
   alias: Hourly Energy
   sequence:
-  #delay start if furnace power is changing of hour boundary.
-    - wait_template: "{{ is_state('script.energy', 'off') }}"
-    - service: python_script.energy_hour
-      data:
-        power: furnace_power
-        last_power: last_power
-        energy_accum: energy_accum
-        hourly_energy: hourly_energy     
-        
+  - wait_template: '{{ is_state(''script.energy'', ''off'') }}'
+  - service: python_script.energy_hour
+    data:
+      power: furnace_power
+      last_power: last_power
+      energy_accum: energy_accum
+      hourly_energy: hourly_energy
