@@ -7,11 +7,6 @@ wifi:
   ssid: "GreenMountain"
   password: !secret wifi_password
 
-captive_portal:
- 
-# Enable logging
-logger:
-
 # Enable Home Assistant API
 api:
   password: !secret ota_password

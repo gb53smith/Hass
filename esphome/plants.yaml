@@ -10,8 +10,6 @@ esphome:
 wifi:
   ssid: "GreenMountain"
   password: !secret wifi_password
-
-captive_portal:
  
 # Enable logging
 logger:
