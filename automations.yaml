@@ -146,7 +146,7 @@
     state: 'on'
   action:
     service: switch.turn_on
-    entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
+    entity_id: switch.scene_capable_push_on_off
   id: 19e7ea5237134f478ebb77dc312976c3
 - alias: Bedroom Room Light OFF when on Vacation
   initial_state: true
@@ -162,7 +162,7 @@
     state: 'on'
   action:
     service: switch.turn_off
-    entity_id: switch.leviton_dz15s_1bz_decora_smart_switch_switch
+    entity_id: switch.scene_capable_push_on_off
   id: f4ccf77d963c4b729311199cb14bd864
 - id: 48259ef77a1f4882955e69383e0820e8
   alias: Set Home Setpoint

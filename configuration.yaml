@@ -209,7 +209,7 @@ logbook:
       - switch.back_irrigation
       - switch.deck_irrigation
       - switch.front_irrigation
-      - switch.leviton_dz15s_1bz_decora_smart_switch_switch
+      - switch.scene_capable_push_on_off
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.medalert1_check
       # Test only
@@ -227,7 +227,7 @@ history:
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - binary_sensor.away
       - binary_sensor.ecolink_motion_detector_sensor
-      - switch.leviton_dz15s_1bz_decora_smart_switch_switch
+      - switch.scene_capable_push_on_off
       - switch.back_irrigation
       - switch.deck_irrigation
       - switch.front_irrigation
