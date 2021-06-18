@@ -1,0 +1,109 @@
+esphome:
+  name: sonoffbasic
+  platform: ESP8266
+  #board: esp8285
+  #arduino_version: 2.4.2
+  board: d1_mini
+  includes:
+    - flashsize.h
+
+wifi:
+  ssid: "GreenMountain"
+  password: !secret wifi_password
+
+
+# Enable logging
+logger:
+  level: DEBUG
+  esp8266_store_log_strings_in_flash: False
+
+ota:
+  password: !secret ota_password
+  
+substitutions:
+  l_name: heinz
+  u_name: Heinz
+
+# Enable Home Assistant API
+api:
+  password: !secret ota_password
+  services:
+    - service: flash
+      then:
+        - output.turn_on: output1
+        - delay: 150ms
+        - output.turn_off: output1
+        - delay: 150ms
+        - output.turn_on: output1
+        - delay: 150ms
+        - output.turn_off: output1
+        - delay: 150ms
+        - output.turn_on: output1
+        - delay: 150ms
+        - output.turn_off: output1
+        - delay: 150ms
+        - if:
+            condition:
+              light.is_on: light1
+            then:
+              - output.turn_on: output1
+    - service: restart
+      then:
+        - switch.toggle: restart_my_esp
+
+# Use D7/GPIO13 instead of GPIO0 which has restrictions on boot.
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D7
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Heinz button"
+    on_press:
+      - light.toggle: light1
+
+light:
+  - platform: binary
+    name: "$u_name"
+    id: light1
+    output: output1
+
+output:
+  - platform: gpio
+    pin: D6
+    inverted: True
+    id: output1
+
+status_led:
+  pin:
+    number: GPIO2
+    inverted: yes
+
+sensor:
+  - platform: wifi_signal
+    name: "$u_name WiFi signal"
+    update_interval: 60s
+
+  - platform: uptime
+    name: "$u_name uptime"
+    
+  - platform: custom
+    lambda: |-
+      auto flash = new MyFlash();
+      App.register_component(flash);
+      return {flash->flash_sensor};
+    sensors:
+    - name: "Real Flash Size"
+      unit_of_measurement: bytes
+      accuracy_decimals: 0
+    
+switch:
+  - platform: restart
+    id: restart_my_esp
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "$u_name IP"
+
+

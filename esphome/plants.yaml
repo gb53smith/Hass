@@ -1,3 +1,49 @@
+# logger:
+  # level: NONE
+
+# substitutions:
+  # node_name: plants
+  # device_verbose_name: "Basement Plants"
+  
+# packages:
+  # nodemcu: !include common/nodemcu.yaml
+  
+# switch:
+  # - platform: gpio
+    # pin: 14
+    # name: "Plant Light"
+  # - platform: gpio
+    # pin: 12
+    # name: "Plant Heater"
+  # - platform: gpio
+    # pin: 13
+    # name: "Plant Dehumidifier"
+
+
+# sensor:
+  # - platform: dht
+    # pin: 2
+    # temperature:
+      # name: "Plants Temperature"
+      # filters:
+      # - delta: 0.2
+      # # # Max delta filter
+      # # - lambda: |-
+            # # float MAX_DIFFERENCE = 5.0;  // adjust this!
+            # # static float last_value = NAN;
+            # # if (isnan(last_value) || std::abs(x - last_value) < MAX_DIFFERENCE)
+              # # return last_value = x;
+            # # else
+              # # return {};
+      # #- lambda: !lambda if ( x < 13.0 ) { return x * 2.0; } else { return x; }
+    # humidity:
+      # name: "Plants Humidity"
+      # filters:
+      # - delta: 1
+    # update_interval: 10s
+    # model: DHT22_TYPE2
+
+
 esphome:
   name: plants
   platform: ESP8266
