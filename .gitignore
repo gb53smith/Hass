@@ -14,9 +14,12 @@ deps
 tts
 pyozw.sqlite
 www
-custom_components/mitsubishi_mqtt/__pycache__
+#custom_components/mitsubishi_mqtt/__pycache__
 esphome/.esphome
+esphome/archive
 **/src/
 **/platformio.ini
+*/*/__pycache__
+*/*/*/__pycache__
 
 
