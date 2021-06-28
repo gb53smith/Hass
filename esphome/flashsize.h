@@ -20,6 +20,7 @@ class MyFlash : public PollingComponent, public Sensor {
     float flashsize = float(ESP.getFlashChipRealSize());
     flash_sensor->publish_state(flashsize);
     ESP_LOGD("custom", "The flash size is: %f", flashsize);
+   /*  Sign-Magnitude to 2's Complement conversion
    uint8_t data2 = 0x80;
    uint8_t data3 = 0xFF;
    uint16_t raw_temperature = (uint16_t(data2 & 0xFF) << 8) | (data3 & 0xFF);
@@ -31,5 +32,6 @@ class MyFlash : public PollingComponent, public Sensor {
     
     
     ESP_LOGD("custom", "The temperature is: %f", temperature );
+    */
   }
 };

@@ -96,6 +96,12 @@ sensor:
     - name: "Real Flash Size"
       unit_of_measurement: bytes
       accuracy_decimals: 0
+  - platform: adc
+    name: VCC Voltage
+    pin: A0
+    filters:
+    #Using on board voltage dividor so needs calibration
+      - multiply: 3.3
     
 switch:
   - platform: restart

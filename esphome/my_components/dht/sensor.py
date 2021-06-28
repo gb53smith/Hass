@@ -19,15 +19,13 @@ from esphome.const import (
 from esphome.cpp_helpers import gpio_pin_expression
 
 dht_ns = cg.esphome_ns.namespace("dht")
-DHTModel = dht_ns.enum("DHTModel")
+#GBS Modified to use DHT models defined in DHTNew.h
+dhtnew_ns = cg.esphome_ns.namespace("")
+DHTModel_t = dhtnew_ns.enum("DHTModel")
+
 DHT_MODELS = {
-    "AUTO_DETECT": DHTModel.DHT_MODEL_AUTO_DETECT,
-    "DHT11": DHTModel.DHT_MODEL_DHT11,
-    "DHT22": DHTModel.DHT_MODEL_DHT22,
-    "AM2302": DHTModel.DHT_MODEL_AM2302,
-    "RHT03": DHTModel.DHT_MODEL_RHT03,
-    "SI7021": DHTModel.DHT_MODEL_SI7021,
-    "DHT22_TYPE2": DHTModel.DHT_MODEL_DHT22_TYPE2,
+    "DHT11": DHTModel_t.DHT_MODEL_DHT11,
+    "DHT22": DHTModel_t.DHT_MODEL_DHT22
 }
 DHT = dht_ns.class_("DHT", cg.PollingComponent)
 
