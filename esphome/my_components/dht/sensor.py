@@ -43,7 +43,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_HUMIDITY): sensor.sensor_schema(
             UNIT_PERCENT, ICON_EMPTY, 0, DEVICE_CLASS_HUMIDITY, STATE_CLASS_MEASUREMENT
         ),
-        cv.Optional(CONF_MODEL, default="auto detect"): cv.enum(
+        cv.Optional(CONF_MODEL, default="dht22"): cv.enum(
             DHT_MODELS, upper=True, space="_"
         ),
     }
@@ -65,3 +65,4 @@ async def to_code(config):
         cg.add(var.set_humidity_sensor(sens))
 
     cg.add(var.set_dht_model(config[CONF_MODEL]))
+    cg.add_library("diaoul/DHTNew", "1.0.0")

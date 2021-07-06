@@ -79,6 +79,9 @@ status_led:
     number: GPIO2
     inverted: yes
 
+i2c:
+  scan: True
+  
 sensor:
   - platform: wifi_signal
     name: "$u_name WiFi signal"
@@ -102,6 +105,19 @@ sensor:
     filters:
     #Using on board voltage dividor so needs calibration
       - multiply: 3.3
+  - platform: bme280
+    #iir_filter: 'OFF'
+    temperature:
+      name: "BME280 Temperature"
+      oversampling: 1x
+    pressure:
+      name: "BME280 Pressure"
+      oversampling: 1x
+    humidity:
+      name: "BME280 Humidity"
+      oversampling: 1x
+    #address: 0x77
+    update_interval: 10s
     
 switch:
   - platform: restart
@@ -111,5 +127,9 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: "$u_name IP"
+      
+external_components:
+  - source: my_components
+    components: [bme280]
 
 

@@ -8,9 +8,6 @@ esphome:
   name: ${node_name}
   platform: ESP8266
   board: nodemcuv2
-  platformio_options:
-    lib_deps: diaoul/DHTNew@1.0.0
-  
 
 wifi:
   ssid: "GreenMountain"
@@ -46,8 +43,17 @@ external_components:
     #components: [dht]
   #- source: github://gb53smith/esphome@DiaoulRead2
     #components: [dht]
-  - source: github://gb53smith/esphome@dev1
-    components: [dht]
+### Short form not working
+ - source: github://gb53smith/esphome
+   components: [dht]
+### This long from works. refresh needed for changes less than 24 hours old
+  #- source:
+  #    type: git
+  #    url: https://github.com:/gb53smith/esphome
+  #    ref: main
+  #  components: [dht]
+  #  refresh: 0s
+### Use this local copy to debug, the commit to github
   #- source: my_components
 
 sensor:
@@ -62,7 +68,7 @@ sensor:
       filters:
       - delta: 1
     update_interval: 10s
-    model: DHT22
+    #model: DHT22
   - platform: dallas
     address: 0x1F3C01B556A19A28
     name: "Plants Soil Temperature"

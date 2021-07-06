@@ -13,7 +13,7 @@ namespace dht {
 /// Component for reading temperature/humidity measurements from DHT11/DHT22 sensors.
 class DHT : public PollingComponent {
  public:
-  void set_pin(GPIOPin *pin) { dhtPin_ = pin->get_pin(); }
+  void set_pin(GPIOPin *pin) { pin_ = pin->get_pin(); }
   void set_dht_model(DHTModel_t model);
   void set_temperature_sensor(sensor::Sensor *temperature_sensor) { temperature_sensor_ = temperature_sensor; }
   void set_humidity_sensor(sensor::Sensor *humidity_sensor) { humidity_sensor_ = humidity_sensor; }
@@ -30,7 +30,7 @@ class DHT : public PollingComponent {
   //Read sensor and return error message;
   const char* readSensor();
 
-  uint8_t dhtPin_;
+  uint8_t pin_;
   DHTModel_t model_{};
 
   sensor::Sensor *temperature_sensor_{nullptr};
@@ -43,10 +43,6 @@ class DHT : public PollingComponent {
   float _temperature;
   float _humidity;
 
- private:
-  DHTModel_t _model; // from DHTNEw
-  DHTError_t _error; // from DHTNEw
-  unsigned long _lastReadTime;
 };
 
 }  // namespace dht

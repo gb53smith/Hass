@@ -8,16 +8,13 @@ namespace dht {
 static const char *const TAG = "dht";
 
 void DHT::setup() {
-
-  DHTModel_t DHTModel = this->model_;
-  const uint8_t dhtPin = this->dhtPin_;
   // Create DHT object using pointer.  This is after parameters are available.
-  dhtnew_ = new ::DHT(dhtPin, model_);
+  dhtnew_ = new ::DHT(this->pin_, this->model_);
 }
 
 void DHT::dump_config() {
   ESP_LOGCONFIG(TAG, "DHT:");
-  ESP_LOGCONFIG(TAG, "  Pin: %d", this->dhtPin_);
+  ESP_LOGCONFIG(TAG, "  Pin: %d", this->pin_);
   if (this->model_ == DHT_MODEL_DHT11) {
     ESP_LOGCONFIG(TAG, "  Model: DHT11");
   } else {
@@ -29,10 +26,10 @@ void DHT::dump_config() {
 }
 
 void DHT::update() {
-  const char *errorString = this->readSensor();
+  const char *error_string = this->readSensor();
   const char *success = "none";
 
-  if (strcmp(errorString, success) == 0) {
+  if (strcmp(error_string, success) == 0) {
     ESP_LOGD(TAG, "Got Temperature=%.1f°C Humidity=%.1f%%", _temperature, _humidity);
     if (this->temperature_sensor_ != nullptr)
       this->temperature_sensor_->publish_state(_temperature);
@@ -40,7 +37,7 @@ void DHT::update() {
       this->humidity_sensor_->publish_state(_humidity);
     this->status_clear_warning();
   } else {
-      ESP_LOGD(TAG, "Got this DHT error: %s.", errorString);
+      ESP_LOGD(TAG, "Got this DHT error: %s.", error_string);
     if (this->temperature_sensor_ != nullptr)
       this->temperature_sensor_->publish_state(NAN);
     if (this->humidity_sensor_ != nullptr)
@@ -64,9 +61,9 @@ const char* DHT::readSensor() {
   _temperature = dhtnew_->readTemperature();
   _humidity = dhtnew_->readHumidity();
     
-  const char* errorString = dhtnew_->getErrorString();
+  const char* error_string = dhtnew_->getErrorString();
     
-  return errorString;
+  return error_string;
 }
 
 }  // namespace dht
