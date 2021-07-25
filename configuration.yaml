@@ -14,6 +14,7 @@ homeassistant:
   internal_url: "http://homeassistant.local:8123"
   customize: !include customize.yaml
 
+#Running NGINX on another PI 4 so I can share my IP address with PrivateBook
 http:
   use_x_forwarded_for: true
   trusted_proxies:
