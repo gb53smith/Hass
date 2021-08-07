@@ -1067,3 +1067,72 @@
       temperature: '{{ states(''input_number.slider_ac_home'')}}'
   mode: single
   initial_state: true
+- id: '1628201940502'
+  alias: UPS On Line
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.myups_status
+    for: 00:01:00
+    to: Online
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: UPS now ON Line Battery Fully Changed
+  mode: single
+- id: '1628202005900'
+  alias: UPS On Battery
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.myups_status
+    to: On Battery Battery Discharging
+    for: 00:01:00
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: UPS now ON Battery
+  mode: single
+- id: '1628202555027'
+  alias: UPS ON Line Charging
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.myups_status
+    to: Online Battery Charging
+    for: 00:01:00
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: UPS now ON Line and Charging Battery
+  mode: single
+- id: '1628206228430'
+  alias: UPS Low Battery Shutdown
+  description: UPS battery low and has started the force shutdown
+  trigger:
+  - platform: event
+    event_data: {}
+    event_type: FSD
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: Home Assistant Shutdown
+  mode: single
+- id: '1628219707084'
+  alias: UPS On Line Battery Charging
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.myups_status
+    for: 00:01:00
+    to: Online Battery Charging
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: UPS now ON Line Battery Charging
+  mode: single

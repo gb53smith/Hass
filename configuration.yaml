@@ -176,6 +176,12 @@ recorder:
       - sensor.joyce_ipad2_storage
       #- sensor.z_wave_motion_sensor_battery_level
       - input_boolean.plant_automation
+      # UPS states not worth saving
+      - sensor.myups_battery_runtime
+      - sensor.myups_battery_voltage
+      - sensor.myups_beeper_status
+      - sensor.myups_input_voltage
+      - sensor.myups_load
 
     domains:
       - zwave
