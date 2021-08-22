@@ -246,7 +246,6 @@
   alias: Away
   description: 'Turn temperature set point down if away set when door locked from
     outside keypad
-
     #Note: A normal template sensor did not trigger so the binary_sensor was used
     instead.'
   trigger:
@@ -262,6 +261,10 @@
     data:
       entity_id: climate.summer_fan
       temperature: '{{ states(''input_number.temperature_fan_away'')}}'
+  - service: climate.set_temperature
+    data:
+      entity_id: climate.mitsubishi_heatpump
+      temperature: '{{ states(''input_number.slider_ac_away'')}}'         
   initial_state: true
   mode: single
 - id: d5c8e48aa51549caa1d295a0a4c0b370
@@ -287,6 +290,10 @@
     data:
       entity_id: climate.summer_fan
       temperature: '{{ states(''input_number.temperature_fan'')}}'
+  - service: climate.set_temperature
+    data:
+      entity_id: climate.mitsubishi_heatpump
+      temperature: '{{ states(''input_number.slider_ac_home'')}}'  
   initial_state: true
   mode: single
 - id: 544aeec69a024d7c8a12e15c8ff4eaae
@@ -1094,33 +1101,6 @@
   - service: notify.mobile_app_iphone
     data:
       message: UPS now ON Battery
-  mode: single
-- id: '1628202555027'
-  alias: UPS ON Line Charging
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.myups_status
-    to: Online Battery Charging
-    for: 00:01:00
-  condition: []
-  action:
-  - service: notify.mobile_app_iphone
-    data:
-      message: UPS now ON Line and Charging Battery
-  mode: single
-- id: '1628206228430'
-  alias: UPS Low Battery Shutdown
-  description: UPS battery low and has started the force shutdown
-  trigger:
-  - platform: event
-    event_data: {}
-    event_type: FSD
-  condition: []
-  action:
-  - service: notify.mobile_app_iphone
-    data:
-      message: Home Assistant Shutdown
   mode: single
 - id: '1628219707084'
   alias: UPS On Line Battery Charging
