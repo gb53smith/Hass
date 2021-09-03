@@ -1,17 +1,4 @@
 homeassistant:
-  # Name of the location where Home Assistant is running
-  name: !secret name
-  # Location required to calculate the time the sun rises and sets
-  latitude: !secret latitude
-  longitude: !secret longitude
-  # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: !secret elevation
-  # metric for Metric, imperial for Imperial
-  unit_system: metric
-  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: !secret time_zone
-  external_url: !secret base_url
-  internal_url: "http://homeassistant.local:8123"
   customize: !include customize.yaml
 
 #Running NGINX on another PI 4 so I can share my IP address with PrivateBook
@@ -27,35 +14,6 @@ esphome:
 # api:
   # password: !secret ota_password
 zeroconf:
-
-#Uncomment to use ui-lovelace.yaml instead of UI
-# lovelace:
-# mode: yaml
-#GBS new comment 5/31/2020
-
-## Removed for HA2021.3.1
-## Now configured using a UI Integration.
-# mysensors:
-  # gateways:
-    # - device: mqtt
-      # persistence_file: "/config/mysensors1.json"
-      # topic_in_prefix: "mygateway1-out"
-      # topic_out_prefix: "mygateway1-in"
-  # optimistic: false
-  # persistence: true
-  # retain: true
-  # version: "2.3"
-
-# zwave:
-  # usb_path: /dev/ttyACM0
-  # network_key: !secret zwave_key
-  # polling_interval: 30000
-  # device_config:
-    # light.ge_12724_3way_dimmer_switch_level: # Added to keep HA in sync after manual override
-      # refresh_value: true #refresh the brightness value if the dimmer do "soft off"
-      # delay: 2 #Amount of seconds before the refresh is done after the actual action.
-      # #Polls the device when each (polling_intensity) polling is performed by polling_interval
-      # polling_intensity: 1
 
 # See Helpers in UI
 input_text:
@@ -79,19 +37,20 @@ discovery:
 
 python_script:
 
-#Need this only to debug python scripts
-# logger:
-  # default: info
+#This set the severity of notices in the log file
+#Can be set to "info" for more detail or "debug" for certain components
+logger:
+  default: warning
   # logs:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
 
 # #For Mysensors debug only
 # logger:
-# default: info
-# logs:
-# homeassistant.components.mysensors: debug
-# mysensors: debug
+  # default: info
+  # logs:
+    # homeassistant.components.mysensors: debug
+    # mysensors: debug
 
 #Enable IOS App, Home Assistant Companion
 mobile_app:
@@ -182,6 +141,12 @@ recorder:
       - sensor.myups_beeper_status
       - sensor.myups_input_voltage
       - sensor.myups_load
+      #Energy Meter. Only need last value
+      - sensor.eagle_200_total_meter_energy_delivered
+      - sensor.eagle_200_net_meter_energy_delivered_minus_received
+      - sensor.eagle_200_total_meter_energy_received
+      - input_number.hydro_meter_last_hour
+      - input_number.hydro_meter_last_day
 
     domains:
       - zwave
@@ -610,6 +575,26 @@ input_number:
     # max: 150
     # step: 1
     # unit_of_measurement: "kW"
+  hydro_hourly_energy:
+    min: 0
+    max: 1000
+    step: 0.1
+    mode: box
+  hydro_daily_energy:
+    min: 0
+    max: 1000
+    step: 0.1
+    mode: box
+  hydro_meter_last_hour:
+    min: 0
+    max: 1000000
+    step: 0.1
+    mode: box
+  hydro_meter_last_day:
+    min: 0
+    max: 1000000
+    step: 0.1
+    mode: box
 
 input_datetime:
   lr_off_time:
@@ -667,6 +652,20 @@ light ms2:
     rgb: true
     retain: true
 
+# # Electricity Energy
+# utility_meter:
+  # hydro_hourly_energy:
+    # source: sensor.eagle_200_meter_power_demand
+    # cycle: hourly
+  # hydro_daily_energy:
+    # source: sensor.eagle_200_meter_power_demand
+    # cycle: daily    
+  # hydro_weekly_energy:
+    # source: sensor.eagle_200_meter_power_demand
+    # cycle: weekly    
+    
+    
+    
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automations.yaml

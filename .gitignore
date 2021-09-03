@@ -4,7 +4,7 @@ mysensors1.json
 *.xml
 *.txt
 .*
-home-assistant.log
+home-assistant.log*
 home-assistant_v2.db
 home-assistant_v2.db-wal
 home-assistant_v2.db-shm

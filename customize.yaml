@@ -11,11 +11,11 @@ switch.leviton_dz15s_1bz_decora_smart_switch_switch:
 sensor.mysensors_bme280_2_1:
   friendly_name: Outdoor Pressure
   icon: mdi:airballoon
-  unit_of_measurement: hPa
+  unit_of_measurement: 'hPa'
 sensor.mysensors_bme280_2_2:
   friendly_name: Outdoor Temperature
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 sensor.mysensors_bme280_2_3:
   friendly_name: Outdoor Humidity
   icon: mdi:water-percent
@@ -23,31 +23,23 @@ sensor.mysensors_bme280_2_3:
 sensor.mysensors_bme280_2_4:
   friendly_name: Outdoor Voltage
   icon: mdi:battery
-  unit_of_measurement: V
+  unit_of_measurement: 'V'
 sensor.hour_diff:
   friendly_name: Hourly Temperature Difference
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 sensor.daily_temp_diff:
   friendly_name: Daily Average Temperature Difference
   icon: mdi:thermometer
-  unit_of_measurement: °C
-sensor.furnace_hourly:
-  friendly_name: HA Hourly Energy Consumption
-  icon: mdi:radiator
-  unit_of_measurement: kWh
-sensor.furnace_daily:
-  friendly_name: HA Daily Energy Consumption
-  icon: mdi:radiator
-  unit_of_measurement: kWh
+  unit_of_measurement: '°C'
 sensor.hourly_energy:
-  friendly_name: Hourly Energy Consumption
+  friendly_name: Hourly Gas Energy
   icon: mdi:radiator
-  unit_of_measurement: kWh
+  unit_of_measurement: 'kWh'
 sensor.daily_energy:
-  friendly_name: Daily Total Energy Consumption
+  friendly_name: Daily Gas Energy
   icon: mdi:radiator
-  unit_of_measurement: kWh
+  unit_of_measurement: 'kWh'
 automation.living_room_light_on:
   hidden: false
 automation.living_room_light_off:
@@ -66,7 +58,7 @@ sensor.soil_moisture_sensor_8_1:
 sensor.soil_moisture_sensor_8_2:
   friendly_name: Indoor Voltage
   icon: mdi:battery
-  unit_of_measurement: V
+  unit_of_measurement: 'V'
 sensor.soil_moisture_sensor_8_3:
   friendly_name: Up Days
   unit_of_measurement: int
@@ -77,7 +69,7 @@ sensor.multisensor2_humidity:
 sensor.house_temperature:
   friendly_name: House Temperature
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 sensor.soil_moisture_sensor_4_1:
   friendly_name: Outdoor Moisture
   icon: mdi:water-percent
@@ -85,24 +77,24 @@ sensor.soil_moisture_sensor_4_1:
 sensor.soil_moisture_sensor_4_2:
   friendly_name: Outdoor Moisture Voltage
   icon: mdi:battery
-  unit_of_measurement: V
+  unit_of_measurement: 'V'
 sensor.soil_moisture_sensor_4_3:
   friendly_name: Up Days
   unit_of_measurement: int
 sensor.soil_moisture_sensor_4_4:
   friendly_name: Debug RFM69 RSSI
-  unit_of_measurement: dBm
+  unit_of_measurement: 'dBm'
 input_number.last_house_temp:
   friendly_name: Last House Temp
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 input_number.pressure:
   friendly_name: Outdoor Pressure
   icon: mdi:airballoon
-  unit_of_measurement: hPa
+  unit_of_measurement: 'hPa'
 input_number.temperature:
   friendly_name: Outdoor Temperature
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 input_number.humidity:
   friendly_name: Outdoor Humidity
   icon: mdi:water-percent
@@ -110,17 +102,17 @@ input_number.humidity:
 input_number.hour_diff:
   friendly_name: Hourly Temp Diff
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 input_number.hourly_energy:
   friendly_name: Hourly Energy
-  unit_of_measurement: kWh
+  unit_of_measurement: 'kWh'
 input_number.daily_energy:
   friendly_name: Daily Energy
-  unit_of_measurement: kWh
+  unit_of_measurement: 'kWh'
 input_number.daily_temp_diff:
   friendly_name: Hourly Temp Diff
   icon: mdi:thermometer
-  unit_of_measurement: °C
+  unit_of_measurement: '°C'
 sensor.soil_moisture_1:
   friendly_name: Indoor Moisture
   icon: mdi:water-percent
@@ -129,3 +121,17 @@ sensor.soil_moisture_2:
   friendly_name: Outdoor Moisture
   icon: mdi:water-percent
   unit_of_measurement: '%'
+sensor.eagle_200_meter_power_demand:
+  friendly_name: Live Power
+  icon: mdi:flash
+  unit_of_measurement: 'kW'
+sensor.hydro_hourly_energy:
+  friendly_name: Hourly Hydro Energy
+  icon: mdi:flash
+  unit_of_measurement: 'kWh'
+sensor.hydro_daily_energy:
+  friendly_name: Daily Hydro Energy
+  icon: mdi:flash
+  unit_of_measurement: 'kWh'
+ 
+  

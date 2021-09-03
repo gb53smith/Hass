@@ -60,21 +60,14 @@ Furnace set point is not affected.
 #logger.warning("Got to heatpump")
 
 hvac = hass.states.get('climate.mitsubishi_heatpump')
-#hvac_state = hvac.state
 hvac_attr = hvac.attributes
 
 furnace = hass.states.get('climate.house')
-#furnace_state = furnace.state
 furnace_attr = furnace.attributes
-#logger.warning("hvac_state = {}".format(hvac_state))
 
 current_temperature = hvac_attr['current_temperature']
-# Using max_tmp for testing only
-#current_temperature = hass.states.get('input_number.max_temp').state
-#heatpump_setpoint = hvac_attr['temperature']
 operation_mode = hvac_attr['hvac_action']
 furnace_setpoint = furnace_attr['temperature']
-#furnace_mode = furnace_attr['hvac_action']
 #logger.warning("operation_mode = {}".format(operation_mode))
 #logger.warning("hvac_attr ct = {}".format(current_temperature))
 #logger.warning("hvac_attr t = {}".format(temperature))
@@ -83,23 +76,18 @@ away = hass.states.get('binary_sensor.away').state
 #logger.warning("away = {}".format(away))
 
 # Heating temperature set points
-#away_temperature = hass.states.get('input_number.slider_away').state
-home_temperature = hass.states.get('input_number.slider_home').state
+home_temperature = float(hass.states.get('input_number.slider_home').state)
 # Cooling Temperature set points
-ac_away = hass.states.get('input_number.slider_ac_away').state
-ac_home = hass.states.get('input_number.slider_ac_home').state
+ac_away = float(hass.states.get('input_number.slider_ac_away').state)
+ac_home = float(hass.states.get('input_number.slider_ac_home').state)
 # Outside temperature
-outside_temperature = hass.states.get('input_number.temperature').state
+outside_temperature = float(hass.states.get('input_number.temperature').state)
 
-#logger.warning("heatpumpx current_temperature = {}".format(current_temperature))
-#logger.warning("heatpumpx ac_home = {}".format(ac_home))
-#logger.warning("heatpumpx home_temperature = {}".format(home_temperature))
-#logger.warning("ac home = {}".format(ac_home))
 
 if away == 'off':
     #logger.warning("Got to heatpumpxhome")
     # Start cooling if 2 degrees above set point
-    if float(current_temperature) >= float(ac_home) + 1.5:
+    if current_temperature >= ac_home + 1.5:
         #logger.warning("Got to heatpumpxcool1")
         if operation_mode != 'cooling': # Prevent repeat if already cooling
             #logger.warning("Got to heatpumpxcool2")
@@ -114,8 +102,8 @@ if away == 'off':
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
     # Turn off heat pump in zone between heating and cooling
     # OK to turn furnace back ON 
-    elif float(current_temperature) <= float(ac_home) - 1.0 and \
-        float(current_temperature) > float(home_temperature) + 0.5:
+    elif current_temperature <= ac_home - 1.0 and \
+        current_temperature > home_temperature + 0.5:
         #logger.warning("Got to heatpumpxoff1")
         if operation_mode != 'off': # Prevent repeat if already cooling
             #logger.warning("Got to heatpumpxoff2")
@@ -126,9 +114,9 @@ if away == 'off':
     # Start heating +/- 1.0 around home set point.  Turn furnace heating off to prevent conflict
     # Don't allow heat pump heating when too cold outside for efficiency reasons
     # Don't allow heating when furnace set point is at the away temperature overnight
-    elif float(current_temperature) <= float(home_temperature) + 0.5 and \
-        float(current_temperature) >= float(home_temperature) - 1.0 and float(outside_temperature) >= 1.0 \
-        and float(furnace_setpoint) == float(home_temperature) :
+    elif current_temperature <= home_temperature + 0.5 and \
+        current_temperature >= home_temperature - 1.0 and outside_temperature >= 1.0 \
+        and furnace_setpoint == home_temperature :
         #logger.warning("Got to heatpumpxheat1")
         if operation_mode != 'heating': # Prevent repeat if already heating.  Set mode and temperature in one MQTT json message.
             #logger.warning("Got to heatpumpxheat2")
@@ -157,14 +145,14 @@ if away == 'off':
 # Prevent cooking the house plants when away in the summer time.
 if away == 'on':
     #logger.warning("Got to heatpumpxaway")
-    if float(current_temperature) >= float(ac_away) + 2.0 and operation_mode != 'cooling':
+    if current_temperature >= ac_away + 2.0 and operation_mode != 'cooling':
         # Update temperature set point to match ac_home slider value when cooling is started
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_away}
         hass.services.call('climate', 'set_temperature', service_data, False)
         #time.sleep(2)
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
-    if float(current_temperature) <= float(ac_away) - 1.0 and operation_mode != 'off':
+    if current_temperature <= ac_away - 1.0 and operation_mode != 'off':
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
         # Use furnace only to heat while away
