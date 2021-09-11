@@ -133,5 +133,7 @@ sensor.hydro_daily_energy:
   friendly_name: Daily Hydro Energy
   icon: mdi:flash
   unit_of_measurement: 'kWh'
+binary_sensor.ping_192_168_1_75:
+  friendly_name: Multisensor2 Wifi Status
  
   

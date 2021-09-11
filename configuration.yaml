@@ -113,8 +113,8 @@ recorder:
       - sensor.mysensors_bme280_2_1
       - sensor.mysensors_bme280_2_2
       - sensor.mysensors_bme280_2_3
-      - switch.watchdog
-      - input_boolean.watchdog_delayed
+      #- switch.watchdog
+      #- input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_5_3
       # iPhone entities not used
       - sensor.iphone_battery_level
@@ -342,6 +342,9 @@ binary_sensor:
           or is_state("input_text.lock_last_action", "Locked by Oliver")
           or is_state("input_boolean.vacation", "on") }}
         friendly_name: "I am away"
+# Monitor MultiSensor2 that measures house temperature.
+  - platform: ping
+    host: 192.168.1.75
 
 counter:
   fan_on_minutes:
@@ -354,14 +357,14 @@ input_boolean:
     name: "ON Vacation"
     icon: mdi:car
 
-  watchdog:
-    name: "Watchdog Alarm Override"
-    initial: off
-    icon: mdi:toggle-switch-outline
+  # watchdog:
+    # name: "Watchdog Alarm Override"
+    # initial: off
+    # icon: mdi:toggle-switch-outline
 
-  watchdog_delayed:
-    name: "Watchdog Delayed"
-    initial: off
+  # watchdog_delayed:
+    # name: "Watchdog Delayed"
+    # initial: off
 
   heat0:
     name: "Heat State 0"

@@ -245,9 +245,8 @@
 - id: 32f210d034a04694b8a7b7dc0df080f4
   alias: Away
   description: 'Turn temperature set point down if away set when door locked from
-    outside keypad
-    #Note: A normal template sensor did not trigger so the binary_sensor was used
-    instead.'
+    outside keypad #Note: A normal template sensor did not trigger so the binary_sensor
+    was used instead.'
   trigger:
   - platform: state
     entity_id: binary_sensor.away
@@ -264,7 +263,7 @@
   - service: climate.set_temperature
     data:
       entity_id: climate.mitsubishi_heatpump
-      temperature: '{{ states(''input_number.slider_ac_away'')}}'         
+      temperature: '{{ states(''input_number.slider_ac_away'')}}'
   initial_state: true
   mode: single
 - id: d5c8e48aa51549caa1d295a0a4c0b370
@@ -293,7 +292,7 @@
   - service: climate.set_temperature
     data:
       entity_id: climate.mitsubishi_heatpump
-      temperature: '{{ states(''input_number.slider_ac_home'')}}'  
+      temperature: '{{ states(''input_number.slider_ac_home'')}}'
   initial_state: true
   mode: single
 - id: 544aeec69a024d7c8a12e15c8ff4eaae
@@ -410,30 +409,16 @@
     data:
       message: Basement Flood Detected!
   id: b023ab62caba4b35bd82e014c24f6e20
-- alias: Watchdog
-  initial_state: true
-  trigger:
-    platform: time_pattern
-    minutes: /10
-  action:
-  - service: homeassistant.turn_on
-    entity_id:
-    - script.watchdog_timer
-  id: 973febf2c0a04d4bba20d54b5dbb3a00
 - id: 2c587360c4a8480faa87bf3e388f1cac
   alias: Watchdog Alarm
-  description: Send a notice to iPhone if watchdog state does not turn ON
+  description: Send a notice to iPhone if MultiSensor2 is disconnected from WiFi.
   trigger:
-  - platform: state
-    entity_id: input_boolean.watchdog_delayed
+  - platform: time_pattern
+    minutes: /10
   condition:
-  - condition: template
-    value_template: '{%- if is_state("input_boolean.watchdog", "off") and  ((is_state("switch.watchdog",
-      "off") and  is_state("input_boolean.watchdog_delayed", "on")) or  (is_state("switch.watchdog",
-      "on") and  is_state("input_boolean.watchdog_delayed", "off"))) -%} true {%-else
-      -%} false {%- endif %}
-
-      '
+  - condition: state
+    entity_id: binary_sensor.ping_192_168_1_75
+    state: 'off'
   action:
   - service: notify.mobile_app_iphone
     data:
@@ -687,6 +672,8 @@
   mode: single
 - id: f7b38968d7ad45cdaee935f942d8a8ad
   alias: Burglar Alarm
+  description: If away, and motion is detected send text message, iPhone notification
+    and turn on Siren for 2 minutes.
   trigger:
   - platform: state
     entity_id: binary_sensor.ecolink_motion_detector_sensor
@@ -696,16 +683,16 @@
     entity_id: binary_sensor.away
     state: 'on'
   action:
-  - service: mqtt.publish
-    data:
-      topic: /home/sound
-      payload: '{"sound":"claxon","playcount":5}'
   - service: notify.burglar_alarm_sms
     data:
-      message: Burglar Alarm Triggered!
+      message: Graham Burglar Alarm Triggered!
       target:
-      - '{{ states(''input_text.local_phone'')}}'
       - '{{ states(''input_text.travel_phone'')}}'
+  - service: notify.mobile_app_iphone
+    data:
+      message: Graham Burglar Alarm Triggered!
+  - service: script.turn_on
+    entity_id: script.burglar_alarm_timer
   initial_state: true
   mode: single
 - id: 68eef09ca6714c85a4d466bd27fde205

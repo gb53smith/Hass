@@ -16,3 +16,4 @@ Switches OFF at Restart:
     - switch.furnace
     - switch.fan
     - switch.watchdog
+    - switch.siren_gen5

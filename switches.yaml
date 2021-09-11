@@ -30,17 +30,17 @@
   command_topic: "/home/furnace/fan"
   retain: False
 
-# Multisensor2 support
-- platform: mqtt
-  name: "Watchdog"
-  state_topic: "/home/ms2/wc"
-  command_topic: "/home/ms2/w"
-  payload_on: '{"s":"ON"}'
-  payload_off: '{"s":"OFF"}'
-  state_on: "ON"
-  state_off: "OFF"
-  value_template: "{{ value_json.s }}"
-  retain: False
+# # Multisensor2 support
+# - platform: mqtt
+  # name: "Watchdog"
+  # state_topic: "/home/ms2/wc"
+  # command_topic: "/home/ms2/w"
+  # payload_on: '{"s":"ON"}'
+  # payload_off: '{"s":"OFF"}'
+  # state_on: "ON"
+  # state_off: "OFF"
+  # value_template: "{{ value_json.s }}"
+  # retain: False
   
 # # For Plants Support
 # - platform: mqtt
