@@ -15,5 +15,4 @@ Switches OFF at Restart:
     - switch.deck_irrigation
     - switch.furnace
     - switch.fan
-    - switch.watchdog
     - switch.siren_gen5

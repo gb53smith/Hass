@@ -361,7 +361,7 @@
       entity_id: sensor.multisensor2_temperature
       state: unavailable
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: House Temperature Out of Range
   initial_state: true
@@ -380,7 +380,7 @@
       entity_id: sensor.remote_temperature
       state: unavailable
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Wine Cellar Temperature Out of Range
   initial_state: true
@@ -393,7 +393,7 @@
   - platform: template
     value_template: '{{ states(''sensor.mysensors_bme280_2_4'') | float < 3.2 }}'
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Outdoor battery needs to be charged.
   initial_state: true
@@ -405,7 +405,7 @@
     entity_id: sensor.flood
     to: 'ON'
   action:
-    service: notify.mobile_app_iphone
+    service: notify.mobile_app_grahams_iphone
     data:
       message: Basement Flood Detected!
   id: b023ab62caba4b35bd82e014c24f6e20
@@ -420,7 +420,7 @@
     entity_id: binary_sensor.ping_192_168_1_75
     state: 'off'
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Multisensor Failed!
   initial_state: true
@@ -465,7 +465,7 @@
     entity_id: automation.furnace_state
   - delay:
       minutes: 10
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: HA Restarted
   initial_state: true
@@ -515,7 +515,7 @@
     to: FIX
     for: 0:21:00
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Medalert1 System Down!
   initial_state: true
@@ -688,7 +688,7 @@
       message: Graham Burglar Alarm Triggered!
       target:
       - '{{ states(''input_text.travel_phone'')}}'
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Graham Burglar Alarm Triggered!
   - service: script.turn_on
@@ -800,7 +800,7 @@
   - platform: template
     value_template: '{{ states(''counter.brita_days'') | float > 90.0 }}'
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Brita Filter Used for 90 Days
   initial_state: true
@@ -825,7 +825,7 @@
     data: {}
     target:
       entity_id: switch.plant_dehumidifier
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Plant Dehumidifier  ON
   mode: single
@@ -900,7 +900,7 @@
         by '' + mapper[selection] if selection in mapper else ''error'' }}'
     target:
       entity_id: input_text.lock_last_action
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: Back Door Unlocked
   mode: single
@@ -1071,7 +1071,7 @@
     to: Online
   condition: []
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: UPS now ON Line Battery Fully Changed
   mode: single
@@ -1085,7 +1085,7 @@
     for: 00:01:00
   condition: []
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: UPS now ON Battery
   mode: single
@@ -1099,7 +1099,7 @@
     to: Online Battery Charging
   condition: []
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_grahams_iphone
     data:
       message: UPS now ON Line Battery Charging
   mode: single
