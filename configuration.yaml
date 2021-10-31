@@ -214,6 +214,7 @@ history:
       - sensor.medalert1_check
       - sensor.house_temperature
       - input_number.temperature
+      - sensor.eagle_200_meter_power_demand
 
 # Track the sun
 sun:
