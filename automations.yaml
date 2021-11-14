@@ -1140,6 +1140,8 @@
       seconds: 0
       milliseconds: 0
   - service: fan.turn_off
+    target:
+      entity_id: fan.hepa_filter_fan
   mode: restart
 - id: '1636156308812'
   alias: Air Filter Accumulator
