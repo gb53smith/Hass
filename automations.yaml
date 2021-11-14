@@ -1117,12 +1117,12 @@
     entity_id: climate.mitsubishi_heatpump
     attribute: hvac_action
     from: 'off'
-    to: cool
+    to: cooling
   - platform: state
     entity_id: climate.mitsubishi_heatpump
     attribute: hvac_action
     from: 'off'
-    to: heat
+    to: heating
   condition:
   - condition: state
     entity_id: binary_sensor.away
@@ -1158,7 +1158,8 @@
     target:
       entity_id: input_number.hepa_hours
     data:
-      value: '{{ states(''input_number.hepa_hours'') | float + state_attr(''fan.hepa_filter_fan'',''percentage'' ) | float / 4320 }}'
+      value: '{{ states(''input_number.hepa_hours'') | float + state_attr(''fan.hepa_filter_fan'',''percentage''
+        ) | float / 4320 }}'
   mode: single
   initial_state: true
 - id: '1636156585964'

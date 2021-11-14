@@ -1,0 +1,56 @@
+logger:
+  level: None
+
+esphome:
+  name: hepafilter
+  platform: ESP32
+  board: nodemcu-32s
+
+# Enable Home Assistant API
+wifi:
+  ssid: "GreenMountain"
+  password: !secret wifi_password
+
+# Enable Home Assistant API
+api:
+  password: !secret ota_password
+
+ota:
+  password: !secret ota_password
+
+#On Board Blue LED. Used to test WiFi connection 
+switch:
+  - platform: gpio
+    name: blueled
+    pin: 2
+
+# Measured 10KHz on MA-25 PWM pin
+# Connected to 2N3904 NPN BJT with a 4K7 resistor to base
+# and 470 ohm pullup resistor on collector (otput PWM signal).
+output:
+  - platform: ledc
+    pin: GPIO33
+    inverted: true
+    frequency: 10000 Hz
+    id: hepa_fan_pwm
+
+fan:
+  - platform: speed
+    output: hepa_fan_pwm
+    name: "Hepa Filter Fan"
+
+# Used to measure frquency of MA-25 PWM pin
+# Used resistor divider to tolerant 5V signal.
+# Series 1K8 and 2K2 resistor to GND.
+# Measured frequency up to 25KHz.
+# Limited by overflow of ESP32 16 bit counter.
+#sensor:
+#  - platform: pulse_counter
+#    pin: GPIO27
+#    internal_filter: 1 us
+#    unit_of_measurement: 'Hz'
+#    name: 'Hepa Filter Fan Speed'
+#    update_interval: 1 s
+#    filters:
+#      - multiply: 0.01667 # Convert to pulses/sec ie Hz 
+#      - throttle_average: 60s

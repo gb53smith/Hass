@@ -17,6 +17,8 @@ www
 #custom_components/mitsubishi_mqtt/__pycache__
 esphome/.esphome
 esphome/archive
+esphome/plants
+esphome/hepafilter
 **/src/
 **/platformio.ini
 */*/__pycache__
