@@ -328,3 +328,10 @@
         {% set abovewet = raw - wet %}
         {% set abovewetfraction = abovewet / range %}
         {{(( 1 - abovewetfraction ) * 100) | int }}
+        
+- platform: template
+  sensors:
+    hepa_fan_speed:
+      friendly_name: "Hepa Fan Speed"
+      unit_of_measurement: "%"
+      value_template: "{{ state_attr('fan.hepa_filter_fan','percentage')}}"
