@@ -1179,15 +1179,21 @@
   initial_state: true
 - id: '1637003740722'
   alias: Air Filter Keep Going
-  description: ''
+  description: Turn fan ON if Heat Pump is heating or cooling.
   trigger:
   - platform: time_pattern
     minutes: /5
   condition:
-  - condition: state
-    entity_id: climate.mitsubishi_heatpump
-    state: heating
-    attribute: hvac_action
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: climate.mitsubishi_heatpump
+      state: heating
+      attribute: hvac_action
+    - condition: state
+      entity_id: climate.mitsubishi_heatpump
+      state: cooling
+      attribute: hvac_action
   - condition: state
     entity_id: fan.hepa_filter_fan
     state: 'off'
