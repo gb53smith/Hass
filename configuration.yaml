@@ -113,8 +113,6 @@ recorder:
       - sensor.mysensors_bme280_2_1
       - sensor.mysensors_bme280_2_2
       - sensor.mysensors_bme280_2_3
-      #- switch.watchdog
-      #- input_boolean.watchdog_delayed
       - sensor.soil_moisture_sensor_5_3
       # iPhone entities not used
       - sensor.iphone_battery_level
@@ -358,15 +356,6 @@ input_boolean:
   vacation:
     name: "ON Vacation"
     icon: mdi:car
-
-  # watchdog:
-    # name: "Watchdog Alarm Override"
-    # initial: off
-    # icon: mdi:toggle-switch-outline
-
-  # watchdog_delayed:
-    # name: "Watchdog Delayed"
-    # initial: off
 
   heat0:
     name: "Heat State 0"

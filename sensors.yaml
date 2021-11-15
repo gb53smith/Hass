@@ -282,15 +282,14 @@
 # window_size: '00:05:00'
 # precision: 1
 
-# If watchdog fails switch temperature sensors
-#{{states('sensor.multisensor2_temperature') | float}}
+# If binary_sensor.ping fails switch temperature sensors
 # Use input_number.last_house_temp to prevent spiking to 0 when MQTT restarted.
 - platform: template
   sensors:
     house_temperature:
       friendly_name: "House Temperature"
       value_template: >
-        {% if is_state("input_boolean.watchdog", "off") %}
+        {% if is_state("binary_sensor.ping_192_168_1_75", "on") %}
           {{states('input_number.last_house_temp') | float}}
         {% else %}
           {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float}}

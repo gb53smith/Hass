@@ -1177,3 +1177,23 @@
       message: HEPA Filter Used for 150,000 hours.
   mode: single
   initial_state: true
+- id: '1637003740722'
+  alias: Air Filter Keep Going
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: state
+    entity_id: climate.mitsubishi_heatpump
+    state: heating
+    attribute: hvac_action
+  - condition: state
+    entity_id: fan.hepa_filter_fan
+    state: 'off'
+  action:
+  - service: fan.turn_on
+    data: {}
+    target:
+      entity_id: fan.hepa_filter_fan
+  mode: single

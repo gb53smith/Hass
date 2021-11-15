@@ -71,25 +71,7 @@ ir_deck:
   - delay: 00:{{ states('input_number.slider_delay_d') | int }}:00
   - service: switch.turn_off
     entity_id: switch.deck_irrigation
-# watchdog_timer:
-  # alias: Watchdog Toggle
-  # sequence:
-  # - service: switch.turn_on
-    # entity_id: switch.watchdog
-  # - service: input_boolean.turn_off
-    # data:
-      # entity_id: input_boolean.watchdog_delayed
-  # - delay: 0:02:30
-  # - service: input_boolean.turn_on
-    # data:
-      # entity_id: input_boolean.watchdog_delayed
-  # - delay: 0:02:30
-  # - service: switch.turn_off
-    # entity_id: switch.watchdog
-  # - delay: 0:02:30
-  # - service: input_boolean.turn_off
-    # data:
-      # entity_id: input_boolean.watchdog_delayed
+
 energy:
   alias: Energy Integrator
   sequence:

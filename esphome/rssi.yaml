@@ -1,0 +1,44 @@
+# Enable logging
+logger:
+  level: DEBUG
+
+esphome:
+  name: rssi
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: "GreenMountain"
+  password: !secret wifi_password
+
+ota:
+  password: !secret ota_password
+
+# Enable Home Assistant API
+api:
+  password: !secret ota_password
+  
+binary_sensor:
+  - platform: gpio
+    name: "Rssi button"
+    pin:
+      number: D7
+      mode: INPUT_PULLUP
+      inverted: True
+
+light:
+  - platform: binary
+    name: "Rssi LED"
+    id: light1
+    output: output1
+
+output:
+  - platform: gpio
+    pin: D6
+    inverted: True
+    id: output1
+
+status_led:
+  pin:
+    number: GPIO2
+    inverted: yes
