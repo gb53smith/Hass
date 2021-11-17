@@ -1103,46 +1103,6 @@
     data:
       message: UPS now ON Line Battery Charging
   mode: single
-- id: '1636144277233'
-  alias: Air Filter
-  description: Turn HEPA Air Filter ON for a fixed time after heat or air conditioning
-    goes ON while at home and not sleeping.
-  trigger:
-  - platform: state
-    entity_id: climate.house
-    attribute: hvac_action
-    to: heating
-    from: idle
-  - platform: state
-    entity_id: climate.mitsubishi_heatpump
-    attribute: hvac_action
-    from: 'off'
-    to: cooling
-  - platform: state
-    entity_id: climate.mitsubishi_heatpump
-    attribute: hvac_action
-    from: 'off'
-    to: heating
-  condition:
-  - condition: state
-    entity_id: binary_sensor.away
-    state: 'off'
-  - condition: time
-    after: 06:00
-    before: '23:59'
-  action:
-  - service: fan.turn_on
-    target:
-      entity_id: fan.hepa_filter_fan
-  - delay:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - service: fan.turn_off
-    target:
-      entity_id: fan.hepa_filter_fan
-  mode: restart
 - id: '1636156308812'
   alias: Air Filter Accumulator
   description: Accumulate how many minutes the HEPA Filter is ON to determine when
@@ -1178,12 +1138,22 @@
   mode: single
   initial_state: true
 - id: '1637003740722'
-  alias: Air Filter Keep Going
-  description: Turn fan ON if Heat Pump is heating or cooling.
+  alias: Air Filter
+  description: Turn fan ON for 1 hour if Heat Pump is heating or cooling, furnace
+    is heating.  Conditions prevent this when away or when sleeping.
   trigger:
   - platform: time_pattern
     minutes: /5
   condition:
+  - condition: state
+    entity_id: fan.hepa_filter_fan
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.away
+    state: 'off'
+  - condition: time
+    after: 06:00
+    before: '23:59'
   - condition: or
     conditions:
     - condition: state
@@ -1194,12 +1164,21 @@
       entity_id: climate.mitsubishi_heatpump
       state: cooling
       attribute: hvac_action
-  - condition: state
-    entity_id: fan.hepa_filter_fan
-    state: 'off'
+    - condition: state
+      entity_id: climate.house
+      state: heating
+      attribute: hvac_action
   action:
   - service: fan.turn_on
     data: {}
     target:
       entity_id: fan.hepa_filter_fan
-  mode: single
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: fan.turn_off
+    target:
+      entity_id: fan.hepa_filter_fan
+  mode: restart

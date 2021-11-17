@@ -65,11 +65,14 @@ hvac_attr = hvac.attributes
 furnace = hass.states.get('climate.house')
 furnace_attr = furnace.attributes
 
-current_temperature = hvac_attr['current_temperature']
+#house_temperature switches to hvac_attr['current_temperature'] if the WiFi connection
+#to multisensor2 fails
+current_temperature = float(hass.states.get('sensor.house_temperature').state)
 operation_mode = hvac_attr['hvac_action']
 furnace_setpoint = furnace_attr['temperature']
+#logger.warning("furnace_setpoint = {}".format(furnace_setpoint))
 #logger.warning("operation_mode = {}".format(operation_mode))
-#logger.warning("hvac_attr ct = {}".format(current_temperature))
+#logger.warning("current_temperature = {}".format(current_temperature))
 #logger.warning("hvac_attr t = {}".format(temperature))
 
 away = hass.states.get('binary_sensor.away').state
@@ -77,6 +80,7 @@ away = hass.states.get('binary_sensor.away').state
 
 # Heating temperature set points
 home_temperature = float(hass.states.get('input_number.slider_home').state)
+#logger.warning("home_temperature = {}".format(home_temperature))
 # Cooling Temperature set points
 ac_away = float(hass.states.get('input_number.slider_ac_away').state)
 ac_home = float(hass.states.get('input_number.slider_ac_home').state)
@@ -134,7 +138,7 @@ if away == 'off':
     else :
         #logger.warning("Got to heatpumpxfurnace1")
         if operation_mode == 'heating':
-            #logger.warning("Got to heatpumpxfurnace1")
+            #logger.warning("Got to heatpumpxfurnace2")
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)
         service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
