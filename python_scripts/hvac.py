@@ -109,6 +109,7 @@ if away == 'off':
     elif current_temperature <= ac_home - 1.0 and \
         current_temperature > home_temperature + 0.5:
         #logger.warning("Got to heatpumpxoff1")
+        #logger.warning("Turning heatpump OFF with current_temperature = {}".format(current_temperature))
         if operation_mode != 'off': # Prevent repeat if already cooling
             #logger.warning("Got to heatpumpxoff2")
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
@@ -122,6 +123,7 @@ if away == 'off':
         current_temperature >= home_temperature - 1.0 and outside_temperature >= 1.0 \
         and furnace_setpoint == home_temperature :
         #logger.warning("Got to heatpumpxheat1")
+        #logger.warning("Turning heatpump ON with current_temperature = {}".format(current_temperature))
         if operation_mode != 'heating': # Prevent repeat if already heating.  Set mode and temperature in one MQTT json message.
             #logger.warning("Got to heatpumpxheat2")
             #Update temperature set point to match home slider value before heating is started
@@ -137,6 +139,7 @@ if away == 'off':
     # Enable furnace heating
     else :
         #logger.warning("Got to heatpumpxfurnace1")
+        #logger.warning("Default Turning heatpump OFF, furnace ON with current_temperature = {}".format(current_temperature))
         if operation_mode == 'heating':
             #logger.warning("Got to heatpumpxfurnace2")
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}

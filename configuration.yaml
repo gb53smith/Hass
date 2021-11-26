@@ -188,6 +188,7 @@ logbook:
       - switch.scene_capable_push_on_off
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.medalert1_check
+      - sensor.wide_vane
       # Test only
       # - input_number.power_test
       # - input_number.energy_accum
@@ -649,21 +650,27 @@ light ms2:
     command_topic: "/home/ms2/l"
     state_topic: "/home/ms2/lc"
     rgb: true
-    retain: true
-
-# # Electricity Energy
-# utility_meter:
-  # hydro_hourly_energy:
-    # source: sensor.eagle_200_meter_power_demand
-    # cycle: hourly
-  # hydro_daily_energy:
-    # source: sensor.eagle_200_meter_power_demand
-    # cycle: daily    
-  # hydro_weekly_energy:
-    # source: sensor.eagle_200_meter_power_demand
-    # cycle: weekly    
+    retain: true  
     
-    
+fan:
+  - platform: mqtt
+    name: "Wide Vane"
+    icon: mdi:air-filter    
+    command_topic: "heatpump/set"
+    command_template:  '{ "power" : "{{ value }}" , "mode" : "FAN"}'
+    state_topic: "heatpump"
+    state_value_template:  "{{ value_json.power }}"
+    preset_mode_command_topic: "heatpump/set"
+    preset_mode_command_template: '{ "wideVane" : "{{ value }}" }'
+    preset_mode_state_topic: "heatpump"
+    preset_mode_value_template: "{{ value_json.wideVane }}"
+    preset_modes: 
+       -  "<<"
+       -  "<"
+       -  "|"
+       -  ">"
+       -  ">>"
+       -  "SWING"
     
 # Include other files to better organize code
 group: !include groups.yaml

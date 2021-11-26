@@ -334,3 +334,10 @@
       friendly_name: "Hepa Fan Speed"
       unit_of_measurement: "%"
       value_template: "{{ state_attr('fan.hepa_filter_fan','percentage')}}"
+
+- platform: template
+  sensors:
+    wide_vane:
+      friendly_name: "Wide Vane Setting"
+      value_template: "{{ state_attr('fan.wide_vane','preset_mode')}}"
+      

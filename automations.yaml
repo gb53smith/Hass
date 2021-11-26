@@ -1067,7 +1067,11 @@
   trigger:
   - platform: state
     entity_id: sensor.myups_status
-    for: 00:01:00
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
     to: Online
   condition: []
   action:
@@ -1146,14 +1150,11 @@
     minutes: /5
   condition:
   - condition: state
-    entity_id: fan.hepa_filter_fan
-    state: 'off'
-  - condition: state
     entity_id: binary_sensor.away
     state: 'off'
   - condition: time
     after: 06:00
-    before: '23:59'
+    before: '23:00'
   - condition: or
     conditions:
     - condition: state
