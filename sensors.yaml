@@ -54,10 +54,10 @@
       value_template: "{{ states('input_number.daily_temp_diff') | float }}"
 
 # This works even after certificate expired
-- platform: command_line
-  name: Medalert1 Check
-  scan_interval: 600
-  command: "curl -m 5 -sSf https://medalert1.duckdns.org > /dev/null && echo UP || echo FIX"
+# - platform: command_line
+  # name: Medalert1 Check
+  # scan_interval: 600
+  # command: "curl -m 5 -sSf https://medalert1.duckdns.org > /dev/null && echo UP || echo FIX"
 
 # Replaced with ms2
 # - platform: mqtt
@@ -340,4 +340,10 @@
     wide_vane:
       friendly_name: "Wide Vane Setting"
       value_template: "{{ state_attr('fan.wide_vane','preset_mode')}}"
+      
+- platform: template
+  sensors:
+    hepa_filter_hours_rounded:
+      friendly_name: "Hepa Filter Hours"
+      value_template: "{{ states('input_number.hepa_hours') | round}}"
       

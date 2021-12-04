@@ -187,7 +187,6 @@ logbook:
       - switch.front_irrigation
       - switch.scene_capable_push_on_off
       - switch.leviton_dzr151lz_binary_scene_switch_switch
-      - sensor.medalert1_check
       - sensor.wide_vane
       # Test only
       # - input_number.power_test
@@ -211,7 +210,6 @@ history:
       - switch.furnace
       - switch.fan
       - sensor.flood
-      - sensor.medalert1_check
       - sensor.house_temperature
       - input_number.temperature
       - sensor.eagle_200_meter_power_demand
@@ -651,7 +649,7 @@ light ms2:
     state_topic: "/home/ms2/lc"
     rgb: true
     retain: true  
-    
+   
 fan:
   - platform: mqtt
     name: "Wide Vane"
@@ -671,7 +669,21 @@ fan:
        -  ">"
        -  ">>"
        -  "SWING"
-    
+
+# Used to set wide vane position every time the heat pump is turned ON as it
+# seems to revert to "<<" for no reason.
+input_select:
+  widevane:
+    name: Wide Vane Setting
+    options:
+       -  "<<"
+       -  "<"
+       -  "|"
+       -  ">"
+       -  ">>"
+       -  "SWING"
+    icon: mdi:air-filter 
+
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automations.yaml

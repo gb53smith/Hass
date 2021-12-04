@@ -505,21 +505,6 @@
       temperature: '{{ states(''input_number.slider_away'')}}'
   initial_state: true
   mode: single
-- id: c97fead56e0040cd804f2b097e2ef738
-  alias: Medalert1 Alarm
-  description: Monitor Mom's Medical Alert System and notify if system has lost connection
-    to the internet.
-  trigger:
-  - platform: state
-    entity_id: sensor.medalert1_check
-    to: FIX
-    for: 0:21:00
-  action:
-  - service: notify.mobile_app_grahams_iphone
-    data:
-      message: Medalert1 System Down!
-  initial_state: true
-  mode: single
 - id: 75ff7b3c3b6c4d8ea9bca710f4aa51e0
   alias: Increment fan ON counter
   description: Count how many minutes the furnace fan in ON to determine when the
@@ -609,10 +594,11 @@
   mode: single
 - id: 75f3710546f84017a8ad9af8833c330c
   alias: Redirect all MQTT HVAC set commands to the heatpumps
-  description: "This is required because MQTT HVAC uses a separate topic for each\
+  description: " This is required because MQTT HVAC uses a separate topic for each\
     \ command\nwhile the Mitsubishi Heatpump uses one set topic for all settings in\
     \ a json message\n ie heatpump/_set/temperature 23  --> heatpump/set {\"temperature\"\
-    :\"23.5\"}"
+    :\"23.5\"}\nAdded wideVane every time the heat pump is turned ON as it seems to\
+    \ revert to \"<<\" for no reason."
   trigger:
   - platform: mqtt
     topic: heatpump/_set/+
@@ -624,9 +610,10 @@
         \ == \"OFF\" %}\n    {\"power\":\"OFF\"}\n  {% elif trigger.payload == \"\
         fan_only\" %}\n    {\"power\":\"ON\",\"mode\":\"FAN\"}\n  {% else %}\n   \
         \ {{ \"{\\\"power\\\":\\\"ON\\\",\\\"mode\\\":\"|safe + trigger.payload|upper|tojson\
-        \ + \"}\" }}\n  {% endif %}\n{% else %}\n  {{ \"{\" + trigger.topic.split(\"\
+        \ + \",\\\"wideVane\\\":\"|safe  + states('input_select.widevane')|to_json|safe\
+        \ + \"}\"}}\n  {% endif %}\n{% else %}\n  {{ \"{\" + trigger.topic.split(\"\
         /\")[-1]|tojson + \":\" + trigger.payload|tojson + \"}\" }}\n{% endif %}\n"
-  mode: queued
+  mode: single
 - id: e42cd82395df4e798be4ad063006e0e4
   alias: Furnace State
   description: 'Sends colour info to RGB LED in MultiSensor2
