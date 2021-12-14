@@ -41,6 +41,9 @@ python_script:
 #Can be set to "info" for more detail or "debug" for certain components
 logger:
   default: warning
+  # Ignore rainforest errors and warnings as it reboots daily.
+  logs:
+    homeassistant.components.rainforest_eagle.data: critical
   # logs:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
