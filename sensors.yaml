@@ -289,7 +289,7 @@
     house_temperature:
       friendly_name: "House Temperature"
       value_template: >
-        {% if is_state("binary_sensor.ping_192_168_1_75", "on") %}
+        {% if is_state("binary_sensor.ping_ms2", "on") %}
           {{states('input_number.last_house_temp') | float}}
         {% else %}
           {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float}}

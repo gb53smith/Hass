@@ -417,7 +417,7 @@
     minutes: /10
   condition:
   - condition: state
-    entity_id: binary_sensor.ping_192_168_1_75
+    entity_id: binary_sensor.ping_ms2
     state: 'off'
   action:
   - service: notify.mobile_app_grahams_iphone

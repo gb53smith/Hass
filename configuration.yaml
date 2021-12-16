@@ -344,10 +344,12 @@ binary_sensor:
           or is_state("input_text.lock_last_action", "Locked by Oliver")
           or is_state("input_boolean.vacation", "on") }}
         friendly_name: "I am away"
-# Monitor MultiSensor2 that measures house temperature.
-  - platform: ping
-    host: 192.168.1.75
 
+# Monitor MultiSensor2 that measures house temperature.
+  - platform: ping 
+    host: 192.168.1.101
+    name: "ping ms2"
+    
 counter:
   fan_on_minutes:
     icon: mdi:fan
