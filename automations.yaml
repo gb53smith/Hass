@@ -411,7 +411,8 @@
   id: b023ab62caba4b35bd82e014c24f6e20
 - id: 2c587360c4a8480faa87bf3e388f1cac
   alias: Watchdog Alarm
-  description: Send a notice to iPhone if MultiSensor2 is disconnected from WiFi.
+  description: Send a notice to iPhone if MultiSensor2 is disconnected from WiFi an
+    UPS ONline
   trigger:
   - platform: time_pattern
     minutes: /10
@@ -419,6 +420,16 @@
   - condition: state
     entity_id: binary_sensor.ping_ms2
     state: 'off'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.myups_status
+      state: Online
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: sensor.myups_status
+        state: Online Battery Charging
   action:
   - service: notify.mobile_app_grahams_iphone
     data:

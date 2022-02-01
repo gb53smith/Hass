@@ -190,7 +190,7 @@ logbook:
       - switch.front_irrigation
       - switch.scene_capable_push_on_off
       - switch.leviton_dzr151lz_binary_scene_switch_switch
-      - sensor.wide_vane
+      - sensor.widevane
       # Test only
       # - input_number.power_test
       # - input_number.energy_accum
@@ -346,8 +346,9 @@ binary_sensor:
         friendly_name: "I am away"
 
 # Monitor MultiSensor2 that measures house temperature.
+# IP address reserved using the DCHP setting on my router
   - platform: ping 
-    host: 192.168.1.101
+    host: 192.168.1.82
     name: "ping ms2"
     
 counter:
