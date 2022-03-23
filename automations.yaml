@@ -823,9 +823,6 @@
     data: {}
     target:
       entity_id: switch.plant_dehumidifier
-  - service: notify.mobile_app_grahams_iphone
-    data:
-      message: Plant Dehumidifier  ON
   mode: single
 - id: 058780e6e40d4e8c8ed1d4d32bec6417
   alias: Plant Dehumidifier OFF

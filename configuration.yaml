@@ -1,39 +1,42 @@
 homeassistant:
   customize: !include customize.yaml
 
-#Running NGINX on another PI 4 so I can share my IP address with PrivateBook
+default_config:
+
+# #Includes
+# #Show links to resources in log and frontend
+# #introduction:
+# system_health:
+# zeroconf:
+# # See Helpers in UI
+# input_text:
+# #Running NGINX on another PI 4 so I can share my IP address with PrivateBook
+# # Enables the frontend
+# frontend:
+  # #javascript_version: es5
+# # Enables configuration UI
+# config:
+# # Checks for available updates
+# updater:
+# #Replace discovery with hassio
+# hassio:
+# # Discover some devices automatically
+# discovery:
+  # ignore:
+    # - apple_tv
+# # Track the sun
+# sun:
+# #Enable IOS App, Home Assistant Companion
+# mobile_app:
+
 http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.1.90
 
-#Show links to resources in log and frontend
-#introduction:
-system_health:
 esphome:
 # api:
   # password: !secret ota_password
-zeroconf:
-
-# See Helpers in UI
-input_text:
-
-# Enables the frontend
-frontend:
-  #javascript_version: es5
-
-# Enables configuration UI
-config:
-
-# Checks for available updates
-updater:
-
-#Replace discovery with hassio
-hassio:
-# Discover some devices automatically
-discovery:
-  ignore:
-    - apple_tv
 
 python_script:
 
@@ -54,9 +57,6 @@ logger:
   # logs:
     # homeassistant.components.mysensors: debug
     # mysensors: debug
-
-#Enable IOS App, Home Assistant Companion
-mobile_app:
 
 # Send SMS if burglar alarm triggered
 twilio:
@@ -216,9 +216,6 @@ history:
       - sensor.house_temperature
       - input_number.temperature
       - sensor.eagle_200_meter_power_demand
-
-# Track the sun
-sun:
 
 # Keep alive repeats furnace ON or OFF message every 3 minutes
 # Furnace Arduino will expect repeated furnace ON messages to keep the furnace relay ON.

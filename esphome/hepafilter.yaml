@@ -10,6 +10,10 @@ esphome:
 wifi:
   ssid: "GreenMountain"
   password: !secret wifi_password
+  manual_ip:
+    static_ip: 192.168.1.102
+    gateway: 192.168.1.254
+    subnet: 255.255.255.0
 
 # Enable Home Assistant API
 api:
@@ -26,7 +30,7 @@ switch:
 
 # Measured 10KHz on MA-25 PWM pin
 # Connected to 2N3904 NPN BJT with a 4K7 resistor to base
-# and 470 ohm pullup resistor on collector (otput PWM signal).
+# and 470 ohm pullup resistor on collector (output PWM signal).
 output:
   - platform: ledc
     pin: GPIO33
@@ -39,7 +43,7 @@ fan:
     output: hepa_fan_pwm
     name: "Hepa Filter Fan"
 
-# Used to measure frquency of MA-25 PWM pin
+# Used to measure frequency of MA-25 PWM pin
 # Used resistor divider to tolerant 5V signal.
 # Series 1K8 and 2K2 resistor to GND.
 # Measured frequency up to 25KHz.

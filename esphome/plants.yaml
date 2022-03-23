@@ -12,6 +12,10 @@ esphome:
 wifi:
   ssid: "GreenMountain"
   password: !secret wifi_password
+  manual_ip:
+    static_ip: 192.168.1.104
+    gateway: 192.168.1.254
+    subnet: 255.255.255.0
 
 # Enable Home Assistant API
 api:
@@ -36,7 +40,7 @@ dallas:
 - pin: GPIO10
   update_interval: 10s
   
-external_components:
+#external_components:
   #- source: github://esphome/esphome@dev
    # components: [dht]
   #- source: github://agners/esphome@improve-dht-data-polarity-detection
@@ -44,8 +48,8 @@ external_components:
   #- source: github://gb53smith/esphome@DiaoulRead2
     #components: [dht]
 ### Short form not working
- - source: github://gb53smith/esphome
-   components: [dht]
+# - source: github://gb53smith/esphome
+#   components: [dht]
 ### This long from works. refresh needed for changes less than 24 hours old
   #- source:
   #    type: git
@@ -68,7 +72,7 @@ sensor:
       filters:
       - delta: 1
     update_interval: 10s
-    #model: DHT22
+    model: DHT22
   - platform: dallas
     address: 0x1F3C01B556A19A28
     name: "Plants Soil Temperature"
@@ -140,5 +144,3 @@ sensor:
     # name: "Plants Soil Temperature"
     # filters:
       # - delta: 0.2
-
-
