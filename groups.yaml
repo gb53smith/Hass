@@ -1,6 +1,7 @@
 # Create Groups of Entities
 # for use in automations.yaml
 # Deleted those no longer required for the frontend UI
+#
 
 Irrigation Switches:
   entities:
