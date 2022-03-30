@@ -18,7 +18,7 @@ Instructions:
 1. Python Script setup
    1.1 Create /config/python_scripts directory and copy this file to it.
    1.2 Add this line to configuration.yaml
-       python_scripts:    
+       python_script:    
         
 2.  Add these input_number entity to configuration.yaml
     input_number used because their values are restored after HA restarts.

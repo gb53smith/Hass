@@ -10,7 +10,7 @@ Instructions:
 1. Python Script setup
    1.1 Create /config/python_scripts directory and copy this file to it.
    1.2 Add this line to configuration.yaml
-       python_scripts:
+       python_script:
         
 2.  Add this automation to automations.yaml
   - alias: HVAC
