@@ -2,7 +2,7 @@ homeassistant:
   customize: !include customize.yaml
 
 default_config:
-
+# New line to test git
 # #Includes
 # #Show links to resources in log and frontend
 # #introduction:
