@@ -690,7 +690,9 @@
     data:
       message: Graham Burglar Alarm Triggered!
   - service: script.turn_on
-    entity_id: script.burglar_alarm_timer
+    data: {}
+    target:
+      entity_id: script.burglar_alarm_timer
   initial_state: true
   mode: single
 - id: 68eef09ca6714c85a4d466bd27fde205
