@@ -132,38 +132,42 @@
     service: switch.turn_off
     entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
   id: 0c274958b4da4bb39c9470ccab241b3d
-- alias: Bedroom Room Light ON when on Vacation
-  initial_state: true
+- id: 19e7ea5237134f478ebb77dc312976c3
+  alias: Bedroom Room Light ON when on Vacation
   trigger:
-    platform: template
+  - platform: template
     value_template: '{{ (state_attr(''input_datetime.br_on_time_random'', ''timestamp'')
       | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
 
       '
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.vacation
     state: 'on'
   action:
-    service: switch.turn_on
-    entity_id: switch.scene_capable_push_on_off
-  id: 19e7ea5237134f478ebb77dc312976c3
-- alias: Bedroom Room Light OFF when on Vacation
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.scene_capable_switch_on_off
   initial_state: true
+- id: f4ccf77d963c4b729311199cb14bd864
+  alias: Bedroom Room Light OFF when on Vacation
   trigger:
-    platform: template
+  - platform: template
     value_template: '{{ (state_attr(''input_datetime.br_off_time_random'', ''timestamp'')
       | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
 
       '
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.vacation
     state: 'on'
   action:
-    service: switch.turn_off
-    entity_id: switch.scene_capable_push_on_off
-  id: f4ccf77d963c4b729311199cb14bd864
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.scene_capable_switch_on_off
+  initial_state: true
 - id: 48259ef77a1f4882955e69383e0820e8
   alias: Set Home Setpoint
   description: 'Temperature Control Notes
@@ -665,7 +669,7 @@
         '
       brightness: 100
     target:
-      entity_id: light.mqtt_json_light
+      entity_id: light.ms2_light
   initial_state: true
   mode: single
 - id: f7b38968d7ad45cdaee935f942d8a8ad

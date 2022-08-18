@@ -5,7 +5,7 @@ lock.schlage_be469nxcen_touchscreen_deadbolt_locked:
   friendly_name: Back Door
 light.ge_12724_3way_dimmer_switch_level:
   friendly_name: Dining Room Dimmer
-switch.leviton_dz15s_1bz_decora_smart_switch_switch:
+switch.scene_capable_switch_on_off:
   friendly_name: Bed Room Light
   icon: mdi:lightbulb
 sensor.mysensors_bme280_2_1:

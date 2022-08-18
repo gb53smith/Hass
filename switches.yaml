@@ -1,34 +1,34 @@
 # For Relay4 Arduino Project
-- platform: mqtt
-  name: "Back Irrigation"
-  state_topic: "/home/irrigation/zoneConfirm1"
-  command_topic: "/home/irrigation/zone1"
-  retain: False
+# - platform: mqtt
+  # name: "Back Irrigation"
+  # state_topic: "/home/irrigation/zoneConfirm1"
+  # command_topic: "/home/irrigation/zone1"
+  # retain: False
 
-- platform: mqtt
-  name: "Front Irrigation"
-  state_topic: "/home/irrigation/zoneConfirm2"
-  command_topic: "/home/irrigation/zone2"
-  retain: False
+# - platform: mqtt
+  # name: "Front Irrigation"
+  # state_topic: "/home/irrigation/zoneConfirm2"
+  # command_topic: "/home/irrigation/zone2"
+  # retain: False
 
-- platform: mqtt
-  name: "Deck Irrigation"
-  state_topic: "/home/irrigation/zoneConfirm3"
-  command_topic: "/home/irrigation/zone3"
-  retain: False
+# - platform: mqtt
+  # name: "Deck Irrigation"
+  # state_topic: "/home/irrigation/zoneConfirm3"
+  # command_topic: "/home/irrigation/zone3"
+  # retain: False
 
-# For Furnace_Controller Arduino Project
-- platform: mqtt
-  name: "Furnace"
-  state_topic: "/home/furnace/heat/confirm"
-  command_topic: "/home/furnace/heat"
-  retain: False
+# # For Furnace_Controller Arduino Project
+# - platform: mqtt
+  # name: "Furnace"
+  # state_topic: "/home/furnace/heat/confirm"
+  # command_topic: "/home/furnace/heat"
+  # retain: False
 
-- platform: mqtt
-  name: "Fan"
-  state_topic: "/home/furnace/fan/confirm"
-  command_topic: "/home/furnace/fan"
-  retain: False
+# - platform: mqtt
+  # name: "Fan"
+  # state_topic: "/home/furnace/fan/confirm"
+  # command_topic: "/home/furnace/fan"
+  # retain: False
 
 # # Multisensor2 support
 # - platform: mqtt

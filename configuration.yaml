@@ -77,6 +77,7 @@ notify:
 # Must log automations to restore_state of automations on restart
 recorder:
   auto_purge: true
+  auto_repack: true
   purge_keep_days: 10
   exclude:
     entities:
@@ -188,7 +189,7 @@ logbook:
       - switch.back_irrigation
       - switch.deck_irrigation
       - switch.front_irrigation
-      - switch.scene_capable_push_on_off
+      - switch.scene_capable_switch_on_off
       - switch.leviton_dzr151lz_binary_scene_switch_switch
       - sensor.widevane
       # Test only
@@ -206,7 +207,7 @@ history:
       - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
       - binary_sensor.away
       - binary_sensor.ecolink_motion_detector_sensor
-      - switch.scene_capable_push_on_off
+      - switch.scene_capable_switch_on_off
       - switch.back_irrigation
       - switch.deck_irrigation
       - switch.front_irrigation
@@ -265,69 +266,6 @@ climate:
       minutes: 5
     initial_hvac_mode: "heat"  
 
-  - platform: mqtt
-    name: "Mitsubishi Heatpump"
-    # Mode Definitions
-    modes:
-      - "off"
-      - heat
-      - dry
-      - cool
-      - fan_only
-      - auto
-    fan_modes:
-      - AUTO
-      - QUIET
-      - "1"
-      - "2"
-      - "3"
-      - "4"
-    swing_modes:
-      - AUTO
-      - "1"
-      - "2"
-      - "3"
-      - "4"
-      - "5"
-      - SWING
-    # MQTT Status Topic Processing
-    current_temperature_topic: "heatpump/status"
-    current_temperature_template: "{{ value_json.roomTemperature }}"
-    mode_state_topic: "heatpump"
-    mode_state_template: >
-      {% if value_json.power == "OFF" %}
-        off
-      {% elif value_json.mode == "FAN" %}
-        fan_only
-      {% else %}
-        {{ value_json.mode|lower }}
-      {% endif %}
-    temperature_state_topic: "heatpump"
-    temperature_state_template: "{{ value_json.temperature }}"
-    fan_mode_state_topic: "heatpump"
-    fan_mode_state_template: "{{ value_json.fan }}"
-    swing_mode_state_topic: "heatpump"
-    swing_mode_state_template: "{{ value_json.vane }}"
-    action_topic: "heatpump"
-    action_template: >
-      {% if value_json.power == "OFF" %}
-        off
-      {% elif value_json.mode == "HEAT" %}
-        heating
-      {% elif value_json.mode == "COOL" %}
-        cooling
-      {% elif value_json.mode == "DRY" %}
-        drying
-      {% else %}
-        {{ value_json.mode|lower }}
-      {% endif %}
-    # MQTT Command Topics
-    # Additional automation is required to process HQTT HVAC topics into a single set topic
-    # with a json payload.
-    mode_command_topic: "heatpump/_set/mode"
-    temperature_command_topic: "heatpump/_set/temperature"
-    fan_mode_command_topic: "heatpump/_set/fan"
-    swing_mode_command_topic: "heatpump/_set/vane"
 
 # Used in automations to detect when I leave and come home again.  'on' = away
 # Add special condition for Oliver since he sometimes locks using a key code
@@ -344,8 +282,9 @@ binary_sensor:
 
 # Monitor MultiSensor2 that measures house temperature.
 # IP address reserved using the DCHP setting on my router
+# Moved to 150 since extender assigns IP addresses starting at 100
   - platform: ping 
-    host: 192.168.1.100
+    host: 192.168.1.150
     name: "ping ms2"
     
 counter:
@@ -643,36 +582,6 @@ input_datetime:
     has_date: false
     has_time: true
 
-# MultiSensor2 Support
-# ms2 added to prevent possible conflict with Z-wave light.  It is needed.
-light ms2:
-  - platform: mqtt
-    schema: json
-    command_topic: "/home/ms2/l"
-    state_topic: "/home/ms2/lc"
-    rgb: true
-    retain: true  
-   
-fan:
-  - platform: mqtt
-    name: "Wide Vane"
-    icon: mdi:air-filter    
-    command_topic: "heatpump/set"
-    command_template:  '{ "power" : "{{ value }}" , "mode" : "FAN"}'
-    state_topic: "heatpump"
-    state_value_template:  "{{ value_json.power }}"
-    preset_mode_command_topic: "heatpump/set"
-    preset_mode_command_template: '{ "wideVane" : "{{ value }}" }'
-    preset_mode_state_topic: "heatpump"
-    preset_mode_value_template: "{{ value_json.wideVane }}"
-    preset_modes: 
-       -  "<<"
-       -  "<"
-       -  "|"
-       -  ">"
-       -  ">>"
-       -  "SWING"
-
 # Used to set wide vane position every time the heat pump is turned ON as it
 # seems to revert to "<<" for no reason.
 input_select:
@@ -693,3 +602,4 @@ automation: !include automations.yaml
 sensor: !include sensors.yaml
 switch: !include switches.yaml
 script: !include scripts.yaml
+mqtt: !include mqtt.yaml

@@ -1,0 +1,215 @@
+# For Relay4 Arduino Project
+  switch:
+    - unique_id: back_irrigation
+      name: "Back Irrigation"
+      state_topic: "/home/irrigation/zoneConfirm1"
+      command_topic: "/home/irrigation/zone1"
+      retain: False
+
+    - unique_id: front_irrigation
+      name: "Front Irrigation"
+      state_topic: "/home/irrigation/zoneConfirm2"
+      command_topic: "/home/irrigation/zone2"
+      retain: False
+
+    - unique_id: deck_irrigation
+      name: "Deck Irrigation"
+      state_topic: "/home/irrigation/zoneConfirm3"
+      command_topic: "/home/irrigation/zone3"
+      retain: False
+
+# For Furnace_Controller Arduino Project
+    - unique_id: furnace_activate
+      name: "Furnace"
+      state_topic: "/home/furnace/heat/confirm"
+      command_topic: "/home/furnace/heat"
+      retain: False
+
+    - unique_id: furnace_fan
+      name: "Fan"
+      state_topic: "/home/furnace/fan/confirm"
+      command_topic: "/home/furnace/fan"
+      retain: False
+
+  sensor:
+    - unique_id: flood
+      name: "Flood"
+      state_topic: "/home/basement/flood"
+  
+    - unique_id: remote_temperature
+      name: "Remote Temperature"
+      state_topic: "/home/TH_sensor1"
+      unit_of_measurement: "°C"
+      value_template: "{{ value_json.temperature }}"
+
+    - unique_id: remote_humdity
+      name: "Remote Humidity"
+      state_topic: "/home/TH_sensor1"
+      unit_of_measurement: "%"
+      value_template: "{{ value_json.humidity }}"
+
+# Multisensor2 Support
+    - unique_id: MS2_temperature
+      name: "MultiSensor2 Temperature"
+      state_topic: "/home/ms2"
+      unit_of_measurement: "°C"
+      # Keep last house temperature if topic does not contain a json element
+      # Also doing temperature calibration here
+      # Goes to zero on MQTT restart even with the unavailable condition?
+      # {% if value_json.temperature | default and not is_state('sensor.multisensor2_temperature', 'unavailable') %}
+      value_template: >
+        {% if value_json.temperature | default %}
+          {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
+        {% else %}
+          {{states('input_number.last_house_temp')}}
+        {% endif %}
+
+    - unique_id: MS2_humidity
+      name: "MultiSensor2 Humidity"
+      state_topic: "/home/ms2"
+      unit_of_measurement: "%"
+      value_template: >
+        {%- if value_json.humidity | default-%}
+          {{value_json.humidity}}
+        {%- else -%}
+          {{ states('input_number.last_house_humidity')}}
+        {%- endif -%}
+
+    - unique_id: MS2_pressure
+      name: "MultiSensor2 Pressure"
+      state_topic: "/home/ms2"
+      unit_of_measurement: "hPa"
+      value_template: >
+        {%- if value_json.pressure | default -%}
+          {{value_json.pressure}}
+        {%- else -%}
+          {{ states('sensor.multisensor2_pressure')}}
+        {%- endif -%}
+
+    - unique_id: MS2_gas
+      name: "MultiSensor2 Gas"
+      state_topic: "/home/ms2"
+      unit_of_measurement: "Kohms"
+      value_template: >
+        {%- if value_json.gas | default -%}
+          {{value_json.gas}}
+        {%- else -%}
+          {{ states('input_number.last_gas')}}
+        {%- endif -%}
+
+    - unique_id: MS2_gasavg
+      name: "MultiSensor2 GasAVG"
+      state_topic: "/home/ms2"
+      unit_of_measurement: "Kohms"
+      value_template: >
+        {%- if value_json.gasavg | default -%}
+          {{value_json.gasavg}}
+        {%- else -%}
+          {{ states('sensor.multisensor2_gasavg')}}
+        {%- endif -%}
+
+    - unique_id: MS2_rssi
+      name: "MultiSensor2 RSSI"
+      state_topic: "/home/ms2"
+      unit_of_measurement: "dBm"
+      value_template: >
+        {%- if value_json.rssi | default -%}
+          {{value_json.rssi}}
+        {%- else -%}
+          {{ states('sensor.multisensor2_rssi')}}
+        {%- endif -%}
+
+  fan:
+    - unique_id: wide_vane
+      name: "Wide Vane"
+      icon: mdi:air-filter    
+      command_topic: "heatpump/set"
+      command_template:  '{ "power" : "{{ value }}" , "mode" : "FAN"}'
+      state_topic: "heatpump"
+      state_value_template:  "{{ value_json.power }}"
+      preset_mode_command_topic: "heatpump/set"
+      preset_mode_command_template: '{ "wideVane" : "{{ value }}" }'
+      preset_mode_state_topic: "heatpump"
+      preset_mode_value_template: "{{ value_json.wideVane }}"
+      preset_modes: 
+         -  "<<"
+         -  "<"
+         -  "|"
+         -  ">"
+         -  ">>"
+         -  "SWING"
+  
+# MultiSensor2 Support
+  light:
+    - unique_id: MS2_light
+      name: MS2_light
+      schema: json
+      command_topic: "/home/ms2/l"
+      state_topic: "/home/ms2/lc"
+      rgb: true
+      retain: true
+      
+  climate:
+    - unique_id: heatpump
+      name: "Mitsubishi Heatpump"
+      # Mode Definitions
+      modes:
+        - "off"
+        - heat
+        - dry
+        - cool
+        - fan_only
+        - auto
+      fan_modes:
+        - AUTO
+        - QUIET
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+      swing_modes:
+        - AUTO
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - SWING
+      # MQTT Status Topic Processing
+      current_temperature_topic: "heatpump/status"
+      current_temperature_template: "{{ value_json.roomTemperature }}"
+      mode_state_topic: "heatpump"
+      mode_state_template: >
+        {% if value_json.power == "OFF" %}
+            off
+        {% elif value_json.mode == "FAN" %}
+            fan_only
+        {% else %}
+            {{ value_json.mode|lower }}
+        {% endif %}
+      temperature_state_topic: "heatpump"
+      temperature_state_template: "{{ value_json.temperature }}"
+      fan_mode_state_topic: "heatpump"
+      fan_mode_state_template: "{{ value_json.fan }}"
+      swing_mode_state_topic: "heatpump"
+      swing_mode_state_template: "{{ value_json.vane }}"
+      action_topic: "heatpump"
+      action_template: >
+        {% if value_json.power == "OFF" %}
+            off
+        {% elif value_json.mode == "HEAT" %}
+            heating
+        {% elif value_json.mode == "COOL" %}
+            cooling
+        {% elif value_json.mode == "DRY" %}
+            drying
+        {% else %}
+            {{ value_json.mode|lower }}
+        {% endif %}
+      # MQTT Command Topics
+      # Additional automation is required to process HQTT HVAC topics into a single set topic
+      # with a json payload.
+      mode_command_topic: "heatpump/_set/mode"
+      temperature_command_topic: "heatpump/_set/temperature"
+      fan_mode_command_topic: "heatpump/_set/fan"
+      swing_mode_command_topic: "heatpump/_set/vane"
