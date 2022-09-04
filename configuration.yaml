@@ -113,10 +113,6 @@ recorder:
       - counter.fan_on_minutes
       - counter.brita_days
       - binary_sensor.updater
-      ## These are copied to input numbers for linear spline smoothing
-      - sensor.mysensors_bme280_2_1
-      - sensor.mysensors_bme280_2_2
-      - sensor.mysensors_bme280_2_3
       - sensor.soil_moisture_sensor_5_3
       # iPhone entities not used
       - sensor.iphone_battery_level
@@ -215,7 +211,6 @@ history:
       - switch.fan
       - sensor.flood
       - sensor.house_temperature
-      - input_number.temperature
       - sensor.eagle_200_meter_power_demand
 
 # Keep alive repeats furnace ON or OFF message every 3 minutes
@@ -427,22 +422,6 @@ input_number:
   last_gas:
     min: 0
     max: 5000
-    step: 1
-    mode: box
-  # Used for outdoor temperature to smooth plotting
-  temperature:
-    min: -20
-    max: 50
-    step: 0.1
-    mode: box
-  pressure:
-    min: 800
-    max: 1200
-    step: 0.1
-    mode: box
-  humidity:
-    min: 0
-    max: 100
     step: 1
     mode: box
   hour_diff:

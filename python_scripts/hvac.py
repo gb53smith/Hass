@@ -89,8 +89,12 @@ home_temperature = float(hass.states.get('input_number.slider_home').state)
 ac_away = float(hass.states.get('input_number.slider_ac_away').state)
 ac_home = float(hass.states.get('input_number.slider_ac_home').state)
 # Outside temperature
-outside_temperature = float(hass.states.get('input_number.temperature').state)
-
+if (hass.states.get('sensor.mysensors_bme280_2_2').state == "unavailable"):
+    #Force heatpump to run when outside temperature sensor fails
+    outside_temperature = 99.0 
+else:
+    #Use outside temperature to decide to enable the heatpump.
+    outside_temperature = float(hass.states.get('sensor.mysensors_bme280_2_2').state)
 
 if away == 'off':
     #logger.warning("Got to heatpumpxhome")
@@ -161,7 +165,7 @@ if away == 'off':
 # Prevent cooking the house plants when away in the summer time.
 if away == 'on':
     #logger.warning("Got to heatpumpxaway")
-    if current_temperature >= ac_away + 2.0:
+    if current_temperature >= ac_away + 1.5:
         if operation_mode != 'cooling': # Prevent repeat if already cooling
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'cool'}
             hass.services.call('climate', 'set_hvac_mode', service_data, False)

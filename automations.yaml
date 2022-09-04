@@ -71,9 +71,9 @@
   id: 6576cd3835d74d7780a56389d5892370
 - id: ee79e6868aca40588a2b5d40bd9846e4
   alias: Irrigation Safety
-  description: "  In case some interruption occurs while a zone is ON\n  Not sure\
-    \ this is necessary but does not hurt to include\n Time are after the last zone\
-    \ cycle"
+  description: "  In case some interruption occurs while a zone is ON\n  Not sure
+    this is necessary but does not hurt to include\n Time are after the last zone
+    cycle"
   trigger:
   - platform: time
     at: 08:30:00
@@ -281,9 +281,9 @@
     to: 'off'
   condition:
   - condition: template
-    value_template: "{{ (now().hour * 60 + now().minute) * 60  \n    > state_attr('input_datetime.heat_on_time',\
-      \ 'timestamp') and \n    (now().hour * 60 + now().minute) * 60 \n    < state_attr('input_datetime.heat_off_time',\
-      \ 'timestamp') }}\n"
+    value_template: "{{ (now().hour * 60 + now().minute) * 60  \n    > state_attr('input_datetime.heat_on_time',
+      'timestamp') and \n    (now().hour * 60 + now().minute) * 60 \n    < state_attr('input_datetime.heat_off_time',
+      'timestamp') }}\n"
   action:
   - service: climate.set_temperature
     data:
@@ -461,16 +461,16 @@
   - service: climate.set_temperature
     data:
       entity_id: climate.house
-      temperature: "{% if is_state('input_boolean.vacation', 'off') and \n  (now().hour\
-        \ * 60 + now().minute) * 60  \n  > state_attr('input_datetime.heat_on_time',\
-        \ 'timestamp') and \n  (now().hour * 60 + now().minute) * 60 \n  < state_attr('input_datetime.heat_off_time',\
-        \ 'timestamp') %}\n  {{ states('input_number.slider_home')}}\n{% else %}\n\
-        \  {{ states('input_number.slider_away')}}\n{% endif %}\n"
+      temperature: "{% if is_state('input_boolean.vacation', 'off') and \n  (now().hour
+        * 60 + now().minute) * 60  \n  > state_attr('input_datetime.heat_on_time',
+        'timestamp') and \n  (now().hour * 60 + now().minute) * 60 \n  < state_attr('input_datetime.heat_off_time',
+        'timestamp') %}\n  {{ states('input_number.slider_home')}}\n{% else %}\n  {{
+        states('input_number.slider_away')}}\n{% endif %}\n"
   - service: climate.set_temperature
     data:
       entity_id: climate.summer_fan
-      temperature: "{% if is_state('input_boolean.vacation', 'off') %}\n  25\n{% else\
-        \ %}\n  30\n{% endif %}\n"
+      temperature: "{% if is_state('input_boolean.vacation', 'off') %}\n  25\n{% else
+        %}\n  30\n{% endif %}\n"
   - service: input_number.set_value
     data:
       entity_id: input_number.furnace_power
@@ -609,11 +609,11 @@
   mode: single
 - id: 75f3710546f84017a8ad9af8833c330c
   alias: Redirect all MQTT HVAC set commands to the heatpumps
-  description: " This is required because MQTT HVAC uses a separate topic for each\
-    \ command\nwhile the Mitsubishi Heatpump uses one set topic for all settings in\
-    \ a json message\n ie heatpump/_set/temperature 23  --> heatpump/set {\"temperature\"\
-    :\"23.5\"}\nAdded wideVane every time the heat pump is turned ON as it seems to\
-    \ revert to \"<<\" for no reason."
+  description: " This is required because MQTT HVAC uses a separate topic for each
+    command\nwhile the Mitsubishi Heatpump uses one set topic for all settings in
+    a json message\n ie heatpump/_set/temperature 23  --> heatpump/set {\"temperature\":\"23.5\"}\nAdded
+    wideVane every time the heat pump is turned ON as it seems to revert to \"<<\"
+    for no reason."
   trigger:
   - platform: mqtt
     topic: heatpump/_set/+
@@ -621,13 +621,12 @@
   - service: mqtt.publish
     data:
       topic: '{{ "heatpump/set" }}'
-      payload: "{% if trigger.topic.split(\"/\")[-1] == \"mode\" %}\n  {% if trigger.payload|upper\
-        \ == \"OFF\" %}\n    {\"power\":\"OFF\"}\n  {% elif trigger.payload == \"\
-        fan_only\" %}\n    {\"power\":\"ON\",\"mode\":\"FAN\"}\n  {% else %}\n   \
-        \ {{ \"{\\\"power\\\":\\\"ON\\\",\\\"mode\\\":\"|safe + trigger.payload|upper|tojson\
-        \ + \",\\\"wideVane\\\":\"|safe  + states('input_select.widevane')|to_json|safe\
-        \ + \"}\"}}\n  {% endif %}\n{% else %}\n  {{ \"{\" + trigger.topic.split(\"\
-        /\")[-1]|tojson + \":\" + trigger.payload|tojson + \"}\" }}\n{% endif %}\n"
+      payload: "{% if trigger.topic.split(\"/\")[-1] == \"mode\" %}\n  {% if trigger.payload|upper
+        == \"OFF\" %}\n    {\"power\":\"OFF\"}\n  {% elif trigger.payload == \"fan_only\"
+        %}\n    {\"power\":\"ON\",\"mode\":\"FAN\"}\n  {% else %}\n    {{ \"{\\\"power\\\":\\\"ON\\\",\\\"mode\\\":\"|safe
+        + trigger.payload|upper|tojson + \",\\\"wideVane\\\":\"|safe  + states('input_select.widevane')|to_json|safe
+        + \"}\"}}\n  {% endif %}\n{% else %}\n  {{ \"{\" + trigger.topic.split(\"/\")[-1]|tojson
+        + \":\" + trigger.payload|tojson + \"}\" }}\n{% endif %}\n"
   mode: single
 - id: e42cd82395df4e798be4ad063006e0e4
   alias: Furnace State
@@ -753,41 +752,6 @@
       value: '{{ states(''sensor.multisensor2_gas'')}}'
   initial_state: true
   mode: single
-- id: 6fb750f5304440ac98ba8673460f6f60
-  alias: Temperature
-  description: Added for spline plotting of Outdoor temperature, pressure and humidity.
-  trigger:
-  - platform: state
-    entity_id: sensor.mysensors_bme280_2_2
-  action:
-  - service: input_number.set_value
-    data:
-      entity_id: input_number.temperature
-      value: '{{ states(''sensor.mysensors_bme280_2_2'')}}'
-  initial_state: true
-  mode: single
-- alias: Pressure
-  initial_state: true
-  trigger:
-    platform: state
-    entity_id: sensor.mysensors_bme280_2_1
-  action:
-  - service: input_number.set_value
-    data:
-      entity_id: input_number.pressure
-      value: '{{ states(''sensor.mysensors_bme280_2_1'')}}'
-  id: 0d114d79016b47cdaa55c4ac31d7c4a4
-- alias: Humidity
-  initial_state: true
-  trigger:
-    platform: state
-    entity_id: sensor.mysensors_bme280_2_3
-  action:
-  - service: input_number.set_value
-    data:
-      entity_id: input_number.humidity
-      value: '{{ states(''sensor.mysensors_bme280_2_3'')}}'
-  id: f9e37fbc33434ac498adb5d5d9194ef1
 - alias: Increment Brita Days counter
   initial_state: true
   trigger:
