@@ -71,7 +71,6 @@ ir_deck:
   - delay: 00:{{ states('input_number.slider_delay_d') | int }}:00
   - service: switch.turn_off
     entity_id: switch.deck_irrigation
-
 energy:
   alias: Energy Integrator
   sequence:
@@ -103,3 +102,4 @@ burglar_alarm_timer:
   - delay: 0:02:00
   - service: switch.turn_off
     entity_id: switch.siren_gen5
+  mode: single

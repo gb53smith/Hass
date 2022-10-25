@@ -100,7 +100,7 @@
   mode: single
 - id: e97eaa7390304a73bab4af0c25710585
   alias: Living Room Light OFF at Home
-  description: ' Turn OFF at input_datetime.lr_off_time ONLY when not on vacation'
+  description: ' Turn OFF at input_datetime.lr_off_time ONLY when not away'
   trigger:
   - platform: template
     value_template: '{{ (state_attr(''input_datetime.lr_off_time'', ''timestamp'')
@@ -109,14 +109,14 @@
       '
   condition:
   - condition: state
-    entity_id: input_boolean.vacation
+    entity_id: binary_sensor.away
     state: 'off'
   action:
   - service: switch.turn_off
     entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
   initial_state: true
   mode: single
-- alias: Living Room Light OFF when Vacation
+- alias: Living Room Light OFF when away
   initial_state: true
   trigger:
     platform: template
@@ -126,14 +126,14 @@
       '
   condition:
     condition: state
-    entity_id: input_boolean.vacation
+    entity_id: binary_sensor.away
     state: 'on'
   action:
     service: switch.turn_off
     entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
   id: 0c274958b4da4bb39c9470ccab241b3d
 - id: 19e7ea5237134f478ebb77dc312976c3
-  alias: Bedroom Room Light ON when on Vacation
+  alias: Bedroom Room Light ON when on away
   trigger:
   - platform: template
     value_template: '{{ (state_attr(''input_datetime.br_on_time_random'', ''timestamp'')
@@ -142,7 +142,7 @@
       '
   condition:
   - condition: state
-    entity_id: input_boolean.vacation
+    entity_id: binary_sensor.away
     state: 'on'
   action:
   - service: switch.turn_on
@@ -151,7 +151,7 @@
       entity_id: switch.scene_capable_switch_on_off
   initial_state: true
 - id: f4ccf77d963c4b729311199cb14bd864
-  alias: Bedroom Room Light OFF when on Vacation
+  alias: Bedroom Room Light OFF when on away
   trigger:
   - platform: template
     value_template: '{{ (state_attr(''input_datetime.br_off_time_random'', ''timestamp'')
@@ -160,7 +160,7 @@
       '
   condition:
   - condition: state
-    entity_id: input_boolean.vacation
+    entity_id: binary_sensor.away
     state: 'on'
   action:
   - service: switch.turn_off
@@ -174,17 +174,14 @@
 
     binary_sensor.away is controlled by input_text.lock_last_action and by input_boolean.vacation.
 
-    Set by locking back door either by Me or Oliver or input_boolean.vacation = "on"
-    .
+    Set by locking back door either by Me or Oliver or input_boolean.vacation = "on".
 
     input_binary.vacation is controlled by GUI slide switch.
 
     When binary_sensor.away is ON the temperature set point is set to away temp.
 
     The back door must be unlocked or locked from the inside to turn OFF the binary_sensor.away
-    and return
-
-    to normal heating schedule.
+    and return to normal heating schedule.
 
     The away temperature can be adjusted to pre-heat the house remotely.
 
