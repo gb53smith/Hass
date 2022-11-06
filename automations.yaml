@@ -473,8 +473,14 @@
       entity_id: input_number.furnace_power
       value: 0
   - service: python_script.random_lights
+    data: {}
   - service: automation.trigger
     entity_id: automation.furnace_state
+  - service: fan.set_percentage
+    data:
+      percentage: 40
+    target:
+      entity_id: fan.hepa_filter_fan    
   - delay:
       minutes: 10
   - service: notify.mobile_app_grahams_iphone
