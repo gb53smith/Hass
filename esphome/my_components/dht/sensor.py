@@ -8,7 +8,6 @@ from esphome.const import (
     CONF_MODEL,
     CONF_PIN,
     CONF_TEMPERATURE,
-    ICON_EMPTY,
     STATE_CLASS_MEASUREMENT,
     UNIT_CELSIUS,
     UNIT_PERCENT,
@@ -19,6 +18,17 @@ from esphome.const import (
 from esphome.cpp_helpers import gpio_pin_expression
 
 dht_ns = cg.esphome_ns.namespace("dht")
+# DHTModel = dht_ns.enum("DHTModel")
+# DHT_MODELS = {
+    # "AUTO_DETECT": DHTModel.DHT_MODEL_AUTO_DETECT,
+    # "DHT11": DHTModel.DHT_MODEL_DHT11,
+    # "DHT22": DHTModel.DHT_MODEL_DHT22,
+    # "AM2302": DHTModel.DHT_MODEL_AM2302,
+    # "RHT03": DHTModel.DHT_MODEL_RHT03,
+    # "SI7021": DHTModel.DHT_MODEL_SI7021,
+    # "DHT22_TYPE2": DHTModel.DHT_MODEL_DHT22_TYPE2,
+# }
+
 #GBS Modified to use DHT models defined in DHTNew.h
 dhtnew_ns = cg.esphome_ns.namespace("")
 DHTModel_t = dhtnew_ns.enum("DHTModel")
@@ -27,23 +37,26 @@ DHT_MODELS = {
     "DHT11": DHTModel_t.DHT_MODEL_DHT11,
     "DHT22": DHTModel_t.DHT_MODEL_DHT22
 }
+
 DHT = dht_ns.class_("DHT", cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(DHT),
-        cv.Required(CONF_PIN): pins.gpio_input_pin_schema,
+        cv.Required(CONF_PIN): pins.internal_gpio_input_pin_schema,
         cv.Optional(CONF_TEMPERATURE): sensor.sensor_schema(
-            UNIT_CELSIUS,
-            ICON_EMPTY,
-            1,
-            DEVICE_CLASS_TEMPERATURE,
-            STATE_CLASS_MEASUREMENT,
+            unit_of_measurement=UNIT_CELSIUS,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_TEMPERATURE,
+            state_class=STATE_CLASS_MEASUREMENT,
         ),
         cv.Optional(CONF_HUMIDITY): sensor.sensor_schema(
-            UNIT_PERCENT, ICON_EMPTY, 0, DEVICE_CLASS_HUMIDITY, STATE_CLASS_MEASUREMENT
+            unit_of_measurement=UNIT_PERCENT,
+            accuracy_decimals=0,
+            device_class=DEVICE_CLASS_HUMIDITY,
+            state_class=STATE_CLASS_MEASUREMENT,
         ),
-        cv.Optional(CONF_MODEL, default="dht22"): cv.enum(
+        cv.Optional(CONF_MODEL, default="auto detect"): cv.enum(
             DHT_MODELS, upper=True, space="_"
         ),
     }

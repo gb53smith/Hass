@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esphome/core/component.h"
+#include "esphome/core/hal.h"
 #include "esphome/components/sensor/sensor.h"
 /*
 Using Platformio library: "diaoul/DHTNew @ 1.0.0"
@@ -13,7 +14,7 @@ namespace dht {
 /// Component for reading temperature/humidity measurements from DHT11/DHT22 sensors.
 class DHT : public PollingComponent {
  public:
-  void set_pin(GPIOPin *pin) { pin_ = pin->get_pin(); }
+  void set_pin(InternalGPIOPin *pin) { pin_ = pin->get_pin(); }
   void set_dht_model(DHTModel_t model);
   void set_temperature_sensor(sensor::Sensor *temperature_sensor) { temperature_sensor_ = temperature_sensor; }
   void set_humidity_sensor(sensor::Sensor *humidity_sensor) { humidity_sensor_ = humidity_sensor; }

@@ -8,6 +8,9 @@ esphome:
   name: ${node_name}
   platform: ESP8266
   board: nodemcuv2
+# Required for external component option
+#  platformio_options:
+#    lib_deps: diaoul/DHTNew@1.0.0
 
 wifi:
   ssid: "GreenMountain"
@@ -41,22 +44,13 @@ dallas:
   update_interval: 10s
   
 #external_components:
-  #- source: github://esphome/esphome@dev
-   # components: [dht]
-  #- source: github://agners/esphome@improve-dht-data-polarity-detection
-    #components: [dht]
-  #- source: github://gb53smith/esphome@DiaoulRead2
-    #components: [dht]
-### Short form not working
-# - source: github://gb53smith/esphome
-#   components: [dht]
-### This long from works. refresh needed for changes less than 24 hours old
-  #- source:
-  #    type: git
-  #    url: https://github.com:/gb53smith/esphome
-  #    ref: main
-  #  components: [dht]
-  #  refresh: 0s
+### This long form works. refresh option is only needed for changes less than 24 hours old
+#  - source:
+#      type: git
+#      url: https://github.com:/gb53smith/esphome
+#      ref: main
+#    components: [dht]
+#    refresh: 0s
 ### Use this local copy to debug, the commit to github
   #- source: my_components
 
@@ -79,7 +73,7 @@ sensor:
     filters:
     - delta: 0.2
     
-### Custom Component Method
+### Custom Component Method from here to EOF
 # DHT parameters are hard coded
 # Update period is hard coded
 
