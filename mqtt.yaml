@@ -55,6 +55,7 @@
       name: "MultiSensor2 Temperature"
       state_topic: "/home/ms2"
       state_class: measurement
+      device_class: temperature
       unit_of_measurement: "°C"
       # Keep last house temperature if topic does not contain a json element
       # Also doing temperature calibration here
@@ -70,6 +71,8 @@
     - unique_id: MS2_humidity
       name: "MultiSensor2 Humidity"
       state_topic: "/home/ms2"
+      state_class: measurement
+      device_class: humidity
       unit_of_measurement: "%"
       value_template: >
         {%- if value_json.humidity | default-%}
@@ -81,17 +84,20 @@
     - unique_id: MS2_pressure
       name: "MultiSensor2 Pressure"
       state_topic: "/home/ms2"
+      state_class: measurement
+      device_class: pressure
       unit_of_measurement: "hPa"
       value_template: >
         {%- if value_json.pressure | default -%}
           {{value_json.pressure}}
         {%- else -%}
-          {{ states('sensor.multisensor2_pressure')}}
+          {{ states('input_number.last_pressure')}}
         {%- endif -%}
 
     - unique_id: MS2_gas
       name: "MultiSensor2 Gas"
       state_topic: "/home/ms2"
+      state_class: measurement
       unit_of_measurement: "Kohms"
       value_template: >
         {%- if value_json.gas | default -%}
@@ -103,25 +109,30 @@
     - unique_id: MS2_gasavg
       name: "MultiSensor2 GasAVG"
       state_topic: "/home/ms2"
+      state_class: measurement
       unit_of_measurement: "Kohms"
       value_template: >
         {%- if value_json.gasavg | default -%}
           {{value_json.gasavg}}
         {%- else -%}
-          {{ states('sensor.multisensor2_gasavg')}}
+          {{ states('input_number.last_gas')}}
         {%- endif -%}
 
+### the IOT device send RSSI value on power up reset only
     - unique_id: MS2_rssi
       name: "MultiSensor2 RSSI"
       state_topic: "/home/ms2"
+      state_class: measurement
+      device_class: signal_strength
       unit_of_measurement: "dBm"
       value_template: >
         {%- if value_json.rssi | default -%}
           {{value_json.rssi}}
         {%- else -%}
-          {{ states('sensor.multisensor2_rssi')}}
+          {{ states('input_number.last_rssi')}}
         {%- endif -%}
-
+        
+        
   fan:
     - unique_id: wide_vane
       name: "Wide Vane"

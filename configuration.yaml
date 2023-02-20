@@ -196,7 +196,6 @@ logbook:
 # View the history of only some components
 # Depends on recorder settings.
 history:
-  use_include_order: true
   include:
     entities:
       - sensor.date
@@ -422,6 +421,16 @@ input_number:
   last_gas:
     min: 0
     max: 5000
+    step: 1
+    mode: box
+  last_pressure:
+    min: 900
+    max: 1200
+    step: 1
+    mode: box
+  last_rssi:
+    min: -120
+    max: 0
     step: 1
     mode: box
   hour_diff:

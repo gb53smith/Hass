@@ -1146,3 +1146,43 @@
     target:
       entity_id: fan.hepa_filter_fan
   mode: restart
+- id: '1676935637671'
+  alias: Last Pressure
+  description: air pressure measured indoors
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.multisensor2_pressure
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.multisensor2_pressure
+      state: unavailable
+  action:
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.last_pressure
+      value: '{{ states(''sensor.multisensor2_pressure'')}}'
+  mode: single
+  initial_state: true
+- id: '1676935754174'
+  alias: Last RSSI
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.multisensor2_rssi
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.multisensor2_rssi
+      state: unavailable
+  action:
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.last_rssi
+      value: '{{ states(''sensor.multisensor2_rssi'')}}'
+  mode: single
+  initial_state: true

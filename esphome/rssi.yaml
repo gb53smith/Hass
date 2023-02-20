@@ -21,7 +21,6 @@ ota:
 
 # Enable Home Assistant API
 api:
-  password: !secret ota_password
   encryption:
    key: !secret api_encryption_key
   
