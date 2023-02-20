@@ -64,9 +64,9 @@ twilio:
   auth_token: !secret auth_token
 
 notify:
-  - name: Burglar Alarm SMS
-    platform: twilio_sms
-    from_number: !secret from_number
+  # - name: Burglar Alarm SMS
+    # platform: twilio_sms
+    # from_number: !secret from_number
   - name: energy_notify
     platform: file
     filename: hourly_energy.csv
@@ -574,7 +574,7 @@ input_select:
        -  ">>"
        -  "SWING"
     icon: mdi:air-filter 
-
+        
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -582,3 +582,4 @@ sensor: !include sensors.yaml
 switch: !include switches.yaml
 script: !include scripts.yaml
 mqtt: !include mqtt.yaml
+template: !include template.yaml

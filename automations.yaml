@@ -480,7 +480,7 @@
     data:
       percentage: 40
     target:
-      entity_id: fan.hepa_filter_fan    
+      entity_id: fan.hepa_filter_fan
   - delay:
       minutes: 10
   - service: notify.mobile_app_grahams_iphone
@@ -687,11 +687,6 @@
     entity_id: binary_sensor.away
     state: 'on'
   action:
-  - service: notify.burglar_alarm_sms
-    data:
-      message: Graham Burglar Alarm Triggered!
-      target:
-      - '{{ states(''input_text.travel_phone'')}}'
   - service: notify.mobile_app_grahams_iphone
     data:
       message: Graham Burglar Alarm Triggered!
@@ -1106,7 +1101,7 @@
   action:
   - service: notify.mobile_app_grahams_iphone
     data:
-      message: HEPA Filter Used for 150,000 hours.
+      message: HEPA Filter Used for 2,500 hours.
   mode: single
   initial_state: true
 - id: '1637003740722'

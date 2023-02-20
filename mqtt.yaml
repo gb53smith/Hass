@@ -39,12 +39,14 @@
     - unique_id: remote_temperature
       name: "Remote Temperature"
       state_topic: "/home/TH_sensor1"
+      state_class: measurement
       unit_of_measurement: "°C"
       value_template: "{{ value_json.temperature }}"
 
     - unique_id: remote_humdity
       name: "Remote Humidity"
       state_topic: "/home/TH_sensor1"
+      state_class: measurement
       unit_of_measurement: "%"
       value_template: "{{ value_json.humidity }}"
 
@@ -52,6 +54,7 @@
     - unique_id: MS2_temperature
       name: "MultiSensor2 Temperature"
       state_topic: "/home/ms2"
+      state_class: measurement
       unit_of_measurement: "°C"
       # Keep last house temperature if topic does not contain a json element
       # Also doing temperature calibration here

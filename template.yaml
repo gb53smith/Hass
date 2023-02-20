@@ -1,0 +1,125 @@
+#New syntax for template sensors
+
+- sensor:
+  - name: "outdoor temp"
+    unique_id: my_outdoor temp
+    unit_of_measurement: "°C"
+    state: "{{ states('sensor.mysensors_bme280_2_2') | float }}"
+    state_class: measurement
+    device_class: temperature
+    
+  - name: temp_diff
+    unique_id: my_temp_diff
+    unit_of_measurement: "°C"
+    state: "{{ (states('sensor.house_temperature') | float(default=21)) - (states('sensor.mysensors_bme280_2_2') | float(default=10)) | round(1) }}"
+
+  - name: hourly_energy
+    unique_id: my_hourly_energy
+    state: "{{ states('input_number.hourly_energy') | float }}"
+
+  - name: daily_energy
+    unique_id: my_daily_energy
+    state: "{{ states('input_number.daily_energy') | float }}"
+          
+  - name: hydro_hourly_energy
+    unique_id: my_hydro_hourly_energy
+    state: "{{ states('input_number.hydro_hourly_energy') | float }}"
+
+  - name: hydro_daily_energy
+    unique_id: my_hydro_daily_energy
+    state: "{{ states('input_number.hydro_daily_energy') | float }}"        
+
+  - name: hour_diff
+    unique_id: my_hour_diff
+    state: "{{ states('input_number.hour_diff') | float }}"
+
+  - name: daily_temp_diff
+    unique_id: my_daily_temp_diff
+    state: "{{ states('input_number.daily_temp_diff') | float }}"
+    
+  - name: iaq
+    unique_id: my_iaq
+    unit_of_measurement: "Index"
+    state: >
+        {% set humOffset = states('sensor.multisensor2_humidity')|float - 40.0 %}
+        {% set gas = states('sensor.multisensor2_gas')|float %}
+        {% set gasavg = states('input_number.box_gas')|float %}
+        {% if humOffset > 0 %}
+        {% set humScore = (60 - humOffset) * 0.417 %}
+        {% else %}
+        {% set humScore = (40 + humOffset) * 0.625 %}
+        {% endif %}
+        {% if (gasavg - gas) > 0 %}
+        {% set gasScore =  gas / gasavg * 75  %}
+        {% else %}
+        {% set gasScore = 75 %}
+        {% endif %}
+        {% set score = (100 - humScore - gasScore) * 5 %}
+        {% if score >= 301 %}
+        6
+        {% elif score >= 201  and  score <= 300 %}
+        5
+        {% elif score >= 176  and  score <= 200 %}
+        4
+        {% elif score >= 151  and  score <= 175 %}
+        3
+        {% elif score >= 51  and  score <= 150 %}
+        2
+        {% elif score >= 0  and  score <= 50 %}
+        1
+        {% endif %}
+
+# If binary_sensor.ping fails switch temperature sensors
+# Use input_number.last_house_temp to prevent spiking to 0 when MQTT restarted.
+
+  - name: "House Temperature"
+    unique_id: my_house_temperature
+    state: >
+        {% if is_state("binary_sensor.ping_ms2", "on") %}
+          {{states('input_number.last_house_temp') | float}}
+        {% else %}
+          {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float}}
+        {% endif %}
+
+  - name: "Furnace Power Plot"
+    unique_id: my_furnace_power_plot
+    unit_of_measurement: "kW"
+    state: "{{ states('input_number.furnace_power')}}"
+
+## Indoor soil moisture calibration    
+  - name: soil_moisture_1
+    unique_id: my_soil_moisture_1
+    state: >
+        {% set raw = states('sensor.soil_moisture_sensor_8_1') | float%}
+        {% set dry = states('input_number.soil_dry_1') | float %}
+        {% set wet = states('input_number.soil_wet_1') | float %}
+        {% set range = dry - wet %}
+        {% set abovewet = raw - wet %}
+        {% set abovewetfraction = abovewet / range %}
+        {{(( 1 - abovewetfraction ) * 100) | int }}
+
+## Outdoor soil moisture calibration    
+  - name: soil_moisture_2
+    unique_id: my_soil_moisture_2
+    state: >
+        {% set raw = states('sensor.soil_moisture_sensor_4_1') | float%}
+        {% set dry = states('input_number.soil_dry_2') | float %}
+        {% set wet = states('input_number.soil_wet_2') | float %}
+        {% set range = dry - wet %}
+        {% set abovewet = raw - wet %}
+        {% set abovewetfraction = abovewet / range %}
+        {{(( 1 - abovewetfraction ) * 100) | int }}
+        
+  - name: "Hepa Fan Speed"
+    unique_id: my_hepa_fan_speed
+    unit_of_measurement: "%"
+    state: "{{ state_attr('fan.hepa_filter_fan','percentage')}}"
+
+  - name: "Wide Vane Setting"
+    unique_id: my_wide_vane_setting
+    state: "{{ state_attr('fan.wide_vane','preset_mode')}}"
+      
+  - name: "Hepa Filter Hours Rounded"
+    unique_id: my_hepa_filter_hours_rounded
+    state: "{{ states('input_number.hepa_hours') | round}}"
+      
