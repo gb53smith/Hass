@@ -22,3 +22,12 @@
   scan_interval: 10800
   command: "python3 /config/getrain.py"
 
+## Filter in HA instead of at IOT device
+- platform: filter
+  name: "Average Gas Resistance"
+  entity_id: sensor.multiSensor2_gas
+  filters:
+    - filter: time_simple_moving_average
+      window_size: "02:40"
+      precision: 1
+

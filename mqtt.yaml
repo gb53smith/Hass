@@ -68,6 +68,9 @@
           {{states('input_number.last_house_temp')}}
         {% endif %}
 
+    # If this used the sensor goes unknown when HA restarts
+    # and works again with the next change in humidity
+    #{{ states('sensor.multiSensor2_humidity')}}
     - unique_id: MS2_humidity
       name: "MultiSensor2 Humidity"
       state_topic: "/home/ms2"
@@ -75,7 +78,7 @@
       device_class: humidity
       unit_of_measurement: "%"
       value_template: >
-        {%- if value_json.humidity | default-%}
+        {% if value_json.humidity | default %}
           {{value_json.humidity}}
         {%- else -%}
           {{ states('input_number.last_house_humidity')}}
@@ -106,17 +109,18 @@
           {{ states('input_number.last_gas')}}
         {%- endif -%}
 
-    - unique_id: MS2_gasavg
-      name: "MultiSensor2 GasAVG"
-      state_topic: "/home/ms2"
-      state_class: measurement
-      unit_of_measurement: "Kohms"
-      value_template: >
-        {%- if value_json.gasavg | default -%}
-          {{value_json.gasavg}}
-        {%- else -%}
-          {{ states('input_number.last_gas')}}
-        {%- endif -%}
+#Using HA Filter to calculate average
+    # - unique_id: MS2_gasavg
+      # name: "MultiSensor2 GasAVG"
+      # state_topic: "/home/ms2"
+      # state_class: measurement
+      # unit_of_measurement: "Kohms"
+      # value_template: >
+        # {%- if value_json.gasavg | default -%}
+          # {{value_json.gasavg}}
+        # {%- else -%}
+          # {{ states('sensor.multiSensor2_gasavg')}}
+        # {%- endif -%}
 
 ### the IOT device send RSSI value on power up reset only
     - unique_id: MS2_rssi
