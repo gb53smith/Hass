@@ -29,5 +29,5 @@
   filters:
     - filter: time_simple_moving_average
       window_size: "02:40"
-      precision: 1
+      precision: 0
 

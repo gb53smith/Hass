@@ -27,7 +27,8 @@
   - service: script.turn_on
     entity_id: script.ir_back
   mode: single
-- alias: Front Irrigation
+- id: 1820ed746d614333ba591bcb5b6d1d38
+  alias: Front Irrigation
   trigger:
   - platform: time
     at: 07:00:00
@@ -47,8 +48,8 @@
   action:
     service: script.turn_on
     entity_id: script.ir_front
-  id: 1820ed746d614333ba591bcb5b6d1d38
-- alias: Deck Irrigation
+- id: 6576cd3835d74d7780a56389d5892370
+  alias: Deck Irrigation
   trigger:
   - platform: time
     at: 07:30:00
@@ -68,7 +69,6 @@
   action:
     service: script.turn_on
     entity_id: script.ir_deck
-  id: 6576cd3835d74d7780a56389d5892370
 - id: ee79e6868aca40588a2b5d40bd9846e4
   alias: Irrigation Safety
   description: "  In case some interruption occurs while a zone is ON\n  Not sure
@@ -116,22 +116,22 @@
     entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
   initial_state: true
   mode: single
-- alias: Living Room Light OFF when away
-  initial_state: true
+- id: 0c274958b4da4bb39c9470ccab241b3d
+  alias: Living Room Light OFF when away
   trigger:
-    platform: template
+  - platform: template
     value_template: '{{ (state_attr(''input_datetime.lr_off_time_random'', ''timestamp'')
       | int  | timestamp_custom("%H:%M", False)) == states(''sensor.time'')}}
 
       '
   condition:
-    condition: state
+  - condition: state
     entity_id: binary_sensor.away
     state: 'on'
   action:
-    service: switch.turn_off
+  - service: switch.turn_off
     entity_id: switch.leviton_dzr151lz_binary_scene_switch_switch
-  id: 0c274958b4da4bb39c9470ccab241b3d
+  initial_state: true
 - id: 19e7ea5237134f478ebb77dc312976c3
   alias: Bedroom Room Light ON when on away
   trigger:
@@ -399,7 +399,8 @@
       message: Outdoor battery needs to be charged.
   initial_state: true
   mode: single
-- alias: Basement Flood Alarm
+- id: b023ab62caba4b35bd82e014c24f6e20
+  alias: Basement Flood Alarm
   initial_state: true
   trigger:
     platform: state
@@ -409,7 +410,6 @@
     service: notify.mobile_app_grahams_iphone
     data:
       message: Basement Flood Detected!
-  id: b023ab62caba4b35bd82e014c24f6e20
 - id: 2c587360c4a8480faa87bf3e388f1cac
   alias: Watchdog Alarm
   description: Send a notice to iPhone if MultiSensor2 is disconnected from WiFi an
@@ -544,7 +544,8 @@
     entity_id: counter.fan_on_minutes
   initial_state: true
   mode: single
-- alias: Hourly Temperature Difference
+- id: 17e8bb84eb9d47888792ec4646772ec4  
+  alias: Hourly Temperature Difference
   initial_state: true
   trigger:
   - platform: time_pattern
@@ -555,8 +556,8 @@
       temp_diff: temp_diff
       temp_diff_accum: temp_diff_accum
       hour_diff: hour_diff
-  id: 17e8bb84eb9d47888792ec4646772ec4
-- alias: Energy Integration
+- id: b6c8df5f4b884258bb0ce456a9900986  
+  alias: Energy Integration
   initial_state: true
   trigger:
   - platform: state
@@ -564,8 +565,8 @@
   action:
     service: script.turn_on
     entity_id: script.energy
-  id: b6c8df5f4b884258bb0ce456a9900986
-- alias: Hourly Energy
+- id: b37947cb4e5049459899cecfdef58379
+  alias: Hourly Energy
   initial_state: true
   trigger:
   - platform: time_pattern
@@ -573,8 +574,8 @@
   action:
     service: script.turn_on
     entity_id: script.energy_hour
-  id: b37947cb4e5049459899cecfdef58379
-- alias: Daily Energy Total
+- id: c06125f64fde49a193b1dc6c84a27e93
+  alias: Daily Energy Total
   initial_state: true
   trigger:
   - platform: time_pattern
@@ -585,8 +586,8 @@
       hourly: hourly_energy
       hourly_accum: hourly_energy_accum
       daily: daily_energy
-  id: c06125f64fde49a193b1dc6c84a27e93
-- alias: Daily Temp Diff Average
+- id: 5d8af1a7b8e6454c9ac100de9af3b08d
+  alias: Daily Temp Diff Average
   initial_state: true
   trigger:
   - platform: time_pattern
@@ -598,7 +599,6 @@
       hourly_accum: hourly_temp_diff_accum
       daily: daily_temp_diff
       mode: average
-  id: 5d8af1a7b8e6454c9ac100de9af3b08d
 - id: 462a791f448d479f9439e0243958ba74
   alias: HVAC
   description: Triggers a Python Script every 5 minutes to decide if heat pump should
@@ -750,7 +750,8 @@
       value: '{{ states(''sensor.multisensor2_gas'')}}'
   initial_state: true
   mode: single
-- alias: Increment Brita Days counter
+- id: 6bbfc94a788c4f89b4936b24e0f8c7fc
+  alias: Increment Brita Days counter
   initial_state: true
   trigger:
   - platform: time
@@ -758,7 +759,6 @@
   action:
   - service: counter.increment
     entity_id: counter.brita_days
-  id: 6bbfc94a788c4f89b4936b24e0f8c7fc
 - id: e9cdd9717dca4fce98b51ecdd6162efb
   alias: Notify Brita Filter
   description: Send Notification if Brita Filter used for more than 90 days.
