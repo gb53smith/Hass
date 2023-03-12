@@ -37,37 +37,37 @@
     unique_id: my_daily_temp_diff
     state: "{{ states('input_number.daily_temp_diff') | float }}"
     
-  - name: iaq
-    unique_id: my_iaq
-    unit_of_measurement: "Index"
-    state: >
-        {% set humOffset = states('sensor.multisensor2_humidity')|float - 40.0 %}
-        {% set gas = states('sensor.multisensor2_gas')|float %}
-        {% set gasavg = states('input_number.box_gas')|float %}
-        {% if humOffset > 0 %}
-        {% set humScore = (60 - humOffset) * 0.417 %}
-        {% else %}
-        {% set humScore = (40 + humOffset) * 0.625 %}
-        {% endif %}
-        {% if (gasavg - gas) > 0 %}
-        {% set gasScore =  gas / gasavg * 75  %}
-        {% else %}
-        {% set gasScore = 75 %}
-        {% endif %}
-        {% set score = (100 - humScore - gasScore) * 5 %}
-        {% if score >= 301 %}
-        6
-        {% elif score >= 201  and  score <= 300 %}
-        5
-        {% elif score >= 176  and  score <= 200 %}
-        4
-        {% elif score >= 151  and  score <= 175 %}
-        3
-        {% elif score >= 51  and  score <= 150 %}
-        2
-        {% elif score >= 0  and  score <= 50 %}
-        1
-        {% endif %}
+  # - name: iaq
+    # unique_id: my_iaq
+    # unit_of_measurement: "Index"
+    # state: >
+        # {% set humOffset = states('sensor.sensor.multisensor_gen3_ms3_humidity')|float - 40.0 %}
+        # {% set gas = states('sensor.multisensor_gen3_ms3_gas_resistance')|float %}
+        # {% set gasavg = states('input_number.box_gas')|float %}
+        # {% if humOffset > 0 %}
+        # {% set humScore = (60 - humOffset) * 0.417 %}
+        # {% else %}
+        # {% set humScore = (40 + humOffset) * 0.625 %}
+        # {% endif %}
+        # {% if (gasavg - gas) > 0 %}
+        # {% set gasScore =  gas / gasavg * 75  %}
+        # {% else %}
+        # {% set gasScore = 75 %}
+        # {% endif %}
+        # {% set score = (100 - humScore - gasScore) * 5 %}
+        # {% if score >= 301 %}
+        # 6
+        # {% elif score >= 201  and  score <= 300 %}
+        # 5
+        # {% elif score >= 176  and  score <= 200 %}
+        # 4
+        # {% elif score >= 151  and  score <= 175 %}
+        # 3
+        # {% elif score >= 51  and  score <= 150 %}
+        # 2
+        # {% elif score >= 0  and  score <= 50 %}
+        # 1
+        # {% endif %}
 
 # If binary_sensor.ping fails switch temperature sensors
 # Use input_number.last_house_temp to prevent spiking to 0 when MQTT restarted.
@@ -75,7 +75,7 @@
   - name: "House Temperature"
     unique_id: my_house_temperature
     state: >
-        {% if is_state("binary_sensor.ping_ms2", "on") %}
+        {% if is_state("binary_sensor.ping_ms3", "on") %}
           {{states('input_number.last_house_temp') | float}}
         {% else %}
           {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float}}

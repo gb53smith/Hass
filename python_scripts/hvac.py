@@ -48,9 +48,9 @@ another state is determined based on the current room temperature
 A little too complicated for a yaml automation so done using Python.
 
 Testing with home_temperature = 21.0, ac_home = 24.0
-Furnace heat from  -n to 19.5
-Heat pump heat from 20.0 to 21.5, Furnace is OFF (Furnace is ON for all other temperature ranges.)
-Heat pump OFF from 22.0 to 23.0
+Furnace heat from  -n to 19.0
+Heat pump heat from 19.0 to 21.5, Furnace is OFF (Furnace is ON for all other temperature ranges.)
+Heat pump OFF from 21.5 to 23.0
 Heat pump cool starts at 25.5 and is turned off at 23.0
 
 Furnace set point is not affected.
@@ -67,6 +67,7 @@ hvac = hass.states.get('climate.mitsubishi_heatpump')
 hvac_attr = hvac.attributes
 
 furnace = hass.states.get('climate.house')
+furnace_state = furnace.state
 furnace_attr = furnace.attributes
 
 #house_temperature switches to hvac_attr['current_temperature'] if the WiFi connection
@@ -78,6 +79,7 @@ furnace_setpoint = furnace_attr['temperature']
 #logger.warning("furnace_setpoint = {}".format(furnace_setpoint))
 #logger.warning("operation_mode = {}".format(operation_mode))
 #logger.warning("current_temperature = {}".format(current_temperature))
+#logger.warning("Furnace State = {}".format(furnace_state))
 
 away = hass.states.get('binary_sensor.away').state
 #logger.warning("away = {}".format(away))
@@ -110,8 +112,7 @@ if away == 'off':
             #Update temperature set point to match ac_home slider value.  After cooling has started.
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': ac_home}
             hass.services.call('climate', 'set_temperature', service_data, False)
-    # Turn off heat pump in zone between heating and cooling
-    # OK to turn furnace back ON 
+    # Turn off heat pump and furnance in zone between heating and cooling
     elif current_temperature <= ac_home - 1.0 and \
         current_temperature > home_temperature + 0.5:
         #logger.warning("Got to heatpumpxoff1")
@@ -124,12 +125,13 @@ if away == 'off':
             #Update temperature set point to match home slider value.  If heating is already OFF.
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature}
             hass.services.call('climate', 'set_temperature', service_data, False)
-        service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
-        hass.services.call('climate', 'set_hvac_mode', service_data, False)
-    # Start heating +/- 1.0 around home set point.  Turn furnace heating off to prevent conflict
+        #Turn off Furnace
+        if furnace_state != 'off':
+            service_data = {'entity_id': 'climate.house', 'hvac_mode': 'off'}
+            hass.services.call('climate', 'set_hvac_mode', service_data, False)
     # Don't allow heat pump heating when too cold outside for efficiency reasons
     # Don't allow heating when furnace set point is at the away temperature overnight
-    elif current_temperature <= home_temperature + 0.5 and \
+    elif current_temperature <= home_temperature - 0.5 and \
         current_temperature >= home_temperature - 1.0 and outside_temperature >= 1.0 \
         and furnace_setpoint == home_temperature :
         #logger.warning("Got to heatpumpxheat1")
@@ -145,8 +147,13 @@ if away == 'off':
             #Update temperature set point to match home slider value.  After heating has started.
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature}
             hass.services.call('climate', 'set_temperature', service_data, False)
-    # Enable furnace heating
-    else :
+        #Turn off Furnace
+        if furnace_state != 'off':
+            service_data = {'entity_id': 'climate.house', 'hvac_mode': 'off'}
+            hass.services.call('climate', 'set_hvac_mode', service_data, False)
+    # Enable furnace heating below range of heatpump
+    elif current_temperature < home_temperature - 1.0 and \
+        furnace_setpoint == home_temperature :
         #logger.warning("Got to heatpumpxfurnace1")
         #logger.warning("Default Turning heatpump OFF, furnace ON with current_temperature = {}".format(current_temperature))
         if operation_mode == 'heating':
@@ -157,8 +164,10 @@ if away == 'off':
             #Update temperature set point to match home slider value.  If heating is already OFF.
             service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'temperature': home_temperature}
             hass.services.call('climate', 'set_temperature', service_data, False)
-        service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
-        hass.services.call('climate', 'set_hvac_mode', service_data, False)
+        #Turn on Furnace
+        if furnace_state != 'heat':
+            service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
+            hass.services.call('climate', 'set_hvac_mode', service_data, False)
 
 # When away use only the furnace to maintain the low away temperature.
 # Use the heat pump to cool only if the higher ac away set point is exceeded.

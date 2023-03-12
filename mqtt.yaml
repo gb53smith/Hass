@@ -50,91 +50,91 @@
       unit_of_measurement: "%"
       value_template: "{{ value_json.humidity }}"
 
-# Multisensor2 Support
-    - unique_id: MS2_temperature
-      name: "MultiSensor2 Temperature"
-      state_topic: "/home/ms2"
-      state_class: measurement
-      device_class: temperature
-      unit_of_measurement: "°C"
-      # Keep last house temperature if topic does not contain a json element
-      # Also doing temperature calibration here
-      # Goes to zero on MQTT restart even with the unavailable condition?
-      # {% if value_json.temperature | default and not is_state('sensor.multisensor2_temperature', 'unavailable') %}
-      value_template: >
-        {% if value_json.temperature | default %}
-          {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
-        {% else %}
-          {{states('input_number.last_house_temp')}}
-        {% endif %}
+# # Multisensor2 Support
+    # - unique_id: MS2_temperature
+      # name: "MultiSensor2 Temperature"
+      # state_topic: "/home/ms2"
+      # state_class: measurement
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # # Keep last house temperature if topic does not contain a json element
+      # # Also doing temperature calibration here
+      # # Goes to zero on MQTT restart even with the unavailable condition?
+      # # {% if value_json.temperature | default and not is_state('sensor.multisensor2_temperature', 'unavailable') %}
+      # value_template: >
+        # {% if value_json.temperature | default %}
+          # {{ '%0.1f'|format(value_json.temperature | float - 2.0) }}
+        # {% else %}
+          # {{states('input_number.last_house_temp')}}
+        # {% endif %}
 
-    # If this used the sensor goes unknown when HA restarts
-    # and works again with the next change in humidity
-    #{{ states('sensor.multiSensor2_humidity')}}
-    - unique_id: MS2_humidity
-      name: "MultiSensor2 Humidity"
-      state_topic: "/home/ms2"
-      state_class: measurement
-      device_class: humidity
-      unit_of_measurement: "%"
-      value_template: >
-        {% if value_json.humidity | default %}
-          {{value_json.humidity}}
-        {%- else -%}
-          {{ states('input_number.last_house_humidity')}}
-        {%- endif -%}
+    # # If this used the sensor goes unknown when HA restarts
+    # # and works again with the next change in humidity
+    # #{{ states('sensor.multiSensor2_humidity')}}
+    # - unique_id: MS2_humidity
+      # name: "MultiSensor2 Humidity"
+      # state_topic: "/home/ms2"
+      # state_class: measurement
+      # device_class: humidity
+      # unit_of_measurement: "%"
+      # value_template: >
+        # {% if value_json.humidity | default %}
+          # {{value_json.humidity}}
+        # {%- else -%}
+          # {{ states('input_number.last_house_humidity')}}
+        # {%- endif -%}
 
-    - unique_id: MS2_pressure
-      name: "MultiSensor2 Pressure"
-      state_topic: "/home/ms2"
-      state_class: measurement
-      device_class: pressure
-      unit_of_measurement: "hPa"
-      value_template: >
-        {%- if value_json.pressure | default -%}
-          {{value_json.pressure}}
-        {%- else -%}
-          {{ states('input_number.last_pressure')}}
-        {%- endif -%}
+    # - unique_id: MS2_pressure
+      # name: "MultiSensor2 Pressure"
+      # state_topic: "/home/ms2"
+      # state_class: measurement
+      # device_class: pressure
+      # unit_of_measurement: "hPa"
+      # value_template: >
+        # {%- if value_json.pressure | default -%}
+          # {{value_json.pressure}}
+        # {%- else -%}
+          # {{ states('input_number.last_pressure')}}
+        # {%- endif -%}
 
-    - unique_id: MS2_gas
-      name: "MultiSensor2 Gas"
-      state_topic: "/home/ms2"
-      state_class: measurement
-      unit_of_measurement: "Kohms"
-      value_template: >
-        {%- if value_json.gas | default -%}
-          {{value_json.gas}}
-        {%- else -%}
-          {{ states('input_number.last_gas')}}
-        {%- endif -%}
-
-#Using HA Filter to calculate average
-    # - unique_id: MS2_gasavg
-      # name: "MultiSensor2 GasAVG"
+    # - unique_id: MS2_gas
+      # name: "MultiSensor2 Gas"
       # state_topic: "/home/ms2"
       # state_class: measurement
       # unit_of_measurement: "Kohms"
       # value_template: >
-        # {%- if value_json.gasavg | default -%}
-          # {{value_json.gasavg}}
+        # {%- if value_json.gas | default -%}
+          # {{value_json.gas}}
         # {%- else -%}
-          # {{ states('sensor.multiSensor2_gasavg')}}
+          # {{ states('input_number.last_gas')}}
         # {%- endif -%}
 
-### the IOT device send RSSI value on power up reset only
-    - unique_id: MS2_rssi
-      name: "MultiSensor2 RSSI"
-      state_topic: "/home/ms2"
-      state_class: measurement
-      device_class: signal_strength
-      unit_of_measurement: "dBm"
-      value_template: >
-        {%- if value_json.rssi | default -%}
-          {{value_json.rssi}}
-        {%- else -%}
-          {{ states('input_number.last_rssi')}}
-        {%- endif -%}
+# #Using HA Filter to calculate average
+    # # - unique_id: MS2_gasavg
+      # # name: "MultiSensor2 GasAVG"
+      # # state_topic: "/home/ms2"
+      # # state_class: measurement
+      # # unit_of_measurement: "Kohms"
+      # # value_template: >
+        # # {%- if value_json.gasavg | default -%}
+          # # {{value_json.gasavg}}
+        # # {%- else -%}
+          # # {{ states('sensor.multiSensor2_gasavg')}}
+        # # {%- endif -%}
+
+# ### the IOT device send RSSI value on power up reset only
+    # - unique_id: MS2_rssi
+      # name: "MultiSensor2 RSSI"
+      # state_topic: "/home/ms2"
+      # state_class: measurement
+      # device_class: signal_strength
+      # unit_of_measurement: "dBm"
+      # value_template: >
+        # {%- if value_json.rssi | default -%}
+          # {{value_json.rssi}}
+        # {%- else -%}
+          # {{ states('input_number.last_rssi')}}
+        # {%- endif -%}
         
         
   fan:
@@ -157,15 +157,15 @@
          -  ">>"
          -  "SWING"
   
-# MultiSensor2 Support
-  light:
-    - unique_id: MS2_light
-      name: MS2_light
-      schema: json
-      command_topic: "/home/ms2/l"
-      state_topic: "/home/ms2/lc"
-      rgb: true
-      retain: true
+# # MultiSensor2 Support
+  # light:
+    # - unique_id: MS2_light
+      # name: MS2_light
+      # schema: json
+      # command_topic: "/home/ms2/l"
+      # state_topic: "/home/ms2/lc"
+      # rgb: true
+      # retain: true
       
   climate:
     - unique_id: heatpump

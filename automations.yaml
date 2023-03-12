@@ -359,7 +359,7 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.multisensor2_temperature
+      entity_id: sensor.multisensor_gen3_ms3_temperature
       state: unavailable
   action:
   - service: notify.mobile_app_grahams_iphone
@@ -412,14 +412,14 @@
       message: Basement Flood Detected!
 - id: 2c587360c4a8480faa87bf3e388f1cac
   alias: Watchdog Alarm
-  description: Send a notice to iPhone if MultiSensor2 is disconnected from WiFi an
+  description: Send a notice to iPhone if MultiSensor3 is disconnected from WiFi an
     UPS ONline
   trigger:
   - platform: time_pattern
     minutes: /10
   condition:
   - condition: state
-    entity_id: binary_sensor.ping_ms2
+    entity_id: binary_sensor.ping_ms3
     state: 'off'
   - condition: not
     conditions:
@@ -544,7 +544,7 @@
     entity_id: counter.fan_on_minutes
   initial_state: true
   mode: single
-- id: 17e8bb84eb9d47888792ec4646772ec4  
+- id: 17e8bb84eb9d47888792ec4646772ec4
   alias: Hourly Temperature Difference
   initial_state: true
   trigger:
@@ -556,7 +556,7 @@
       temp_diff: temp_diff
       temp_diff_accum: temp_diff_accum
       hour_diff: hour_diff
-- id: b6c8df5f4b884258bb0ce456a9900986  
+- id: b6c8df5f4b884258bb0ce456a9900986
   alias: Energy Integration
   initial_state: true
   trigger:
@@ -609,6 +609,7 @@
     minutes: /5
   action:
   - service: python_script.hvac
+    data: {}
   mode: single
 - id: 75f3710546f84017a8ad9af8833c330c
   alias: Redirect all MQTT HVAC set commands to the heatpumps
@@ -633,7 +634,7 @@
   mode: single
 - id: e42cd82395df4e798be4ad063006e0e4
   alias: Furnace State
-  description: 'Sends colour info to RGB LED in MultiSensor2
+  description: 'Sends colour info to RGB LED in MultiSensor3
 
     cool/off added to prevent triggers from other attributes
 
@@ -669,9 +670,9 @@
         {% else %} white {% endif %}
 
         '
-      brightness: 100
+      brightness: 200
     target:
-      entity_id: light.ms2_light
+      entity_id: light.multisensor_gen3_ms3_light
   initial_state: true
   mode: single
 - id: f7b38968d7ad45cdaee935f942d8a8ad
@@ -700,54 +701,36 @@
   alias: Last House Temperature
   trigger:
   - platform: state
-    entity_id: sensor.multisensor2_temperature
+    entity_id: sensor.multisensor_gen3_ms3_temperature
   condition:
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.multisensor2_temperature
+      entity_id: sensor.multisensor_gen3_ms3_temperature
       state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_house_temp
-      value: '{{ states(''sensor.multisensor2_temperature'')}}'
+      value: '{{ states(''sensor.multisensor_gen3_ms3_temperature'')}}'
   initial_state: true
   mode: single
 - id: 72e51baeb4cc419faa7ab04f1ce0d08b
   alias: Last House Humidity
   trigger:
   - platform: state
-    entity_id: sensor.multisensor2_humidity
+    entity_id: sensor.multisensor_gen3_ms3_humidity
   condition:
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.multisensor2_humidity
+      entity_id: sensor.multisensor_gen3_ms3_humidity
       state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_house_humidity
-      value: '{{ states(''sensor.multisensor2_humidity'')}}'
-  initial_state: true
-  mode: single
-- id: 2072791e237b42a9a68bf82a35d9388f
-  alias: Last Gas
-  trigger:
-  - platform: state
-    entity_id: sensor.multisensor2_gas
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.multisensor2_gas
-      state: unavailable
-  action:
-  - service: input_number.set_value
-    data:
-      entity_id: input_number.last_gas
-      value: '{{ states(''sensor.multisensor2_gas'')}}'
+      value: '{{ states(''sensor.multisensor_gen3_ms3_humidity'')}}'
   initial_state: true
   mode: single
 - id: 6bbfc94a788c4f89b4936b24e0f8c7fc
@@ -1152,18 +1135,18 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.multisensor2_pressure
+    - sensor.multisensor_gen3_ms3_pressure
   condition:
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.multisensor2_pressure
+      entity_id: sensor.multisensor_gen3_ms3_pressure
       state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_pressure
-      value: '{{ states(''sensor.multisensor2_pressure'')}}'
+      value: '{{ states(''sensor.multisensor_gen3_ms3_pressure'')}}'
   mode: single
   initial_state: true
 - id: '1676935754174'
@@ -1172,17 +1155,17 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.multisensor2_rssi
+    - sensor.ms3_rssi
   condition:
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.multisensor2_rssi
+      entity_id: sensor.ms3_rssi
       state: unavailable
   action:
   - service: input_number.set_value
     data:
       entity_id: input_number.last_rssi
-      value: '{{ states(''sensor.multisensor2_rssi'')}}'
+      value: '{{ states(''sensor.ms3_rssi'')}}'
   mode: single
   initial_state: true
