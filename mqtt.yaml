@@ -35,20 +35,21 @@
     - unique_id: flood
       name: "Flood"
       state_topic: "/home/basement/flood"
-  
-    - unique_id: remote_temperature
-      name: "Remote Temperature"
-      state_topic: "/home/TH_sensor1"
-      state_class: measurement
-      unit_of_measurement: "°C"
-      value_template: "{{ value_json.temperature }}"
 
-    - unique_id: remote_humdity
-      name: "Remote Humidity"
-      state_topic: "/home/TH_sensor1"
-      state_class: measurement
-      unit_of_measurement: "%"
-      value_template: "{{ value_json.humidity }}"
+#Now using ESPHome device 
+    # - unique_id: remote_temperature
+      # name: "Remote Temperature"
+      # state_topic: "/home/TH_sensor1"
+      # state_class: measurement
+      # unit_of_measurement: "°C"
+      # value_template: "{{ value_json.temperature }}"
+
+    # - unique_id: remote_humdity
+      # name: "Remote Humidity"
+      # state_topic: "/home/TH_sensor1"
+      # state_class: measurement
+      # unit_of_measurement: "%"
+      # value_template: "{{ value_json.humidity }}"
 
 # # Multisensor2 Support
     # - unique_id: MS2_temperature

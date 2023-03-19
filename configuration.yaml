@@ -34,16 +34,16 @@ http:
   trusted_proxies:
     - 192.168.1.90
 
+websocket_api:
+
 esphome:
-# api:
-  # password: !secret ota_password
 
 python_script:
 
 #This set the severity of notices in the log file
 #Can be set to "info" for more detail or "debug" for certain components
 logger:
-  default: info
+  default: warning
   # Ignore rainforest errors and warnings as it reboots daily.
   logs:
     homeassistant.components.rainforest_eagle.data: critical
@@ -145,6 +145,9 @@ recorder:
       - input_number.hydro_meter_last_hour
       - input_number.hydro_meter_last_day
       - input_number.hepa_hours
+      #MS3
+      - sensor.multisensor_gen3_ms3_gas_resistance
+      - sensor.ms3_rssi
 
     domains:
       - zwave

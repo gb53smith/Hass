@@ -208,7 +208,7 @@
   initial_state: true
   mode: single
 - id: b2a9dbd5f844423592514eff70d6e9f3
-  alias: Set Away or Asleep Setpoint
+  alias: Set Asleep Setpoint
   description: Change thermostat set point to slider_away temp at datetime.heat_off_time
   trigger:
   - platform: template
@@ -345,22 +345,18 @@
   alias: Notify House Out of Range Temperature
   description: Send Notification if temperature reaches min_temp or max_temp.
   trigger:
-  - platform: template
-    value_template: '{% if is_state(''binary_sensor.away'', ''on'') %}
-
-      {{ states(''sensor.house_temperature'') | float > 30.0 }}
+  - platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: template
+    value_template: '{% if is_state(''binary_sensor.away'', ''on'') %} {{ states(''sensor.house_temperature'')
+      | float > 30.0 }}
 
       {% else %}
 
       {{ states(''sensor.house_temperature'') | float > 26.0 }}
 
       {% endif %}'
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.multisensor_gen3_ms3_temperature
-      state: unavailable
   action:
   - service: notify.mobile_app_grahams_iphone
     data:
@@ -370,16 +366,17 @@
 - id: df3e71a6d3fb4f0bbe53f6768b781d2e
   alias: Notify Wine Out of Range Temperature
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.remote_temperature'') | float > 15.5 }}'
-  - platform: template
-    value_template: '{{ states(''sensor.remote_temperature'') | float < 10.0 }}'
+  - platform: time_pattern
+    minutes: /5
   condition:
-  - condition: not
+  - condition: or
     conditions:
-    - condition: state
-      entity_id: sensor.remote_temperature
-      state: unavailable
+    - condition: numeric_state
+      entity_id: sensor.winecellar_temperature
+      below: 10
+    - condition: numeric_state
+      entity_id: sensor.winecellar_temperature
+      above: 15.5
   action:
   - service: notify.mobile_app_grahams_iphone
     data:
@@ -601,12 +598,12 @@
       mode: average
 - id: 462a791f448d479f9439e0243958ba74
   alias: HVAC
-  description: Triggers a Python Script every 5 minutes to decide if heat pump should
+  description: Triggers a Python Script every minute to decide if heat pump should
     be cooling.  If ON the Heat Pump ON/OFF automations must be turned OFF as they
     control the heat pump while in heating mode.
   trigger:
   - platform: time_pattern
-    minutes: /5
+    minutes: /1
   action:
   - service: python_script.hvac
     data: {}

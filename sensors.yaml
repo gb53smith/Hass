@@ -31,3 +31,4 @@
       # window_size: "02:40"
       # precision: 0
 
+- platform: websocket_api

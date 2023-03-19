@@ -1,8 +1,8 @@
 
 '''
-Date:  May 31, 2021
+Date:  March 12, 2023
 
-Versions used: HA2021.4.3, HassOS and Raspberry PI 3 B
+Versions used: HA2023.3.3
 
 Description:
 
@@ -17,7 +17,7 @@ Instructions:
     initial_state: True
     trigger:
       - platform: time_pattern
-        minutes: '/5'      
+        minutes: '/1'      
     action:
       service: python_script.heatpump
       
@@ -86,6 +86,7 @@ away = hass.states.get('binary_sensor.away').state
 
 # Heating temperature set points
 home_temperature = float(hass.states.get('input_number.slider_home').state)
+away_temperature = float(hass.states.get('input_number.slider_away').state)
 #logger.warning("home_temperature = {}".format(home_temperature))
 # Cooling Temperature set points
 ac_away = float(hass.states.get('input_number.slider_ac_away').state)
@@ -114,7 +115,7 @@ if away == 'off':
             hass.services.call('climate', 'set_temperature', service_data, False)
     # Turn off heat pump and furnance in zone between heating and cooling
     elif current_temperature <= ac_home - 1.0 and \
-        current_temperature > home_temperature + 0.5:
+        current_temperature > home_temperature + 0.3:
         #logger.warning("Got to heatpumpxoff1")
         #logger.warning("Turning heatpump OFF with current_temperature = {}".format(current_temperature))
         if operation_mode != 'off': # Prevent repeat if already cooling
@@ -172,7 +173,7 @@ if away == 'off':
 # When away use only the furnace to maintain the low away temperature.
 # Use the heat pump to cool only if the higher ac away set point is exceeded.
 # Prevent cooking the house plants when away in the summer time.
-if away == 'on':
+else: #away == 'on'
     #logger.warning("Got to heatpumpxaway")
     if current_temperature >= ac_away + 1.5:
         if operation_mode != 'cooling': # Prevent repeat if already cooling
@@ -185,8 +186,12 @@ if away == 'on':
     if current_temperature <= ac_away - 1.0 and operation_mode != 'off':
         service_data = {'entity_id': 'climate.mitsubishi_heatpump', 'hvac_mode': 'off'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False)
-        # Use furnace only to heat while away
+    # Use furnace only to heat while away
+    if furnace_state != 'heat':
         service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
         hass.services.call('climate', 'set_hvac_mode', service_data, False) 
 
-
+#Enable furnance heating while away or sleeping at night
+if furnace_setpoint == away_temperature and furnace_state != 'heat':
+    service_data = {'entity_id': 'climate.house', 'hvac_mode': 'heat'}
+    hass.services.call('climate', 'set_hvac_mode', service_data, False) 
