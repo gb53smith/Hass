@@ -3,8 +3,12 @@ logger:
 
 esphome:
   name: ms3
+  #80 MHz is the lowest possible frequency
   platformio_options:
     board_build.f_cpu: 80000000L
+  # Used to verify that the CPU frequency was set to 80 MHz
+  #includes:
+  #  - cpufreq.h
 
 esp32:
   board: esp32dev
@@ -70,6 +74,16 @@ sensor:
   - platform: wifi_signal
     name: "MS3 RSSI"
     update_interval: 60s
+
+  #- platform: custom
+  #  lambda: |-
+  #    auto cpufreq = new MyCPU();
+  #    App.register_component(cpufreq);
+  #    return {cpufreq->cpu_sensor};
+  #  sensors:
+  #  - name: "CPU Frequency"
+  #    unit_of_measurement: MHz
+  #    accuracy_decimals: 0
 
   # Used to see if CPU frequency option has any affect
   #- platform: internal_temperature
