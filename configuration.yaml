@@ -34,8 +34,12 @@ http:
   trusted_proxies:
     - 192.168.1.90
 
-websocket_api:
+#websocket_api:
 
+#Try fixed IP address to fix update warnings
+samsungtv:
+  - host: 192.168.1.74
+  
 esphome:
 
 python_script:
@@ -43,11 +47,11 @@ python_script:
 #This set the severity of notices in the log file
 #Can be set to "info" for more detail or "debug" for certain components
 logger:
-  default: info
+  default: warning
   # Ignore rainforest errors and warnings as it reboots daily.
   logs:
     homeassistant.components.rainforest_eagle.data: critical
-    #homeassistant.components.websocket_api.http.connection: error
+    homeassistant.components.websocket_api.http.connection: error
   # logs:
     # homeassistant.components.python_scripts: debug
     # homeassistant.components.sensor.time: error
@@ -59,19 +63,19 @@ logger:
     # homeassistant.components.mysensors: debug
     # mysensors: debug
 
-# Send SMS if burglar alarm triggered
-twilio:
-  account_sid: !secret account_sid
-  auth_token: !secret auth_token
+# # Send SMS if burglar alarm triggered
+# twilio:
+  # account_sid: !secret account_sid
+  # auth_token: !secret auth_token
 
-notify:
-  # - name: Burglar Alarm SMS
-    # platform: twilio_sms
-    # from_number: !secret from_number
-  - name: energy_notify
-    platform: file
-    filename: hourly_energy.csv
-    timestamp: true
+# notify:
+  # # - name: Burglar Alarm SMS
+    # # platform: twilio_sms
+    # # from_number: !secret from_number
+  # - name: energy_notify
+    # platform: file
+    # filename: hourly_energy.csv
+    # timestamp: true
 
 # Keep database from growing too large by purging
 # No need to record some entities

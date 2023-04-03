@@ -478,6 +478,11 @@
       percentage: 40
     target:
       entity_id: fan.hepa_filter_fan
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: 'off'
+    target:
+      entity_id: climate.house
   - delay:
       minutes: 10
   - service: notify.mobile_app_grahams_iphone
@@ -1166,3 +1171,58 @@
       value: '{{ states(''sensor.ms3_rssi'')}}'
   mode: single
   initial_state: true
+- id: '1679763471320'
+  alias: HVAC2
+  description: Triggers a script every minute to determine heatpump and furnace operating
+    modes.  Condition 1 is when away - cool around ac_away setpoint Condition 2 is
+    when not away and sleeping (furnace setpoint is away setpoint) - cool around ac_home
+    setpoint Condition 2 is when not away - cool around ac_home setpoint, heat around
+    the home setpoint with heatpump. use the furnance to bring house temperature in
+    range of heatpump.
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.house
+      - service: script.hvac_away
+        data:
+          cool_setpoint: '{{states(''input_number.slider_ac_away'')}}'
+          temperature: '{{states(''sensor.house_temperature'')}}'
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: 'off'
+      - condition: template
+        value_template: '{{is_state_attr(''climate.house'', ''temperature'', states(''input_number.slider_away'')|float)}}'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.house
+      - service: script.hvac_away
+        data:
+          cool_setpoint: '{{states(''input_number.slider_ac_home'')}}'
+          temperature: '{{states(''sensor.house_temperature'')}}'
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.away
+        state: 'off'
+      sequence:
+      - service: script.hvac_home
+        data:
+          cool_setpoint: '{{states(''input_number.slider_ac_home'')}}'
+          heat_setpoint: '{{states(''input_number.slider_home'')}}'
+          temperature: '{{states(''sensor.house_temperature'')}}'
+  mode: single

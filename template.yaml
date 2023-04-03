@@ -4,7 +4,12 @@
   - name: "outdoor temp"
     unique_id: my_outdoor temp
     unit_of_measurement: "°C"
-    state: "{{ states('sensor.mysensors_bme280_2_2') | float }}"
+    state: >
+        {% if is_state('sensor.mysensors_bme280_2_2', 'unavailable') %}
+          99.0
+        {% else %}
+           {{states('sensor.mysensors_bme280_2_2') | float}}
+        {% endif %}
     state_class: measurement
     device_class: temperature
     
@@ -122,4 +127,5 @@
   - name: "Hepa Filter Hours Rounded"
     unique_id: my_hepa_filter_hours_rounded
     state: "{{ states('input_number.hepa_hours') | round}}"
+
       
