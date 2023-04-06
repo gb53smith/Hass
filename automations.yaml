@@ -71,17 +71,17 @@
     entity_id: script.ir_deck
 - id: ee79e6868aca40588a2b5d40bd9846e4
   alias: Irrigation Safety
-  description: "  In case some interruption occurs while a zone is ON\n  Not sure
-    this is necessary but does not hurt to include\n Time are after the last zone
-    cycle"
+  description: In case some interruption occurs while a zone is ON. I assume that
+    the irrigation cycle is less than one hour.
   trigger:
   - platform: time
-    at: 08:30:00
+    at: input_datetime.irrigation_am_stop_time
   - platform: time
-    at: '20:30:00'
+    at: input_datetime.irrigation_pm_stop_time
   action:
   - service: homeassistant.turn_off
     entity_id: group.irrigation_switches
+    enabled: true
   initial_state: true
   mode: single
 - id: cb7eba0fd302410b9ea9cead3639b39c
@@ -1225,4 +1225,73 @@
           cool_setpoint: '{{states(''input_number.slider_ac_home'')}}'
           heat_setpoint: '{{states(''input_number.slider_home'')}}'
           temperature: '{{states(''sensor.house_temperature'')}}'
+  mode: single
+- id: '1680562086422'
+  alias: Irrigation Multiplier
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.average_outdoor_temperature
+  - platform: state
+    entity_id:
+    - input_number.irrigation_gain
+  - platform: state
+    entity_id:
+    - input_number.irrigation_nom_temperature
+  condition:
+  - condition: state
+    entity_id: input_boolean.enable_irrigation_multiplier
+    state: 'on'
+  action:
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.irrigation_multiplier
+      value: '{{ states(''sensor.average_outdoor_temperature'') | float / states(''input_number.irrigation_nom_temperature'')
+        | float * states(''input_number.irrigation_gain'') | float}}'
+  mode: single
+- id: '1680563383342'
+  alias: Advanced Irrigation
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.irrigation_am_time
+  - platform: time
+    at: input_datetime.irrigation_pm_time
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ states(''sensor.yesterday_rainfall'') | float < 5 }}'
+  action:
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.advanced_irrigate_front
+  - wait_template: '{{is_state(''script.advanced_irrigate_front'', ''off'')}}'
+    continue_on_timeout: false
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.advanced_irrigate_back
+  - wait_template: '{{is_state(''script.advanced_irrigate_back'', ''off'')}}'
+    continue_on_timeout: false
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.advanced_irrigate_deck
+  - wait_template: '{{is_state(''script.advanced_irrigate_deck'', ''off'')}}'
+    continue_on_timeout: false
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.irrigation_am_stop_time
+    data:
+      datetime: '{{ strptime(states(''input_datetime.irrigation_am_time''), ''%H:%M:%S'')
+        + timedelta(hours=1) }}'
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.irrigation_pm_stop_time
+    data:
+      datetime: '{{ strptime(states(''input_datetime.irrigation_pm_time''), ''%H:%M:%S'')
+        + timedelta(hours=1) }}'
   mode: single

@@ -23,7 +23,7 @@ ota:
 api:
   encryption:
    key: !secret api_encryption_key
-  
+     
 binary_sensor:
   - platform: gpio
     name: "Rssi button"

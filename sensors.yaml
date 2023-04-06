@@ -31,4 +31,12 @@
       # window_size: "02:40"
       # precision: 0
 
-- platform: websocket_api
+#- platform: websocket_api
+
+- platform: filter
+  name: "Average Outdoor Temperature"
+  entity_id: sensor.outdoor_temp
+  filters:
+    - filter: time_simple_moving_average
+      window_size: "24:00"
+      precision: 0.1

@@ -233,3 +233,60 @@ hvac_away:
         target:
           entity_id: climate.mitsubishi_heatpump
   mode: single
+advanced_irrigate_front:
+  alias: Advanced Irrigate Front
+  sequence:
+  - condition: state
+    entity_id: input_boolean.enable_irrigation_front
+    state: 'on'
+  - service: switch.turn_off
+    entity_id: switch.back_irrigation
+  - service: switch.turn_off
+    entity_id: switch.relay_deck
+  - delay:
+      seconds: 10
+  - service: switch.turn_on
+    entity_id: switch.front_irrigation
+  - delay: 00:{{ (states('input_number.slider_delay_f') | float * states('input_number.irrigation_multiplier')
+      | float) | round()}}:00
+  - service: switch.turn_off
+    entity_id: switch.front_irrigation
+  mode: single
+advanced_irrigate_back:
+  alias: Advanced Irrigate Back
+  sequence:
+  - condition: state
+    entity_id: input_boolean.enable_irrigation_back
+    state: 'on'
+  - service: switch.turn_off
+    entity_id: switch.front_irrigation
+  - service: switch.turn_off
+    entity_id: switch.deck_irrigation
+  - delay:
+      seconds: 10
+  - service: switch.turn_on
+    entity_id: switch.back_irrigation
+  - delay: 00:{{ (states('input_number.slider_delay_b') | float * states('input_number.irrigation_multiplier')
+      | float) | round()}}:00
+  - service: switch.turn_off
+    entity_id: switch.back_irrigation
+  mode: single
+advanced_irrigate_deck:
+  alias: Advanced Irrigate Deck
+  sequence:
+  - condition: state
+    entity_id: input_boolean.enable_irrigation_deck
+    state: 'on'
+  - service: switch.turn_off
+    entity_id: switch.front_irrigation
+  - service: switch.turn_off
+    entity_id: switch.back_irrigation
+  - delay:
+      seconds: 10
+  - service: switch.turn_on
+    entity_id: switch.deck_irrigation
+  - delay: 00:{{ (states('input_number.slider_delay_d') | float * states('input_number.irrigation_multiplier')
+      | float) | round()}}:00
+  - service: switch.turn_off
+    entity_id: switch.deck_irrigation
+  mode: single
