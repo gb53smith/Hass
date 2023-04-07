@@ -16,11 +16,11 @@
     - "time"
     - "date"
 
-- platform: command_line
-  name: Yesterday Rainfall
-  unit_of_measurement: "mm"
-  scan_interval: 10800
-  command: "python3 /config/getrain.py"
+# - platform: command_line
+  # name: Yesterday Rainfall
+  # unit_of_measurement: "mm"
+  # scan_interval: 10800
+  # command: "python3 /config/getrain.py"
 
 ## Filter in HA instead of at IOT device
 # - platform: filter

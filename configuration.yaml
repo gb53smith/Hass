@@ -36,9 +36,9 @@ http:
 
 #websocket_api:
 
-#Try fixed IP address to fix update warnings
-samsungtv:
-  - host: 192.168.1.74
+#Try fixed IP address to fix update warnings.  Moved to UI.
+#samsungtv:
+#  - host: 192.168.1.74
   
 esphome:
 
@@ -147,12 +147,15 @@ recorder:
       - sensor.eagle_200_total_meter_energy_delivered
       - sensor.eagle_200_net_meter_energy_delivered_minus_received
       - sensor.eagle_200_total_meter_energy_received
+      - sensor.meter_price
       - input_number.hydro_meter_last_hour
       - input_number.hydro_meter_last_day
       - input_number.hepa_hours
       #MS3
       - sensor.multisensor_gen3_ms3_gas_resistance
       - sensor.ms3_rssi
+      - sensor.ms3_breath_voc_equivalent
+      - sensor.ms3_co2_equivalent
 
     domains:
       - zwave
@@ -180,21 +183,21 @@ recorder:
 
 # View only some events in logbook
 # Depends on recorder settings.
-logbook:
-  include:
-    entities:
-      - climate.summer_fan
-      - light.ge_12724_3way_dimmer_switch_level
-      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-      - sensor.heat_state
-      - sensor.flood
-      - binary_sensor.away
-      - switch.back_irrigation
-      - switch.deck_irrigation
-      - switch.front_irrigation
-      - switch.scene_capable_switch_on_off
-      - switch.leviton_dzr151lz_binary_scene_switch_switch
-      - sensor.widevane
+# logbook:
+  # include:
+    # entities:
+      # - climate.summer_fan
+      # - light.ge_12724_3way_dimmer_switch_level
+      # - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      # - sensor.heat_state
+      # - sensor.flood
+      # - binary_sensor.away
+      # - switch.back_irrigation
+      # - switch.deck_irrigation
+      # - switch.front_irrigation
+      # - switch.scene_capable_switch_on_off
+      # - switch.leviton_dzr151lz_binary_scene_switch_switch
+      # - sensor.widevane
       # Test only
       # - input_number.power_test
       # - input_number.energy_accum
@@ -202,22 +205,22 @@ logbook:
 
 # View the history of only some components
 # Depends on recorder settings.
-history:
-  include:
-    entities:
-      - sensor.date
-      - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
-      - binary_sensor.away
-      - binary_sensor.ecolink_motion_detector_sensor
-      - switch.scene_capable_switch_on_off
-      - switch.back_irrigation
-      - switch.deck_irrigation
-      - switch.front_irrigation
-      - switch.furnace
-      - switch.fan
-      - sensor.flood
-      - sensor.house_temperature
-      - sensor.eagle_200_meter_power_demand
+# history:
+  # include:
+    # entities:
+      # - sensor.date
+      # - lock.schlage_be469nxcen_touchscreen_deadbolt_locked
+      # - binary_sensor.away
+      # - binary_sensor.ecolink_motion_detector_sensor
+      # - switch.scene_capable_switch_on_off
+      # - switch.back_irrigation
+      # - switch.deck_irrigation
+      # - switch.front_irrigation
+      # - switch.furnace
+      # - switch.fan
+      # - sensor.flood
+      # - sensor.house_temperature
+      # - sensor.eagle_200_meter_power_demand
 
 # Keep alive repeats furnace ON or OFF message every 3 minutes
 # Furnace Arduino will expect repeated furnace ON messages to keep the furnace relay ON.
@@ -444,21 +447,21 @@ input_number:
     step: 0.1
     mode: box
   # Save last sensor.multisensor2_humidity for HA restart
-  last_house_humidity:
-    min: 0
-    max: 100
-    step: 1
-    mode: box
-  last_pressure:
-    min: 900
-    max: 1200
-    step: 1
-    mode: box
-  last_rssi:
-    min: -120
-    max: 0
-    step: 1
-    mode: box
+  # last_house_humidity:
+    # min: 0
+    # max: 100
+    # step: 1
+    # mode: box
+  # last_pressure:
+    # min: 900
+    # max: 1200
+    # step: 1
+    # mode: box
+  # last_rssi:
+    # min: -120
+    # max: 0
+    # step: 1
+    # mode: box
   hour_diff:
     min: -20
     max: 100
