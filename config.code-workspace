@@ -7,6 +7,8 @@
 	"settings": {
 		"files.associations": {
 			"*.yaml": "home-assistant"
-		}
+		},
+		"vscode-home-assistant.hostUrl": "homeassistant",
+		"vscode-home-assistant.longLivedAccessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2YWY1ZjBlNmJiOGI0YTcwOGIxOTUxMWQzZTdhNjdiZCIsImlhdCI6MTY4MTE3Nzc2MywiZXhwIjoxOTk2NTM3NzYzfQ.NQ5ByqMBYLD0krKTEh1G2r8wGpiOTCn8TZLQCuFifXM"
 	}
 }

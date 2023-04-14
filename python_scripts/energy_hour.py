@@ -1,8 +1,8 @@
 
 '''
-Date:  August 31, 2021
+Date:  April 12, 2023
 
-Versions used: HA2021.8.8, HassOS and Raspberry PI 3 B
+Versions used: HA2023.4.1
 
 Description:
 This Python Script calculates the energy used from the last power change to the hour boundary
@@ -47,29 +47,6 @@ Instructions:
       step: 0.1
       mode: box 
         
-    hydro_hourly_energy:
-      min: 0
-      max: 1000
-      step: 0.1
-      mode: box
-    
-    hydro_daily_energy:
-      min: 0
-      max: 1000
-      step: 0.1
-      mode: box
-      
-    hydro_meter_last_hour:
-      min: 0
-      max: 1000000
-      step: 0.1
-      mode: box
-    
-    hydro_meter_last_day::
-      min: 0
-      max: 1000000
-      step: 0.1
-      mode: box
         
 3.  Add this automation to automations.yaml
     
@@ -98,12 +75,6 @@ energy_hour:
         last_power: last_power
         energy_accum: energy_accum
         hourly_energy: hourly_energy
-        meter: eagle_200_total_meter_energy_delivered
-        last_hour: hydro_last_hour
-        last_day: hydro_last_day
-        hydro_hourly_energy: hydro_hourly_energy
-        hydro_daily_energy: hydro_daily_energy        
-
 
 5. Use the history_graph lovelace card to display the result.
 
@@ -126,13 +97,6 @@ power = data.get('power', '0')
 last_power = data.get('last_power', '0')
 energy_accum = data.get('energy_accum', '0')
 hourly_energy = data.get('hourly_energy', '0')
-
-#Hydro Energy
-meter = data.get('meter', '0')
-last_hour = data.get('last_hour', '0')
-last_day = data.get('last_day', '0')
-hydro_hourly_energy = data.get('hydro_hourly_energy', '0')
-hydro_daily_energy = data.get('hydro_daily_energy', '0')
       
 
 if power != '0':
@@ -155,31 +119,6 @@ if hourly_energy != '0':
 else:
 	logger.error("Energy script missing hourly_energy data.")
     
-
-if meter != '0':
-	sensor_meter = "sensor." + meter
-else:
-	logger.error("Energy script missing meter data.")
-    
-if last_hour != '0':
-	input_number_last_hour = "input_number." + last_hour
-else:
-	logger.error("Energy script missing last_hour data.")
-    
-if last_day != '0':
-	input_number_last_day = "input_number." + last_day
-else:
-	logger.error("Energy script missing last_day data.")
-    
-if hydro_hourly_energy != '0':
-	input_number_hydro_hourly_energy = "input_number." + hydro_hourly_energy
-else:
-	logger.error("Energy script missing hydro_hourly_energy data.")
-    
-if hydro_daily_energy != '0':
-	input_number_hydro_daily_energy = "input_number." + hydro_daily_energy
-else:
-	logger.error("Energy script missing hydro_daily_energy data.")
 
 # timestamp is required to calculate energy from last power to the end of the window
 time = datetime.datetime.now()
@@ -216,37 +155,3 @@ hass.states.set(input_number_hourly_energy, round(energy_accum, 1), {"unit_of_me
 hass.states.set(input_number_energy_acum, 0, {"unit_of_measurement": energy_unit})
 #logger.warning("Last Window energy_accum = {}".format(energy_accum)) 
 
-# Hydro Energy Calculations
-#logger.warning("sensor is  = {}".format(sensor_meter))   
-meter_reading_state = hass.states.get(sensor_meter)
-#logger.warning("sensor reading  = {}".format(meter_reading_state.state)) 
-#logger.warning("sensor state  = {}".format(meter_reading_state))   
-meter_reading = float(meter_reading_state.state)
-
-
-meter_attr = hass.states.get(sensor_meter).attributes
-#logger.warning("sensor attr  = {}".format(meter_attr))
-meter_unit = meter_attr['unit_of_measurement']
-#logger.warning("sensor attr2  = {}".format(meter_unit))
-
-last_hour_state = hass.states.get(input_number_last_hour)
-last_hour_reading = float(last_hour_state.state)
-
-last_day_state = hass.states.get(input_number_last_day)
-last_day_reading = float(last_day_state.state)
-
-delta_energy = meter_reading - last_hour_reading
-
-#Update hourly energy
-hass.states.set(input_number_hydro_hourly_energy, delta_energy, {"unit_of_measurement": meter_unit})        
-hass.states.set(input_number_last_hour, meter_reading , {"unit_of_measurement": meter_unit})
-
-#Update daily energy at midnight
-time = datetime.datetime.now()
-time_min = time.minute
-time_hour = time.hour
-
-if time_hour == 0 and time_min == 0:  #At midnight
-    delta_energy = meter_reading - last_day_reading
-    hass.states.set(input_number_hydro_daily_energy, delta_energy, {"unit_of_measurement": meter_unit})        
-    hass.states.set(input_number_last_day, meter_reading , {"unit_of_measurement": meter_unit})

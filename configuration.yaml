@@ -101,7 +101,7 @@ recorder:
       #- input_number.last_power
       - input_number.temp_diff_accum
       - input_number.hourly_temp_diff_accum
-      - input_number.last_house_temp
+      #GBS- input_number.last_house_temp
       - input_number.last_house_humidity
       ## calibration settings
       - input_number.soil_dry_1
@@ -113,7 +113,7 @@ recorder:
       - input_datetime.plant_light_off_time
       - input_datetime.plant_light_on_time
       ## No need to see history after debug
-      - sensor.temp_diff
+      #- sensor.temp_diff
       - counter.fan_on_minutes
       - counter.brita_days
       - binary_sensor.updater

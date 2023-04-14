@@ -40,3 +40,19 @@
     - filter: time_simple_moving_average
       window_size: "24:00"
       precision: 0.1
+      
+- platform: filter
+  name: "Average Hourly Temperature Difference"
+  entity_id: sensor.temp_diff
+  filters:
+    - filter: time_simple_moving_average
+      window_size: "01:00"
+      precision: 0.1
+      
+- platform: filter
+  name: "Average Daily Temperature Difference"
+  entity_id: sensor.temp_diff
+  filters:
+    - filter: time_simple_moving_average
+      window_size: "24:00"
+      precision: 0.1

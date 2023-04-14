@@ -125,11 +125,11 @@ sensor.eagle_200_meter_power_demand:
   friendly_name: Live Power
   icon: mdi:flash
   unit_of_measurement: 'kW'
-sensor.hydro_hourly_energy:
+input_number.hydro_hourly_energy:
   friendly_name: Hourly Hydro Energy
   icon: mdi:flash
   unit_of_measurement: 'kWh'
-sensor.hydro_daily_energy:
+input_number.hydro_daily_energy:
   friendly_name: Daily Hydro Energy
   icon: mdi:flash
   unit_of_measurement: 'kWh'

@@ -1,3 +1,4 @@
+# Manual setup of MQTT devices. switches, sensors, fan and climate
 # For Relay4 Arduino Project
   switch:
     - unique_id: back_irrigation
@@ -30,12 +31,22 @@
       state_topic: "/home/furnace/fan/confirm"
       command_topic: "/home/furnace/fan"
       retain: False
+      
+    # - unique_id: mkr_led
+      # name: "MKR1000 LED"
+      # state_topic: "/home/mkr/led/status"
+      # command_topic: "/home/mkr/led/set"
+      # retain: False
 
   sensor:
     - unique_id: flood
       name: "Flood"
       state_topic: "/home/basement/flood"
-
+    
+    # - unique_id: mkr_A1
+      # name: "MKR1000 A1 Pin"
+      # state_topic: "/home/mkr/a1"
+      
 #Now using ESPHome device 
     # - unique_id: remote_temperature
       # name: "Remote Temperature"

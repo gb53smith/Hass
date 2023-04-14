@@ -5,42 +5,45 @@
     unique_id: my_outdoor temp
     unit_of_measurement: "°C"
     state: >
-        {% if is_state('sensor.mysensors_bme280_2_2', 'unavailable') %}
-          99.0
+        {% if has_value('sensor.mysensors_bme280_2_2') %}
+          {{states('sensor.mysensors_bme280_2_2') | float }}
         {% else %}
-           {{states('sensor.mysensors_bme280_2_2') | float}}
+           99.0
         {% endif %}
     state_class: measurement
     device_class: temperature
-    
+
+# Using defaults to prevent this sensor from being unavailable.
   - name: temp_diff
     unique_id: my_temp_diff
+    state_class: measurement
+    device_class: temperature
     unit_of_measurement: "°C"
     state: "{{ (states('sensor.house_temperature') | float(default=21)) - (states('sensor.mysensors_bme280_2_2') | float(default=10)) | round(1) }}"
 
   - name: hourly_energy
     unique_id: my_hourly_energy
-    state: "{{ states('input_number.hourly_energy') | float }}"
+    state: "{{ states('input_number.hourly_energy') }}"
 
   - name: daily_energy
     unique_id: my_daily_energy
-    state: "{{ states('input_number.daily_energy') | float }}"
+    state: "{{ states('input_number.daily_energy') }}"
           
-  - name: hydro_hourly_energy
-    unique_id: my_hydro_hourly_energy
-    state: "{{ states('input_number.hydro_hourly_energy') | float }}"
+  # - name: hydro_hourly_energy
+    # unique_id: my_hydro_hourly_energy
+    # state: "{{ states('input_number.hydro_hourly_energy') | float }}"
 
-  - name: hydro_daily_energy
-    unique_id: my_hydro_daily_energy
-    state: "{{ states('input_number.hydro_daily_energy') | float }}"        
+  # - name: hydro_daily_energy
+    # unique_id: my_hydro_daily_energy
+    # state: "{{ states('input_number.hydro_daily_energy') | float }}"        
 
-  - name: hour_diff
-    unique_id: my_hour_diff
-    state: "{{ states('input_number.hour_diff') | float }}"
+  # - name: hour_diff
+    # unique_id: my_hour_diff
+    # state: "{{ states('input_number.hour_diff') | float }}"
 
-  - name: daily_temp_diff
-    unique_id: my_daily_temp_diff
-    state: "{{ states('input_number.daily_temp_diff') | float }}"
+  # - name: daily_temp_diff
+    # unique_id: my_daily_temp_diff
+    # state: "{{ states('input_number.daily_temp_diff') | float}}"
     
   # - name: iaq
     # unique_id: my_iaq
@@ -76,14 +79,14 @@
 
 # If binary_sensor.ping fails switch temperature sensors
 # Use input_number.last_house_temp to prevent spiking to 0 when MQTT restarted.
-
+# Note: states are all stored as strings.
   - name: "House Temperature"
     unique_id: my_house_temperature
     state: >
-        {% if is_state("binary_sensor.ping_ms3", "on") %}
-          {{states('input_number.last_house_temp') | float}}
+        {% if is_state('binary_sensor.ping_ms3', 'on') and  has_value('input_number.last_house_temp') %}
+          {{states('input_number.last_house_temp')}}
         {% else %}
-          {{state_attr('climate.mitsubishi_heatpump', 'current_temperature') | float}}
+          {{state_attr('climate.mitsubishi_heatpump', 'current_temperature')}}
         {% endif %}
 
   - name: "Furnace Power Plot"

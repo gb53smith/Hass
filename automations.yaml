@@ -498,13 +498,24 @@
     entity_id: script.energy
 - id: b37947cb4e5049459899cecfdef58379
   alias: Hourly Energy
-  initial_state: true
   trigger:
   - platform: time_pattern
     hours: /1
   action:
-    service: script.turn_on
+  - service: script.turn_on
     entity_id: script.energy_hour
+    enabled: true
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.hydro_hourly_energy
+      value: '{{ states(''sensor.eagle_200_total_meter_energy_delivered'') | float
+        -  states(''input_number.hydro_meter_last_hour'') | float | round(1) }}'
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.hydro_meter_last_hour
+      value: '{{ states(''sensor.eagle_200_total_meter_energy_delivered'') | float
+        }}'
+  initial_state: true
 - id: c06125f64fde49a193b1dc6c84a27e93
   alias: Daily Energy Total
   initial_state: true
@@ -639,6 +650,11 @@
     - condition: state
       entity_id: sensor.multisensor_gen3_ms3_temperature
       state: unavailable
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: sensor.multisensor_gen3_ms3_temperature
+        state: unknown
   action:
   - service: input_number.set_value
     data:
@@ -1104,12 +1120,20 @@
   - platform: state
     entity_id:
     - sensor.average_outdoor_temperature
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
   - platform: state
     entity_id:
     - input_number.irrigation_gain
   - platform: state
     entity_id:
     - input_number.irrigation_nom_temperature
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.enable_irrigation_multiplier
@@ -1167,3 +1191,24 @@
       datetime: '{{ strptime(states(''input_datetime.irrigation_pm_time''), ''%H:%M:%S'')
         + timedelta(hours=1) }}'
   mode: single
+- id: '1681317300903'
+  alias: Daily Energy
+  description: Hydro
+  trigger:
+  - platform: time_pattern
+    hours: '0'
+    minutes: '1'
+  condition: []
+  action:
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.hydro_daily_energy
+      value: '{{ states(''sensor.eagle_200_total_meter_energy_delivered'') | float
+        -  states(''input_number.hydro_meter_last_day'') | float | round(1) }}'
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.hydro_meter_last_day
+      value: '{{ states(''sensor.eagle_200_total_meter_energy_delivered'') | float
+        }}'
+  mode: single
+  initial_state: true
