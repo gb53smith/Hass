@@ -14,13 +14,17 @@
     device_class: temperature
 
 # Using defaults to prevent this sensor from being unavailable.
+# Reducing to 0.5 degree precision to save storage
   - name: temp_diff
     unique_id: my_temp_diff
     state_class: measurement
     device_class: temperature
     unit_of_measurement: "°C"
-    state: "{{ (states('sensor.house_temperature') | float(default=21)) - (states('sensor.mysensors_bme280_2_2') | float(default=10)) | round(1) }}"
-
+    state: >-
+      {% set indoor = states('sensor.house_temperature') | float(default=21) %}
+      {% set outdoor = states('sensor.mysensors_bme280_2_2') | float(default=10) %}    
+      {{ ((indoor - outdoor) * 2) | round / 2 }}     
+    
   - name: hourly_energy
     unique_id: my_hourly_energy
     state: "{{ states('input_number.hourly_energy') }}"
