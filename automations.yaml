@@ -1157,8 +1157,7 @@
   - condition: and
     conditions:
     - condition: template
-      value_template: '{{ states(''sensor.vancouver_precipitation_yesterday'') | float
-        < 5 }}'
+      value_template: '{{ states(''sensor.predicted_rainfall'') | float < 5 }}'
   action:
   - service: script.turn_on
     data: {}
