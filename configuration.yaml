@@ -40,7 +40,7 @@ http:
 #samsungtv:
 #  - host: 192.168.1.74
   
-esphome:
+#esphome:
 
 python_script:
 
@@ -632,12 +632,13 @@ input_select:
        -  ">>"
        -  "SWING"
     icon: mdi:air-filter 
-        
+
+       
 # Include other files to better organize code
 group: !include groups.yaml
 automation: !include automations.yaml
 sensor: !include sensors.yaml
-switch: !include switches.yaml
 script: !include scripts.yaml
 mqtt: !include mqtt.yaml
 template: !include template.yaml
+command_line: !include command_line.yaml

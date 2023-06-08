@@ -1,5 +1,5 @@
 logger:
-  level: DEBUG
+  level: none
 
 substitutions:
   node_name: plants

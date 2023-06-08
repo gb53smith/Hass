@@ -242,7 +242,7 @@ advanced_irrigate_front:
   - service: switch.turn_off
     entity_id: switch.back_irrigation
   - service: switch.turn_off
-    entity_id: switch.relay_deck
+    entity_id: switch.deck_irrigation
   - delay:
       seconds: 10
   - service: switch.turn_on

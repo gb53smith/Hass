@@ -689,15 +689,17 @@
 
     Plant Master Automation control must also be ON.  (input_boolean.plant_automation)'
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.plants_humidity'') | float(default=40) >  states(''input_number.max_humidity'')
-      | float}}
-
-      '
+  - platform: time_pattern
+    minutes: /5
   condition:
   - condition: state
     entity_id: input_boolean.plant_automation
     state: 'on'
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ states(''sensor.plants_humidity'') | float(default=40) >  states(''input_number.max_humidity'')
+        | float}}'
   action:
   - service: switch.turn_on
     data: {}
@@ -710,11 +712,12 @@
 
     One unit of hysteresis added.'
   trigger:
-  - platform: template
+  - platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: template
     value_template: '{{ states(''sensor.plants_humidity'') | float(default=40) <  states(''input_number.max_humidity'')
-      | float - 1.0 }}
-
-      '
+      | float - 1}}'
   action:
   - service: switch.turn_off
     data: {}
