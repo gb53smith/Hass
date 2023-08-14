@@ -414,18 +414,18 @@ input_number:
     mode: box
   # Accumulates temperature difference values over an hour.
   # Sum at end of hour is copied to sensor.hour_diff for graphing.
-  temp_diff_accum:
-    min: 0
-    max: 1000
-    step: 0.1
-    mode: box
+  # temp_diff_accum:
+    # min: 0
+    # max: 1000
+    # step: 0.1
+    # mode: box
   # Accumulates hourly temperature difference values.
   # Sum at the end of the day is copied to sensor.daily_temp_diff for graphing.
-  hourly_temp_diff_accum:
-    min: 0
-    max: 1000
-    step: 0.1
-    mode: box
+  # hourly_temp_diff_accum:
+    # min: 0
+    # max: 1000
+    # step: 0.1
+    # mode: box
   # Accumulates energy use over an hour.
   # Sum at end of hour is copied to sensor.hourly_energy for graphing.
   energy_accum:
@@ -462,11 +462,11 @@ input_number:
     # max: 0
     # step: 1
     # mode: box
-  hour_diff:
-    min: -20
-    max: 100
-    step: 0.1
-    mode: box
+  # hour_diff:
+    # min: -20
+    # max: 100
+    # step: 0.1
+    # mode: box
   hourly_energy:
     min: 0
     max: 100
@@ -477,11 +477,11 @@ input_number:
     max: 100
     step: 0.1
     mode: box
-  daily_temp_diff:
-    min: -20
-    max: 100
-    step: 0.1
-    mode: box 
+  # daily_temp_diff:
+    # min: -20
+    # max: 100
+    # step: 0.1
+    # mode: box 
   soil_dry_1:
     min: 1000
     max: 4000

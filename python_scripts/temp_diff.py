@@ -1,5 +1,6 @@
 
 '''
+Replaced by platform: filter
 Date:  April 16, 2020
 
 Versions used: HA108.0, HassOS and Raspberry PI 3 B

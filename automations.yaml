@@ -475,18 +475,6 @@
     entity_id: counter.fan_on_minutes
   initial_state: true
   mode: single
-- id: 17e8bb84eb9d47888792ec4646772ec4
-  alias: Hourly Temperature Difference
-  initial_state: true
-  trigger:
-  - platform: time_pattern
-    minutes: /5
-  action:
-    service: python_script.temp_diff
-    data:
-      temp_diff: temp_diff
-      temp_diff_accum: temp_diff_accum
-      hour_diff: hour_diff
 - id: b6c8df5f4b884258bb0ce456a9900986
   alias: Energy Integration
   initial_state: true
@@ -528,19 +516,6 @@
       hourly: hourly_energy
       hourly_accum: hourly_energy_accum
       daily: daily_energy
-- id: 5d8af1a7b8e6454c9ac100de9af3b08d
-  alias: Daily Temp Diff Average
-  initial_state: true
-  trigger:
-  - platform: time_pattern
-    minutes: /30
-  action:
-    service: python_script.hour2day
-    data:
-      hourly: hour_diff
-      hourly_accum: hourly_temp_diff_accum
-      daily: daily_temp_diff
-      mode: average
 - id: 462a791f448d479f9439e0243958ba74
   alias: HVAC
   description: Triggers a Python Script every minute to decide if heat pump should

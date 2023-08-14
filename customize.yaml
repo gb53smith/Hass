@@ -24,6 +24,9 @@ sensor.mysensors_bme280_2_4:
   friendly_name: Outdoor Voltage
   icon: mdi:battery
   unit_of_measurement: 'V'
+sensor.mysensors_bme280_2_5:
+  friendly_name: Up Days
+  unit_of_measurement: int
 sensor.hour_diff:
   friendly_name: Hourly Temperature Difference
   icon: mdi:thermometer
