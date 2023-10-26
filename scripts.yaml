@@ -89,11 +89,6 @@ energy_hour:
       last_power: last_power
       energy_accum: energy_accum
       hourly_energy: hourly_energy
-      meter: eagle_200_total_meter_energy_delivered
-      last_hour: hydro_meter_last_hour
-      last_day: hydro_meter_last_day
-      hydro_hourly_energy: hydro_hourly_energy
-      hydro_daily_energy: hydro_daily_energy
 burglar_alarm_timer:
   alias: Burglar Alarm Timer
   sequence:

@@ -489,6 +489,12 @@
   trigger:
   - platform: time_pattern
     hours: /1
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.eagle_200_total_meter_energy_delivered
+      state: unavailable
   action:
   - service: script.turn_on
     entity_id: script.energy_hour
@@ -756,6 +762,10 @@
   - service: notify.mobile_app_grahams_iphone
     data:
       message: Back Door Unlocked
+      data:
+        push:
+          sound: US-EN-Alexa-Back-Door-Unlocked.wav
+      title: Door Lock Activity
   mode: single
 - id: '1615053483437'
   alias: Back Door User Lock
@@ -879,6 +889,7 @@
   - service: zwave_js.refresh_value
     data:
       entity_id: light.ge_12724_3way_dimmer_switch_level
+      refresh_all_values: false
   mode: single
 - id: '1621568021535'
   alias: AC Away Slider Changed
@@ -1041,7 +1052,7 @@
   description: Triggers a script every minute to determine heatpump and furnace operating
     modes.  Condition 1 is when away - cool around ac_away setpoint Condition 2 is
     when not away and sleeping (furnace setpoint is away setpoint) - cool around ac_home
-    setpoint Condition 2 is when not away - cool around ac_home setpoint, heat around
+    setpoint Condition 3 is when not away - cool around ac_home setpoint, heat around
     the home setpoint with heatpump. use the furnance to bring house temperature in
     range of heatpump.
   trigger:
