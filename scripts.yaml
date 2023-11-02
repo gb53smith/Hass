@@ -98,15 +98,15 @@ burglar_alarm_timer:
   - service: switch.turn_off
     entity_id: switch.siren_gen5
   mode: single
-hvac_home:
-  alias: HVAC Home
+hvac_cool_heat:
+  alias: HVAC Cool Heat
   description: Start cooling temperature >= cool_setpoint + 1.5.  Stop cooling with
     temperature < cool_setpoint - 1.0
   variables:
     heatpump_mode: '{{states(''climate.mitsubishi_heatpump'')}}'
-    heatpump_cool_setpoint: '{{state_attr(''climate.mitsubishi_heatpump'', ''temperature'')}}'
-    furnace_mode: '{{states(''climate.house'')}}'
-    furnace_cool_setpoint: '{{state_attr(''climate.house'', ''temperature'')}}'
+    cool_setpoint: '{{states(''input_number.slider_ac_home'')}}'
+    heat_setpoint: '{{states(''input_number.slider_home'')}}'
+    temperature: '{{states(''sensor.house_temperature'')}}'
   sequence:
   - choose:
     - conditions:
@@ -133,6 +133,11 @@ hvac_home:
       - condition: template
         value_template: '{{temperature > heat_setpoint + 0.3}}'
       sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.house
       - condition: template
         value_template: '{{heatpump_mode != ''off''}}'
       - service: climate.set_hvac_mode
@@ -140,19 +145,11 @@ hvac_home:
           hvac_mode: 'off'
         target:
           entity_id: climate.mitsubishi_heatpump
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.house
     - conditions:
       - condition: template
         value_template: '{{temperature <= heat_setpoint - 0.5}}'
       - condition: template
         value_template: '{{temperature >= heat_setpoint - 1.0}}'
-      - condition: numeric_state
-        entity_id: sensor.outdoor_temp
-        above: 1
       - condition: template
         value_template: '{{heatpump_mode != ''heat''}}'
       sequence:
@@ -181,7 +178,7 @@ hvac_home:
       sequence:
       - service: climate.set_hvac_mode
         data:
-          hvac_mode: false
+          hvac_mode: 'off'
         target:
           entity_id: climate.mitsubishi_heatpump
       - service: climate.set_hvac_mode
@@ -190,13 +187,18 @@ hvac_home:
         target:
           entity_id: climate.house
   mode: single
-hvac_away:
-  alias: HVAC Away
+hvac_cool_only:
+  alias: HVAC Cool Only
   description: Controls cooling using heat pump. Heating done by furnace.  A different
     setpoint is passed depending on being away our just sleeping.
   variables:
     heatpump_mode: '{{states(''climate.mitsubishi_heatpump'')}}'
   sequence:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: heat
+    target:
+      entity_id: climate.house
   - choose:
     - conditions:
       - condition: template

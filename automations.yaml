@@ -1050,10 +1050,10 @@
 - id: '1679763471320'
   alias: HVAC2
   description: Triggers a script every minute to determine heatpump and furnace operating
-    modes.  Condition 1 is when away - cool around ac_away setpoint Condition 2 is
-    when not away and sleeping (furnace setpoint is away setpoint) - cool around ac_home
-    setpoint Condition 3 is when not away - cool around ac_home setpoint, heat around
-    the home setpoint with heatpump. use the furnance to bring house temperature in
+    modes.  The first true condition is executed.  Condition 1 is when away - cool around ac_away setpoint. Condition 2 is
+    when not away and sleeping. Heat using furnace with setpoint at the away temperature. Cool around ac_home
+    setpoint. Condition 3 is when not away at not sleeping.  Cool around ac_home setpoint, heat around
+    the home setpoint with heatpump. Use the furnance to bring house temperature in
     range of heatpump.
   trigger:
   - platform: time_pattern
@@ -1066,41 +1066,37 @@
         entity_id: binary_sensor.away
         state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id: climate.house
-      - service: script.hvac_away
+      - service: script.hvac_cool_only
         data:
           cool_setpoint: '{{states(''input_number.slider_ac_away'')}}'
           temperature: '{{states(''sensor.house_temperature'')}}'
     - conditions:
-      - condition: state
-        entity_id: binary_sensor.away
-        state: 'off'
       - condition: template
         value_template: '{{is_state_attr(''climate.house'', ''temperature'', states(''input_number.slider_away'')|float)}}'
       sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id: climate.house
-      - service: script.hvac_away
+      - service: script.hvac_cool_only
         data:
           cool_setpoint: '{{states(''input_number.slider_ac_home'')}}'
           temperature: '{{states(''sensor.house_temperature'')}}'
     - conditions:
-      - condition: state
-        entity_id: binary_sensor.away
-        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.outdoor_temp
+        above: 1
       sequence:
-      - service: script.hvac_home
-        data:
-          cool_setpoint: '{{states(''input_number.slider_ac_home'')}}'
-          heat_setpoint: '{{states(''input_number.slider_home'')}}'
-          temperature: '{{states(''sensor.house_temperature'')}}'
+      - service: script.hvac_cool_heat
+    default:
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: heat
+      target:
+        entity_id: climate.house
+    - condition: template
+      value_template: '{{heatpump_mode != ''off''}}'
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: 'off'
+      target:
+        entity_id: climate.mitsubishi_heatpump   
   mode: single
 - id: '1680562086422'
   alias: Irrigation Multiplier
