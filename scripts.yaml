@@ -150,19 +150,19 @@ hvac_cool_heat:
         value_template: '{{temperature <= heat_setpoint - 0.5}}'
       - condition: template
         value_template: '{{temperature >= heat_setpoint - 1.0}}'
-      - condition: template
-        value_template: '{{heatpump_mode != ''heat''}}'
       sequence:
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: heat
-        target:
-          entity_id: climate.mitsubishi_heatpump
       - service: climate.set_hvac_mode
         data:
           hvac_mode: 'off'
         target:
           entity_id: climate.house
+      - condition: template
+        value_template: '{{heatpump_mode != ''heat''}}'
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.mitsubishi_heatpump
       - delay:
           seconds: 5
       - service: climate.set_temperature
@@ -173,19 +173,19 @@ hvac_cool_heat:
     - conditions:
       - condition: template
         value_template: '{{temperature < heat_setpoint - 1.0}}'
+      sequence:
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: heat
+        target:
+          entity_id: climate.house
       - condition: template
         value_template: '{{heatpump_mode != ''off''}}'
-      sequence:
       - service: climate.set_hvac_mode
         data:
           hvac_mode: 'off'
         target:
           entity_id: climate.mitsubishi_heatpump
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'on'
-        target:
-          entity_id: climate.house
   mode: single
 hvac_cool_only:
   alias: HVAC Cool Only
