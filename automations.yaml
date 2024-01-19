@@ -416,7 +416,7 @@
     data:
       hvac_mode: 'off'
     target:
-      entity_id: climate.house      
+      entity_id: climate.house
   - delay:
       minutes: 10
   - service: notify.mobile_app_grahams_iphone
@@ -1055,9 +1055,10 @@
 - id: '1679763471320'
   alias: HVAC2
   description: Triggers a script every minute to determine heatpump and furnace operating
-    modes.  The first true condition is executed.  Condition 1 is when away - cool around ac_away setpoint. Condition 2 is
-    when not away and sleeping. Heat using furnace with setpoint at the away temperature. Cool around ac_home
-    setpoint. Condition 3 is when not away at not sleeping.  Cool around ac_home setpoint, heat around
+    modes.  The first true condition is executed.  Condition 1 is when away - cool
+    around ac_away setpoint. Condition 2 is when not away and sleeping. Heat using
+    furnace with setpoint at the away temperature. Cool around ac_home setpoint. Condition
+    3 is when not away at not sleeping.  Cool around ac_home setpoint, heat around
     the home setpoint with heatpump. Use the furnance to bring house temperature in
     range of heatpump.
   trigger:
@@ -1092,7 +1093,7 @@
     default:
     - service: climate.set_hvac_mode
       data:
-        hvac_mode: 'heat'
+        hvac_mode: heat
       target:
         entity_id: climate.house
     - condition: template
@@ -1101,7 +1102,7 @@
       data:
         hvac_mode: 'off'
       target:
-        entity_id: climate.mitsubishi_heatpump   
+        entity_id: climate.mitsubishi_heatpump
   mode: single
 - id: '1680562086422'
   alias: Irrigation Multiplier
@@ -1201,3 +1202,61 @@
         }}'
   mode: single
   initial_state: true
+- id: '1705690288628'
+  alias: Peak Power
+  description: Records the peak power during daytime and nighttime determined by the
+    normal heat on and off times.
+  trigger:
+    platform: state
+    entity_id: sensor.eagle_200_meter_power_demand
+  condition: []
+  action:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.eagle_200_meter_power_demand
+      above: input_number.peak_daytime_power
+    - condition: time
+      after: input_datetime.heat_on_time
+      before: input_datetime.heat_off_time
+    then:
+    - service: input_number.set_value
+      data:
+        value: '{{ states(''sensor.eagle_200_meter_power_demand'') }}'
+      target:
+        entity_id: input_number.peak_daytime_power
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.eagle_200_meter_power_demand
+      above: input_number.peak_nighttime_power
+    - condition: time
+      after: input_datetime.heat_off_time
+      before: input_datetime.heat_on_time
+    then:
+    - service: input_number.set_value
+      data:
+        value: '{{ states(''sensor.eagle_200_meter_power_demand'') }}'
+      target:
+        entity_id: input_number.peak_nighttime_power
+  mode: single
+- id: '1705690604737'
+  alias: Peak Power Reset
+  description: Clears peak daytime and nighttime powers
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.peakpowerreset
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    data:
+      value: 0
+    target:
+      entity_id: input_number.peak_daytime_power
+  - service: input_number.set_value
+    data:
+      value: 0
+    target:
+      entity_id: input_number.peak_nighttime_power
+  mode: single
