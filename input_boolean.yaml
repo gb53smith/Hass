@@ -1,0 +1,24 @@
+vacation:
+  name: "ON Vacation"
+  icon: mdi:car
+heat0:
+  name: "Heat State 0"
+  initial: off
+heat1:
+  name: "Heat State 1"
+  initial: off
+plant_automation:
+  name: "Plant Automation"
+  icon: mdi:toggle-switch-outline
+enable_irrigation_front:
+  name: Enable Irrigation Front
+enable_irrigation_back:
+  name: Enable Irrigation Back
+enable_irrigation_deck:
+  name: Enable Irrigation Deck
+enable_irrigation_multiplier:
+  name: Enable Irrigation Multiplier
+peakpowerreset:
+  name: "Peak Power Reset"
+  initial: off
+  icon: mdi:restart

@@ -1,0 +1,242 @@
+slider_home:
+  name: Home
+  #initial: 21
+  min: 18
+  max: 25
+  step: 0.5
+  icon: mdi:target
+  mode: box
+slider_away:
+  name: Away
+  #initial: 18
+  min: 16
+  max: 20
+  step: 0.5
+  icon: mdi:target
+  mode: box
+slider_delay_f:
+  name: Front Duration
+  min: 5
+  max: 29
+  step: 1.0
+  icon: mdi:target
+  mode: box
+slider_delay_b:
+  name: Back Duration
+  min: 5
+  max: 29
+  step: 1.0
+  icon: mdi:target
+  mode: box
+slider_delay_d:
+  name: Deck Duration
+  min: 5
+  max: 29
+  step: 1.0
+  icon: mdi:target
+  mode: box
+# Irrigation Multiplier = Average Outside Temperature / Irrigation Nominal Temperature * Irrigation Gain 
+irrigation_multiplier:
+  name: Irrigation Multiplier
+  min: 0.1
+  max: 3.0
+  step: 0.01
+  mode: box
+irrigation_nom_temperature:
+  name: Irrigation Nominal Temperature
+  min: 1
+  max: 40
+  step: 1
+  mode: box
+irrigation_gain:
+  name: Irrigation Gain
+  min: 0.1
+  max: 10
+  step: 0.01
+  mode: box      
+furnace_power:
+  name: Furnace Power
+  min: 0
+  max: 50
+  step: 0.1
+  unit_of_measurement: "kW"
+slider_ac_home:
+  name: AC Home
+  #initial: 21
+  min: 20
+  max: 25
+  step: 0.5
+  icon: mdi:target
+  mode: box
+slider_ac_away:
+  name: AC Away
+  #initial: 18
+  min: 20
+  max: 30
+  step: 0.5
+  icon: mdi:target
+  mode: box
+
+#stores the last power level when outside of current window.
+last_power:
+  min: 0
+  max: 100
+  step: 0.1
+  unit_of_measurement: "kW"
+  mode: box
+# Accumulates temperature difference values over an hour.
+# Sum at end of hour is copied to sensor.hour_diff for graphing.
+# temp_diff_accum:
+  # min: 0
+  # max: 1000
+  # step: 0.1
+  # mode: box
+# Accumulates hourly temperature difference values.
+# Sum at the end of the day is copied to sensor.daily_temp_diff for graphing.
+# hourly_temp_diff_accum:
+  # min: 0
+  # max: 1000
+  # step: 0.1
+  # mode: box
+# Accumulates energy use over an hour.
+# Sum at end of hour is copied to sensor.hourly_energy for graphing.
+energy_accum:
+  min: 0
+  max: 1000
+  step: 0.1
+  mode: box
+# Accumulates hourly energy values.
+# Sum at the end of the day is copied to sensor.daily_energy for graphing.
+hourly_energy_accum:
+  min: 0
+  max: 1000
+  step: 0.1
+  mode: box
+# Save for sensor.house_temperature restore after HA restart
+last_house_temp:
+  min: 0
+  max: 100
+  step: 0.1
+  mode: box
+# Save last sensor.multisensor2_humidity for HA restart
+# last_house_humidity:
+  # min: 0
+  # max: 100
+  # step: 1
+  # mode: box
+# last_pressure:
+  # min: 900
+  # max: 1200
+  # step: 1
+  # mode: box
+# last_rssi:
+  # min: -120
+  # max: 0
+  # step: 1
+  # mode: box
+# hour_diff:
+  # min: -20
+  # max: 100
+  # step: 0.1
+  # mode: box
+hourly_energy:
+  min: 0
+  max: 100
+  step: 0.1
+  mode: box
+daily_energy:
+  min: 0
+  max: 100
+  step: 0.1
+  mode: box
+# daily_temp_diff:
+  # min: -20
+  # max: 100
+  # step: 0.1
+  # mode: box 
+soil_dry_1:
+  min: 1000
+  max: 4000
+  step: 1
+  mode: box
+soil_wet_1:
+  min: 1000
+  max: 4000
+  step: 1
+  mode: box
+soil_dry_2:
+  min: 1000
+  max: 4000
+  step: 1
+  mode: box
+soil_wet_2:
+  min: 1000
+  max: 4000
+  step: 1
+  mode: box
+max_humidity:
+  min: 50
+  max: 100
+  step: 1
+  mode: box  
+temperature_fan:
+  name: Temperature Fan
+  min: 20
+  max: 35
+  step: 1
+  mode: box
+temperature_fan_away:
+  name: Temperature Fan Away
+  min: 20
+  max: 35
+  step: 1
+  mode: box    
+# # Used to generate at test pattern to power
+# power_test:
+  # name: Power Test
+  # initial: 0
+  # min: 0
+  # max: 150
+  # step: 1
+  # unit_of_measurement: "kW"
+hydro_hourly_energy:
+  min: 0
+  max: 1000
+  step: 0.1
+  mode: box
+hydro_daily_energy:
+  min: 0
+  max: 1000
+  step: 0.1
+  mode: box
+hydro_meter_last_hour:
+  min: 0
+  max: 1000000
+  step: 0.1
+  mode: box
+hydro_meter_last_day:
+  min: 0
+  max: 1000000
+  step: 0.1
+  mode: box
+hepa_hours:
+  min: 0
+  max: 1000000
+  step: 0.1
+  mode: box    
+peak_daytime_power:
+  name: Daytime
+  min: 0
+  max: 50
+  step: 0.1
+  mode: box
+  unit_of_measurement: "kW"
+peak_nighttime_power:
+  name: Nighttime
+  min: 0
+  max: 50
+  step: 0.1
+  mode: box
+  unit_of_measurement: "kW"
+ 
+
