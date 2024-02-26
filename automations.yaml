@@ -287,7 +287,7 @@
 
       {% endif %}'
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: House Temperature Out of Range
   initial_state: true
@@ -307,7 +307,7 @@
       entity_id: sensor.winecellar_temperature
       above: 15.5
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: Wine Cellar Temperature Out of Range
   initial_state: true
@@ -320,7 +320,7 @@
   - platform: template
     value_template: '{{ states(''sensor.mysensors_bme280_2_4'') | float < 3.2 }}'
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: Outdoor battery needs to be charged.
   initial_state: true
@@ -333,7 +333,7 @@
     entity_id: sensor.flood
     to: 'ON'
   action:
-    service: notify.mobile_app_grahams_iphone
+    service: notify.mobile_app_iphone1
     data:
       message: Basement Flood Detected!
 - id: 2c587360c4a8480faa87bf3e388f1cac
@@ -358,7 +358,7 @@
         entity_id: sensor.myups_status
         state: Online Battery Charging
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: Multisensor Failed!
   initial_state: true
@@ -419,7 +419,7 @@
       entity_id: climate.house
   - delay:
       minutes: 10
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: HA Restarted
   initial_state: true
@@ -616,7 +616,7 @@
     entity_id: binary_sensor.away
     state: 'on'
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: Graham Burglar Alarm Triggered!
   - service: script.turn_on
@@ -664,7 +664,7 @@
   - platform: template
     value_template: '{{ states(''counter.brita_days'') | float > 90.0 }}'
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: Brita Filter Used for 90 Days
   initial_state: true
@@ -764,7 +764,7 @@
         by '' + mapper[selection] if selection in mapper else ''error'' }}'
     target:
       entity_id: input_text.lock_last_action
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: Back Door Unlocked
       data:
@@ -944,7 +944,7 @@
     to: Online
   condition: []
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: UPS now ON Line Battery Fully Changed
   mode: single
@@ -958,7 +958,7 @@
     for: 00:01:00
   condition: []
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: UPS now ON Battery
   mode: single
@@ -972,7 +972,7 @@
     to: Online Battery Charging
   condition: []
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: UPS now ON Line Battery Charging
   mode: single
@@ -1005,7 +1005,7 @@
     value_template: '{{ states(''input_number.hepa_hours'') | float > 2500.0 }}'
   condition: []
   action:
-  - service: notify.mobile_app_grahams_iphone
+  - service: notify.mobile_app_iphone1
     data:
       message: HEPA Filter Used for 2,500 hours.
   mode: single
