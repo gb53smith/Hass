@@ -1133,8 +1133,10 @@
   - service: input_number.set_value
     data:
       entity_id: input_number.irrigation_multiplier
-      value: '{{ states(''sensor.average_outdoor_temperature'') | float / states(''input_number.irrigation_nom_temperature'')
-        | float * states(''input_number.irrigation_gain'') | float}}'
+      value: '{% set multiplier = states(''sensor.average_outdoor_temperature'') |
+        float / states(''input_number.irrigation_nom_temperature'') | float * states(''input_number.irrigation_gain'')
+        | float  %} {% if multiplier < 0.1 %} 0.1 {% else %} {{multiplier}} {% endif
+        %}'
   mode: single
 - id: '1680563383342'
   alias: Advanced Irrigation
@@ -1260,3 +1262,30 @@
     target:
       entity_id: input_number.peak_nighttime_power
   mode: single
+- id: '1710176032169'
+  alias: Watchdog Heat Pump
+  description: Send a notice to iPhone if Heat Pump is disconnected from WiFi and
+    UPS ONline
+  trigger:
+  - platform: time_pattern
+    minutes: /10
+  condition:
+  - condition: state
+    entity_id: binary_sensor.192_168_1_100
+    state: 'off'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.myups_status
+      state: Online
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: sensor.myups_status
+        state: Online Battery Charging
+  action:
+  - service: notify.mobile_app_iphone1
+    data:
+      message: Heat Pump Failed!
+  mode: single
+  initial_state: true
