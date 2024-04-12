@@ -347,16 +347,9 @@
   - condition: state
     entity_id: binary_sensor.ping_ms3
     state: 'off'
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.myups_status
-      state: Online
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: sensor.myups_status
-        state: Online Battery Charging
+  - condition: state
+    entity_id: sensor.myups_status
+    state: Online
   action:
   - service: notify.mobile_app_iphone1
     data:
@@ -893,7 +886,8 @@
   action:
   - service: zwave_js.refresh_value
     data:
-      entity_id: light.ge_12724_3way_dimmer_switch_level
+      entity_id:
+      - light.ge_12724_3way_dimmer_switch_level
       refresh_all_values: false
   mode: single
 - id: '1621568021535'
@@ -1271,18 +1265,11 @@
     minutes: /10
   condition:
   - condition: state
-    entity_id: binary_sensor.192_168_1_100
+    entity_id: binary_sensor.heatpump
     state: 'off'
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.myups_status
-      state: Online
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: sensor.myups_status
-        state: Online Battery Charging
+  - condition: state
+    entity_id: sensor.myups_status
+    state: Online
   action:
   - service: notify.mobile_app_iphone1
     data:
