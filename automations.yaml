@@ -77,7 +77,7 @@
   - service: switch.turn_on
     data: {}
     target:
-      entity_id: switch.scene_capable_switch_on_off
+      entity_id: switch.in_wall_paddle_switch_qfsw_500s
   initial_state: true
 - id: f4ccf77d963c4b729311199cb14bd864
   alias: Bedroom Room Light OFF when on away
@@ -95,7 +95,7 @@
   - service: switch.turn_off
     data: {}
     target:
-      entity_id: switch.scene_capable_switch_on_off
+      entity_id: switch.in_wall_paddle_switch_qfsw_500s
   initial_state: true
 - id: 48259ef77a1f4882955e69383e0820e8
   alias: Set Home Setpoint
