@@ -33,14 +33,8 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.1.90
-
-#websocket_api:
-
-#Try fixed IP address to fix update warnings.  Moved to UI.
-#samsungtv:
-#  - host: 192.168.1.74
-  
-#esphome:
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 
 python_script:
 

@@ -273,10 +273,10 @@
 - id: 7c8c7380a4a7468283982bfd5d5be4e9
   alias: Notify House Out of Range Temperature
   description: Send Notification if temperature reaches min_temp or max_temp.
-  trigger:
-  - platform: time_pattern
-    minutes: /5
-  condition:
+  triggers:
+  - minutes: /5
+    trigger: time_pattern
+  conditions:
   - condition: template
     value_template: '{% if is_state(''binary_sensor.away'', ''on'') %} {{ states(''sensor.house_temperature'')
       | float > 30.0 }}
@@ -286,10 +286,19 @@
       {{ states(''sensor.house_temperature'') | float > 26.0 }}
 
       {% endif %}'
-  action:
-  - service: notify.mobile_app_iphone1
-    data:
+  - condition: template
+    value_template: '{% if is_state(''binary_sensor.away'', ''on'') %} {{ states(''sensor.house_temperature'')
+      | float > 30.0 }}
+
+      {% else %}
+
+      {{ states(''sensor.house_temperature'') | float > 26.0 }}
+
+      {% endif %}'
+  actions:
+  - data:
       message: House Temperature Out of Range
+    action: notify.mobile_app_iphone1
   initial_state: true
   mode: single
 - id: df3e71a6d3fb4f0bbe53f6768b781d2e
@@ -323,7 +332,7 @@
   - service: notify.mobile_app_iphone1
     data:
       message: Outdoor battery needs to be charged.
-  initial_state: true
+  initial_state: false
   mode: single
 - id: b023ab62caba4b35bd82e014c24f6e20
   alias: Basement Flood Alarm
@@ -367,54 +376,54 @@
     Turn plant light ON if automation ON and time is in range.
 
     Note !secrets does not work in template.'
-  trigger:
-  - platform: homeassistant
-    event: start
-  action:
-  - service: homeassistant.turn_off
-    data:
+  triggers:
+  - event: start
+    trigger: homeassistant
+  actions:
+  - data:
       entity_id: group.switches_off_at_restart
-  - service: climate.set_temperature
-    data:
+    action: homeassistant.turn_off
+  - data:
       entity_id: climate.house
       temperature: "{% if is_state('input_boolean.vacation', 'off') and \n  (now().hour
         * 60 + now().minute) * 60  \n  > state_attr('input_datetime.heat_on_time',
         'timestamp') and \n  (now().hour * 60 + now().minute) * 60 \n  < state_attr('input_datetime.heat_off_time',
         'timestamp') %}\n  {{ states('input_number.slider_home')}}\n{% else %}\n  {{
         states('input_number.slider_away')}}\n{% endif %}\n"
-  - service: climate.set_temperature
-    data:
+    action: climate.set_temperature
+  - data:
       entity_id: climate.summer_fan
       temperature: "{% if is_state('input_boolean.vacation', 'off') %}\n  25\n{% else
         %}\n  30\n{% endif %}\n"
-  - service: input_number.set_value
-    data:
+    action: climate.set_temperature
+  - data:
       entity_id: input_number.furnace_power
       value: 0
-  - service: python_script.random_lights
-    data: {}
-  - service: automation.trigger
-    entity_id: automation.furnace_state
-  - service: fan.set_percentage
-    data:
+    action: input_number.set_value
+  - data: {}
+    action: python_script.random_lights
+  - entity_id: automation.furnace_state
+    action: automation.trigger
+  - data:
       percentage: 40
     target:
       entity_id: fan.hepa_filter_fan
-  - service: climate.set_hvac_mode
-    data:
+    action: fan.set_percentage
+  - data:
       hvac_mode: 'off'
     target:
       entity_id: climate.mitsubishi_heatpump
-  - service: climate.set_hvac_mode
-    data:
-      hvac_mode: 'off'
+    action: climate.set_hvac_mode
+  - data:
+      hvac_mode: heat
     target:
       entity_id: climate.house
+    action: climate.set_hvac_mode
   - delay:
       minutes: 10
-  - service: notify.mobile_app_iphone1
-    data:
+  - data:
       message: HA Restarted
+    action: notify.mobile_app_iphone1
   initial_state: true
   mode: single
 - id: bee7347e41de4f4e96c85c52ab3ba0f8
@@ -600,22 +609,18 @@
   alias: Burglar Alarm
   description: If away, and motion is detected send text message, iPhone notification
     and turn on Siren for 2 minutes.
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.ecolink_motion_detector_sensor
+  triggers:
+  - entity_id: binary_sensor.ecolink_motion_detector_sensor
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: binary_sensor.away
     state: 'on'
-  action:
-  - service: notify.mobile_app_iphone1
-    data:
+  actions:
+  - data:
       message: Graham Burglar Alarm Triggered!
-  - service: script.turn_on
-    data: {}
-    target:
-      entity_id: script.burglar_alarm_timer
+    action: notify.mobile_app_iphone1
   initial_state: true
   mode: single
 - id: 68eef09ca6714c85a4d466bd27fde205
@@ -1274,5 +1279,21 @@
   - service: notify.mobile_app_iphone1
     data:
       message: Heat Pump Failed!
+  mode: single
+  initial_state: true
+- id: '1741887998688'
+  alias: Notify EV Charged
+  description: ''
+  triggers:
+  - minutes: /5
+    trigger: time_pattern
+  conditions:
+  - condition: state
+    entity_id: sensor.audi_q6_e_tron_state_of_charge
+    state: '80.0'
+  actions:
+  - data:
+      message: EV Charged
+    action: notify.mobile_app_iphone1
   mode: single
   initial_state: true

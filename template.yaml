@@ -5,8 +5,8 @@
     unique_id: my_outdoor temp
     unit_of_measurement: "°C"
     state: >
-        {% if has_value('sensor.mysensors_bme280_2_2') %}
-          {{states('sensor.mysensors_bme280_2_2') | float }}
+        {% if has_value('sensor.temperature_humidity_xs_sensor_air_temperature') %}
+          {{states('sensor.temperature_humidity_xs_sensor_air_temperature') | float }}
         {% else %}
            99.0
         {% endif %}
@@ -21,8 +21,8 @@
     device_class: temperature
     unit_of_measurement: "°C"
     state: >-
-      {% set indoor = states('sensor.house_temperature') | float(default=21) %}
-      {% set outdoor = states('sensor.mysensors_bme280_2_2') | float(default=10) %}    
+      {% set indoor = states('sensor.temperature_humidity_xs_sensor_air_temperature_2') | float(default=21) %}
+      {% set outdoor = states('sensor.temperature_humidity_xs_sensor_air_temperature') | float(default=10) %}    
       {{ ((indoor - outdoor) * 2) | round / 2 }}     
     
   - name: hourly_energy
@@ -135,4 +135,7 @@
     unique_id: my_hepa_filter_hours_rounded
     state: "{{ states('input_number.hepa_hours') | round}}"
 
-      
+  - name: "Current Date"
+    unique_id: current_date
+    state: "{{ now().strftime('%m-%d') }}"  
+    #state: "{{ now().strftime('%Y-%m-%d') }}"  

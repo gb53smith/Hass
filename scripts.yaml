@@ -89,15 +89,6 @@ energy_hour:
       last_power: last_power
       energy_accum: energy_accum
       hourly_energy: hourly_energy
-burglar_alarm_timer:
-  alias: Burglar Alarm Timer
-  sequence:
-  - service: switch.turn_on
-    entity_id: switch.siren_gen5
-  - delay: 0:02:00
-  - service: switch.turn_off
-    entity_id: switch.siren_gen5
-  mode: single
 hvac_cool_heat:
   alias: HVAC Cool Heat
   description: Start cooling temperature >= cool_setpoint + 1.5.  Stop cooling with
