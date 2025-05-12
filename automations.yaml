@@ -1285,12 +1285,12 @@
   alias: Notify EV Charged
   description: ''
   triggers:
-  - minutes: /5
-    trigger: time_pattern
-  conditions:
-  - condition: state
-    entity_id: sensor.audi_q6_e_tron_state_of_charge
-    state: '80.0'
+  - trigger: state
+    entity_id:
+    - sensor.q6_e_tron_r_charging_state
+    from: charging
+    to: notReadyForCharging
+  conditions: []
   actions:
   - data:
       message: EV Charged
